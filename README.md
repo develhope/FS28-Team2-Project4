@@ -56,12 +56,12 @@ Il progetto è organizzato come segue:
 
 ## Membri del Team
 - [Mario Sica](https://github.com/mario-sica)
-- [Giovanni Vitolo](url)
+- [Giovanni Vitolo](https://github.com/Giovanni-Val)
 - [Luigi Cavalli](https://github.com/luigicavalli)
-- [Maurilio Valenti](url)
+- [Maurilio Valenti](https://github.com/Maurilio93)
 - [Nunzia Biele](https://github.com/Akame96)
 - [Lorenzo de Vita](https://github.com/DEVita42)
-- [Samuele Berti](url)
+- [Samuele Berti](https://github.com/SamBrt)
 
 ### Assegnazione dei compiti
 Ogni membro del team sarà assegnato a specifiche parti del progetto, incluse l'implementazione del frontend, la gestione del backend, il design dell'interfaccia utente, la configurazione del database e la scrittura di test unitari e funzionali.
