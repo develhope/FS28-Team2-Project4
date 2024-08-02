@@ -1,6 +1,6 @@
 # StayFit - Custom Fitness, Simplified.
 
-<img src="./stayfit-app/src/assets/misc/STAYFit(transparent).png" alt="StayFit png transparent" width="300rem">
+<img src="./stayfit-app/src/assets/img/STAYFit(transparent).png" alt="StayFit png transparent" width="300rem">
 
 ## Indice
 - [Introduzione](#introduzione)
