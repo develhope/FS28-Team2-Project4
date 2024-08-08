@@ -20,7 +20,8 @@ const Form = () => {
     password: "",
     confirmPassword: "",
     subscriptionType: "",
-    socialLinks: "",
+    socialNetwork: "",
+    socialAccountName: "",
     termsAccepted: false,
     privacyPolicyAccepted: false,
     referral: "",
@@ -69,11 +70,26 @@ const Form = () => {
     }
   };
 
+  const handleTaxCodeChange = (e) => {
+    const { value } = e.target;
+    const regex = /^[0-9]{0,11}$/;
+    if (regex.test(value)) {
+      setFormData((prev) => ({ ...prev, taxCode: value }));
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const { value } = e.target;
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (regex.test(value)) {
+      setFormData((prev) => ({ ...prev, email: value }));
+    }
+  };
+
   const nextStep = () => {
     const passwordStepIndex = steps.findIndex(s => s.label === "Password");
     const confirmPasswordStepIndex = steps.findIndex(s => s.label === "Conferma Password");
 
-    // Controlla la validità per Termini e Condizioni
     if (step === steps.findIndex(s => s.label === "Termini e Condizioni")) {
       if (!formData.termsAccepted) {
         alert("Devi accettare i Termini e Condizioni per procedere.");
@@ -81,7 +97,6 @@ const Form = () => {
       }
     }
 
-    // Controlla la validità per l'Informativa Privacy
     if (step === steps.findIndex(s => s.label === "Informativa Privacy")) {
       if (!formData.privacyPolicyAccepted) {
         alert("Devi accettare l'Informativa Privacy per procedere.");
@@ -89,7 +104,6 @@ const Form = () => {
       }
     }
 
-    // Verifica se siamo alla fase della conferma della password
     if (step === confirmPasswordStepIndex) {
       if (formData.password !== formData.confirmPassword) {
         alert("Le password inserite non corrispondono.");
@@ -97,14 +111,19 @@ const Form = () => {
       }
     }
 
-    // Controlla se il passo attuale è valido
+    if (step === steps.findIndex(s => s.label === "Partita IVA (opzionale)") && formData.taxCode !== "") {
+      if (formData.taxCode.length !== 11) {
+        alert("La Partita IVA deve essere di 11 cifre.");
+        return;
+      }
+    }
+
     if (isStepValid(step)) {
       setStep(step + 1);
     } else {
       alert("Compila tutti i campi obbligatori.");
     }
   };
-
 
   const prevStep = () => setStep(step - 1);
 
@@ -141,6 +160,22 @@ const Form = () => {
     return steps.every((_, index) => isStepValid(index));
   };
 
+  const renderFilePreview = (files) => {
+    const fileArray = Array.from(files);
+    return fileArray.map((file) => {
+      const fileURL = URL.createObjectURL(file);
+      return (
+        <div key={file.name}>
+          {file.type.startsWith("image/") ? (
+            <img src={fileURL} alt={file.name} style={{ width: '300px', height: 'auto' }} />
+          ) : (
+            <div>{file.name}</div>
+          )}
+        </div>
+      );
+    });
+  };
+
   const steps = [
     {
       label: "Tipo Professionista", fields: ["professionType"], component: (
@@ -155,16 +190,14 @@ const Form = () => {
     {
       label: "Certificazioni", fields: ["certifications"], component: (
         <>
-          <input type="file" name="certifications" accept="application/pdf" multiple onChange={handleFileChange} required />
-          {formData.certifications && formData.certifications.length > 0 && (
-            <div>{Array.from(formData.certifications).map((file) => (<div key={file.name}>{file.name}</div>))}</div>
-          )}
+          <input type="file" name="certifications" accept="application/pdf, image/*" multiple onChange={handleFileChange} required />
+          {formData.certifications && renderFilePreview(formData.certifications)}
         </>
       )
     },
     {
       label: "Partita IVA (opzionale)", fields: [], component: (
-        <input type="text" name="taxCode" value={formData.taxCode || ""} onChange={handleChange} />
+        <input type="text" name="taxCode" value={formData.taxCode || ""} onChange={handleTaxCodeChange} placeholder="Solo numeri, 11 cifre" />
       )
     },
     {
@@ -184,7 +217,7 @@ const Form = () => {
     },
     {
       label: "Email", fields: ["email"], component: (
-        <input type="email" name="email" value={formData.email || ""} onChange={handleChange} required />
+        <input type="email" name="email" value={formData.email || ""} onChange={handleEmailChange} required />
       )
     },
     {
@@ -211,9 +244,7 @@ const Form = () => {
       label: "Foto Profilo", fields: [], component: (
         <>
           <input type="file" name="profilePhoto" accept="image/*" onChange={handleFileChange} required />
-          {formData.profilePhoto && formData.profilePhoto.length > 0 && (
-            <div>{Array.from(formData.profilePhoto).map((file) => (<div key={file.name}>{file.name}</div>))}</div>
-          )}
+          {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
         </>
       )
     },
@@ -244,22 +275,39 @@ const Form = () => {
     },
     {
       label: "Collega i Social (opzionale)", fields: [], component: (
-        <input type="text" name="socialLinks" value={formData.socialLinks || ""} onChange={handleChange} />
+        <>
+          <select name="socialNetwork" value={formData.socialNetwork || ""} onChange={handleChange}>
+            <option value="">Seleziona Social Network</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Instagram">Instagram</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Twitter">Twitter</option>
+          </select>
+          {formData.socialNetwork && (
+            <div>
+              <label>Inserisci il nome del tuo account {formData.socialNetwork}</label>
+              <input type="text" name="socialAccountName" value={formData.socialAccountName || ""} onChange={handleChange} />
+            </div>
+          )}
+        </>
       )
     },
-    { label: "Termini e Condizioni", fields: ["termsAccepted"], component: (
-      <label>
-        <input type="checkbox" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} />
-        Accetto i Termini e Condizioni
-      </label>
-    )},
-    { label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
-      <label>
-        <input type="checkbox" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} />
-        Accetto l'Informativa Privacy
-      </label>
-    )},
-    
+    {
+      label: "Termini e Condizioni", fields: ["termsAccepted"], component: (
+        <label>
+          <input type="checkbox" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} />
+          Accetto i Termini e Condizioni
+        </label>
+      )
+    },
+    {
+      label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
+        <label>
+          <input type="checkbox" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} />
+          Accetto l'Informativa Privacy
+        </label>
+      )
+    },
     {
       label: "Come hai conosciuto l'app", fields: ["referral"], component: (
         <input type="text" name="referral" value={formData.referral || ""} onChange={handleChange} required />
@@ -278,7 +326,7 @@ const Form = () => {
         <label>{steps[step].label}</label>
         {steps[step].component}
       </div>
-      {(step === steps.findIndex(s => s.label === "Password") || step === steps.findIndex(s => s.label === "Conferma Password")) && ( // Visualizza la checkbox per mostrare/nascondere la password
+      {(step === steps.findIndex(s => s.label === "Password") || step === steps.findIndex(s => s.label === "Conferma Password")) && (
         <div>
           <input
             type="checkbox"
