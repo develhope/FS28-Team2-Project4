@@ -6,7 +6,7 @@ const Form = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     professionType: "", certifications: [], taxCode: "", firstName: "", lastName: "", birthDate: "", email: "",
-    phone: "", workArea: "", experience: "", description: "", profilePhoto: null, username: "", password: "",
+    phonePrefix: "", phone: "", workArea: "", experience: "", description: "", profilePhoto: null, username: "", password: "",
     confirmPassword: "", subscriptionType: "", socialNetwork: "", socialAccountName: "", termsAccepted: false,
     privacyPolicyAccepted: false, referral: "", receiveUpdates: false
   });
@@ -17,31 +17,27 @@ const Form = () => {
       [name]: type === "checkbox" ? checked : (files ? files : value)
     }));
   };
-  const validateInput = (name, value) => {
-    const validators = {
-      taxCode: v => /^[0-9]{0,11}$/.test(v),
-      phone: v => /^[0-9+\-().\s]*$/.test(v),
-      email: v => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v), // Questa regex già accetta email valide
-      birthDate: v => new Date().getFullYear() - new Date(v).getFullYear() >= 18,
-    };
-    return validators[name] ? validators[name](value) : true;
-  };
-  const handleInputChange = e => {
-    const { name, value } = e.target;
-
-    // Rimuoviamo la validazione in tempo reale. La validazione viene fatta in fase di invio.
-    handleChange(e);
-  };;
-
   const nextStep = () => {
-    if (isCurrentStepValid()) {
-      if (step === steps.findIndex(s => s.label === "Partita IVA (opzionale)") && formData.taxCode && formData.taxCode.length !== 11) {
-        return alert("La Partita IVA deve essere di 11 cifre.");
+    if (isStepValid(step)) {
+      // Controlliamo se siamo nello step della conferma password
+      if (step === steps.findIndex(s => s.fields.includes("confirmPassword"))) {
+        // Controlla anche le password
+        if (formData.password !== formData.confirmPassword) {
+          alert("Le password non corrispondono.");
+          return; // Ferma qui se le password non corrispondono
+        }
       }
-      if (step === steps.findIndex(s => s.label === "Conferma Password") && formData.password !== formData.confirmPassword) {
-        return alert("Le password non corrispondono.");
+  
+      // Se siamo all'ultimo passo, controlla anche le checkbox accettate
+      if (step === steps.length - 1) {
+        if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
+          alert("Devi accettare i Termini e Condizioni e l'Informativa Privacy.");
+          return; // Ferma qui se le checkbox non sono accettate
+        }
+        handleSubmit();
+      } else {
+        setStep(step + 1);
       }
-      setStep(step + 1);
     } else {
       alert("Compila tutti i campi obbligatori.");
     }
@@ -49,23 +45,53 @@ const Form = () => {
 
   const prevStep = () => setStep(step - 1);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (steps.every((_, i) => isStepValid(i))) {
       alert("Form inviato con successo!");
+      // Aggiungi qui la logica per l'invio effettivo del form, ad esempio con una chiamata API.
     } else {
       alert("Compila tutti i campi obbligatori.");
     }
   };
 
-  const isStepValid = i => steps[i].fields.every(f => formData[f]);
-  const isCurrentStepValid = () => isStepValid(step);
+  const isStepValid = i => {
+    return steps[i].fields.every(f => {
+      if (f === "taxCode") {
+        if (formData.taxCode === "") return true; 
+        if (!/^[0-9]{11}$/.test(formData.taxCode)) {
+          alert("Inserire le 11 cifre della partita IVA");
+          return false;
+        }
+      }
+      if (f === "phone") {
+        if (!/^[0-9]*$/.test(formData.phone)) {
+          alert("Il numero di telefono deve contenere solo cifre.");
+          return false;
+        }
+      }
+      if (f === "socialNetwork") {
+        return formData.socialNetwork === "" || formData.socialNetwork !== "Seleziona"; // Seleziona può essere ignorato.
+      }
+      if (f === "socialAccountName") {
+        return formData.socialNetwork === "" || formData[f];
+      }
+      if (f === "certifications" || f === "profilePhoto") {
+        return formData[f] && formData[f].length > 0;
+      }
+      // Verifica che i termini e privacy policy siano accettati
+      if (f === "termsAccepted" || f === "privacyPolicyAccepted") {
+        return formData[f] === true; // Assicurati che sia true, quindi accettato
+      }
+      return formData[f] !== "" && formData[f] !== null;
+    });
+  };
 
   const renderFilePreview = files => Array.from(files).map(file => (
     <div key={file.name} className="mt-2">
       {file.type.startsWith("image/") ? <img src={URL.createObjectURL(file)} alt={file.name} style={{ width: '300px' }} className="img-thumbnail" /> : <div>{file.name}</div>}
     </div>
   ));
+
 
   const steps = [
     {
@@ -87,10 +113,19 @@ const Form = () => {
       )
     },
     {
-      label: "Partita IVA (opzionale)", fields: [], component: (
-        <input type="text" className="form-control" name="taxCode" value={formData.taxCode} onChange={handleInputChange} placeholder="Solo numeri, 11 cifre" />
+      label: "Partita IVA (opzionale)", fields: ["taxCode"], component: (
+        <input
+          type="text"
+          className="form-control"
+          name="taxCode"
+          value={formData.taxCode}
+          onChange={handleChange}
+          placeholder="Solo numeri, 11 cifre"
+          pattern="\d{11}"
+          maxLength={11}
+        />
       )
-    },
+    },    
     {
       label: "Nome", fields: ["firstName"], component: (
         <input type="text" className="form-control col-md-6" name="firstName" value={formData.firstName} onChange={handleChange} required />
@@ -103,18 +138,43 @@ const Form = () => {
     },
     {
       label: "Data di Nascita", fields: ["birthDate"], component: (
-        <input type="date" className="form-control col-md-6" name="birthDate" value={formData.birthDate} onChange={handleInputChange} required />
+        <input type="date" className="form-control col-md-6" name="birthDate" value={formData.birthDate} onChange={handleChange} required />
       )
     },
     {
       label: "Email", fields: ["email"], component: (
-        <input type="email" className="form-control col-md-6" name="email" value={formData.email} onChange={handleInputChange} required />
+        <input type="email" className="form-control col-md-6" name="email" value={formData.email} onChange={handleChange} required />
       )
     },
     {
-      label: "Numero di Telefono", fields: ["phone"], component: (
-        <input type="tel" className="form-control col-md-6" name="phone" value={formData.phone} onChange={handleInputChange} required />
-      )
+      label: "Numero di Telefono", fields: ["phonePrefix", "phone"], component: (
+        <div className="d-flex">
+          <select className="form-select me-2" name="phonePrefix" value={formData.phonePrefix} onChange={handleChange} required>
+            <option value="">Seleziona il prefisso</option>
+            <option value="+39">Italia (+39)</option>
+            <option value="+33">Francia (+33)</option>
+            <option value="+44">Regno Unito (+44)</option>
+            <option value="+1">Stati Uniti (+1)</option>
+            <option value="+49">Germania (+49)</option>
+            <option value="+81">Giappone (+81)</option>
+            <option value="+86">Cina (+86)</option>
+            <option value="+91">India (+91)</option>
+            <option value="+61">Australia (+61)</option>
+            {/* Aggiungi altri prefissi se necessario */}
+          </select>
+          <input 
+            type="tel" 
+            className="form-control" 
+            name="phone" 
+            value={formData.phone} 
+            onChange={handleChange} 
+            placeholder="Numero di Telefono" 
+            required 
+            pattern="[0-9]*" // Permette solo numeri
+            inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
+          />
+        </div>
+      ),
     },
     {
       label: "Area Geografica di Lavoro", fields: ["workArea"], component: (
@@ -132,7 +192,7 @@ const Form = () => {
       )
     },
     {
-      label: "Foto Profilo", fields: [], component: (
+      label: "Foto Profilo", fields: ["profilePhoto"], component: (
         <>
           <input type="file" className="form-control" name="profilePhoto" accept="image/*" onChange={handleChange} required />
           {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
@@ -158,23 +218,22 @@ const Form = () => {
       label: "Tipologia di Abbonamento", fields: ["subscriptionType"], component: (
         <select className="form-select col-md-6" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
           <option value="">Seleziona</option>
-          <option value="basic">Basic</option>
-          <option value="medium">Medium</option>
-          <option value="premium">Premium</option>
+          <option value="Base">Base</option>
+          <option value="Premium">Premium</option>
         </select>
       )
     },
     {
-      label: "Collega i Social (opzionale)", fields: [], component: (
+      label: "Social Network (opzionale)", fields: ["socialNetwork", "socialAccountName"], component: (
         <>
           <select className="form-select col-md-6" name="socialNetwork" value={formData.socialNetwork} onChange={handleChange}>
-            <option value="">Seleziona</option>
+            <option value="Seleziona">Seleziona</option>
             <option value="Facebook">Facebook</option>
             <option value="Instagram">Instagram</option>
             <option value="LinkedIn">LinkedIn</option>
             <option value="Twitter">Twitter</option>
           </select>
-          {formData.socialNetwork && (
+          {formData.socialNetwork && formData.socialNetwork !== "Seleziona" && (
             <div className="mt-2 col-md-6">
               <label className="form-label">Nome account {formData.socialNetwork}</label>
               <input type="text" className="form-control" name="socialAccountName" value={formData.socialAccountName} onChange={handleChange} required />
@@ -186,7 +245,7 @@ const Form = () => {
     {
       label: "Termini e Condizioni", fields: ["termsAccepted"], component: (
         <div className="form-check">
-          <input type="checkbox" className="form-check-input" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} />
+          <input type="checkbox" className="form-check-input" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} required />
           <label className="form-check-label">Accetto i Termini e Condizioni</label>
         </div>
       )
@@ -194,7 +253,7 @@ const Form = () => {
     {
       label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
         <div className="form-check">
-          <input type="checkbox" className="form-check-input" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} />
+          <input type="checkbox" className="form-check-input" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} required />
           <label className="form-check-label">Accetto l'Informativa Privacy</label>
         </div>
       )
@@ -214,28 +273,36 @@ const Form = () => {
     },
   ];
 
+  
   return (
-    <form onSubmit={handleSubmit} className="container">
+    <form onSubmit={e => e.preventDefault()} className="container">
       <div className="mb-3 text-center">
         <label className="form-label">{steps[step].label}</label>
         <div className="d-flex justify-content-center">
           <div className="col-md-6">
             {steps[step].component}
+
+            {/* Checkbox per mostrare la password */}
+            {["password", "confirmPassword"].includes(steps[step]?.fields[0]) && (
+              <div className="form-check mb-3 text-center">
+                <input type="checkbox" className="form-check-input" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
+                <label className="form-check-label" htmlFor="showPassword">Mostra Password</label>
+              </div>
+            )}
+
             <div className="d-flex justify-content-between mt-4">
-              {step > 0 && <button type="button" className="btn btn-secondary w-50 me-1" onClick={prevStep}>Indietro</button>}
-              {step < steps.length - 1 ?
-                <button type="button" className="btn btn-primary w-50 ms-1" onClick={nextStep} disabled={!isCurrentStepValid()}>Avanti</button> :
-                <button type="submit" className="btn btn-success w-50 ms-1">Invia</button>}
+              {step > 0 && (
+                <button type="button" className="btn btn-secondary w-50 me-1" onClick={prevStep}>
+                  Indietro
+                </button>
+              )}
+              <button type="button" className="btn btn-primary w-50 ms-1" onClick={nextStep}>
+                {step < steps.length - 1 ? "Avanti" : "Invia"}
+              </button>
             </div>
           </div>
         </div>
       </div>
-      {["password", "confirmPassword"].includes(steps[step]?.fields[0]) && (
-        <div className="form-check mb-3 text-center">
-          <input type="checkbox" className="form-check-input" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
-          <label className="form-check-label" htmlFor="showPassword">Mostra Password</label>
-        </div>
-      )}
     </form>
   );
 };
