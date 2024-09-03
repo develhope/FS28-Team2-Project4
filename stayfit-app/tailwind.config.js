@@ -6,6 +6,12 @@ export default {
   ],
   theme: {
     extend: {},
+    colors: {
+        'custom-blue': '#94B7BD',
+        'custom-green': '#C1FF72',
+        'custom-dark' : '#01181B',
+        'hover-orange' : '#FF7272',
+      },
   },
   plugins: [],
 }

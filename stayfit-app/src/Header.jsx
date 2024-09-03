@@ -2,8 +2,8 @@ import STAYFit from './assets/img/STAYFit(transparent).png'
 
 const Header = () => {
   return (
-    <header className="bg-teal-700 p-4 flex justify-between items-center">
-    <img src={STAYFit} alt="Stayfit Logo" className="h-20 w-20 mr-3" />
+    <header className= " p-4 flex justify-between items-center">
+    <img src={STAYFit} alt="Stayfit Logo" className="absolute top-10 right-4 w-40 h-auto" />
       {/* <h1 className="text-white text-3xl font-bold text-center mb-4">Stayfit</h1> */}
       {/* <nav>
         <ul className="flex space-x-4">
