@@ -1,9 +1,11 @@
-const MobileButton = ({ onClick }) => {
+const MobileButton = ({ type, onClick }) => {
   return (
-    <div className="p-5">
+    <div>
       <button
+        type={type}
         onClick={onClick}
-        className="flex justify-center items-center w-[40px] h-[40px] border border-secondary-green rounded-[30px] bg-secondary-green outline-none transition-all duration-300 active:bg-transparent active:border-opacity-70"
+        className="flex justify-center items-center w-10 h-10 border border-secondary-green rounded-[30px] bg-secondary-green
+          outline-none transition-all duration-300 active:bg-transparent active:border-opacity-70"
       >
         <svg
           width="26"
