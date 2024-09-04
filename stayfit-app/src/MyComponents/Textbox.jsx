@@ -24,7 +24,7 @@ const Textbox = ({ label, type, id }) => {
         onFocus={handleFocus}
         onBlur={handleBlur}
         className="peer border-2 w-[300px] h-[40px] bg-transparent border-secondary-gray cursor-text
-          caret-white text-white pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+          caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
           duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
           glow-effect focus:transition-all focus:duration-300"
       />
