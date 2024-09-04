@@ -1,8 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #001e23;
 }
 
 .logo {
@@ -39,4 +44,20 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.glow-text {
+  text-shadow: 0 0 4px rgba(193, 255, 114, 0);
+}
+
+input:focus + label.glow-text {
+  text-shadow: 0 0 4px rgba(193, 255, 114, 1);
+}
+
+.glow-effect {
+  box-shadow: 0 0 0 0 rgba(193, 255, 114, 0);
+}
+
+input:focus.glow-effect {
+  box-shadow: 0 0 4px 0 rgba(193, 255, 114, 1);
 }

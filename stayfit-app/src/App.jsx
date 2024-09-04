@@ -1,17 +1,10 @@
-
-import React from 'react';
-import Form from './FormProfessionista';
 import './App.css';
+import Textbox from './MyComponents/Textbox';
 
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Registrazione Professionista</h1>
-      </header>
-      <main>
-        <Form />
-      </main>
+      <Textbox id={'name'} type={'text'} label={'Nome'} />
     </div>
   );
 };
