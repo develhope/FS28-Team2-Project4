@@ -11,7 +11,12 @@ const App = () => {
         <Textbox id={'name'} type={'text'} label={'Nome'} />
         <MobileButton />
         <Button text={'Unisciti ora!'} />
+        <div className='flex gap-7'>
+        <Card title={'Clienti'} description={`Visualizza l'elenco dei tuoi clienti`} icon={'payment'}></Card>
         <Card title={'Clienti'} description={'Visualizza i tuoi clienti'} icon={'payment'}></Card>
+        <Card title={'Clienti'} description={'Visualizza i tuoi clienti'} icon={'payment'}></Card>
+        <Card title={'Clienti'} description={'Visualizza i tuoi clienti'} icon={'payment'}></Card>
+        </div>
       </div>
     </div>
   );

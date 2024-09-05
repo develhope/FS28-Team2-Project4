@@ -11,6 +11,15 @@ export default {
         'light-blue-shadow': '#01282F',
         'dark-blue-shadow': '#01181B',
         'hover-buttons-shadow': '#FF7272',
+        'activated-card': '#00333B'
+      },
+      boxShadow: {
+        'card': '4px 4px 8px #01181b, -4px -4px 8px #01282f;',
+        'card-click': 'inset 4px 4px 8px #01181b, inset -4px -4px 8px #01282f',
+      },
+      fontFamily: {
+        'nowalt': ['NowAlt', 'sans-serif'],
+        'now': ['Now', 'sans-serif'],
       },
     },
   },
