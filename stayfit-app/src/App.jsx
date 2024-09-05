@@ -2,6 +2,7 @@ import './App.css';
 import Button from './MyComponents/Button';
 import MobileButton from './MyComponents/MobileButton';
 import Textbox from './MyComponents/Textbox';
+import { Card } from './MyComponents/Card';
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
         <Textbox id={'name'} type={'text'} label={'Nome'} />
         <MobileButton />
         <Button text={'Unisciti ora!'} />
+        <Card title={'Clienti'} description={'Visualizza i tuoi clienti'} icon={'payment'}></Card>
       </div>
     </div>
   );
