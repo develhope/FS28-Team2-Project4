@@ -3,6 +3,8 @@ import Button from './MyComponents/Button';
 import MobileButton from './MyComponents/MobileButton';
 import Textbox from './MyComponents/Textbox';
 import { CardMenu } from './MyComponents/CardMenu';
+import { SubCards } from './MyComponents/subCards';
+import { CardProvider } from './MyComponents/CardProvider';
 
 const App = () => {
   return (
@@ -11,7 +13,10 @@ const App = () => {
         <Textbox id={'name'} type={'text'} label={'Nome'} />
         <MobileButton />
         <Button text={'Unisciti ora!'} />
-        <CardMenu></CardMenu>
+        <CardProvider>
+          <CardMenu></CardMenu>
+          <SubCards></SubCards>
+        </CardProvider>
       </div>
     </div>
   );

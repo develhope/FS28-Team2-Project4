@@ -7,6 +7,9 @@ const iconPaths = {
   myAccount: '/src/assets/img/icons/myAccount.svg',
   support: '/src/assets/img/icons/support.svg',
   stats: '/src/assets/img/icons/stats.svg',
+  starter: '/src/assets/img/icons/starter-plan.svg',
+  premium: '/src/assets/img/icons/premium-plan.svg',
+  advanced: '/src/assets/img/icons/advanced-plan.svg',    
 };
 
 export const Icon = ({ type, className, ...props }) => {

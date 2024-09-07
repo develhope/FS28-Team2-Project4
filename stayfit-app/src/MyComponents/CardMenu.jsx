@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card } from './Card';
+import { CardContext } from './CardProvider';
 
 export const CardMenu = () => {
+  const { isSelected, handleClick } = useContext(CardContext);
+
   const dataCard = [
     {
       titolo: 'Clienti',
@@ -14,7 +17,7 @@ export const CardMenu = () => {
       icona: 'plans',
     },
     {
-      titolo: 'La tua iscrizione',
+      titolo: 'Iscrizione',
       descrizione: 'Vedi lo stato del tuo abbonamento',
       icona: 'payment',
     },
@@ -29,7 +32,7 @@ export const CardMenu = () => {
       icona: 'stats',
     },
     {
-      titolo: 'Il tuo account',
+      titolo: 'Account',
       descrizione: 'Vedi le info sul tuo profilo',
       icona: 'myAccount',
     },
@@ -38,12 +41,14 @@ export const CardMenu = () => {
   return (
     <div className="card-list overflow-x-hidden">
       <div className="flex gap-4 items-center overflow-x-auto no-scrollbar snap-x h-80 px-5">
-        {dataCard.map((data, index) => (
+        {dataCard.map((data, idx) => (
           <Card
-            key={index}
+            key={idx}
             title={data.titolo}
             description={data.descrizione}
             icon={data.icona}
+            status={isSelected === idx}
+            onSelect={() => handleClick(idx)}
           />
         ))}
       </div>
