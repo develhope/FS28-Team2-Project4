@@ -264,7 +264,7 @@ const Form = () => {
       label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
         <div className="form-check">
           <input type="checkbox" className="form-check-input" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} required />
-          <label className="form-check-label">Accetto l'Informativa Privacy</label>
+          <label className="form-check-label">Accetto l&apos;Informativa Privacy</label>
         </div>
       )
     },
@@ -277,7 +277,7 @@ const Form = () => {
       label: "Ricevere Aggiornamenti dall'App", fields: [], component: (
         <div className="form-check">
           <input type="checkbox" className="form-check-input" name="receiveUpdates" checked={formData.receiveUpdates} onChange={handleChange} />
-          <label className="form-check-label">Ricevere Aggiornamenti dall'App</label>
+          <label className="form-check-label">Ricevere Aggiornamenti dall&apos;App</label>
         </div>
       )
     },
