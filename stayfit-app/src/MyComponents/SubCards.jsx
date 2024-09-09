@@ -31,7 +31,6 @@ const { isSelected, handleClick } = useContext(CardContext)
     <div className="flex flex-row gap-5">
       {subPlans.map((plan) => {
         return (
-          <>
             <Card
               key={plan.id}
               title={plan.titolo}
@@ -40,7 +39,6 @@ const { isSelected, handleClick } = useContext(CardContext)
               status={isSelected === plan.id}
               onSelect={() => handleClick(plan.id)}
             />
-          </>
         );
       })}
     </div>
