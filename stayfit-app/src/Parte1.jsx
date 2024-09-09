@@ -2,7 +2,7 @@
 
 const Presentazione = () => {
   return (
-    <section className="text-white text-left p-12 py-20 w-full">
+    <section className="text-white text-center md:text-left p-12 py-20 w-full">
       <h2 className="text-5xl font-bold mb-4">IL BENESSERE,
       <br></br>
        PERSONALIZZATO.
