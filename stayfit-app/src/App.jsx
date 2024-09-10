@@ -4,7 +4,6 @@ import Presentazione from './Parte1';
 import Features from './Features';
 import Footer from './Footer';
 import backgroundImage from './assets/img/background.jpg';
-import Button from './Button'
 
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
     >
       <Header />
       <Presentazione />
-      <Button/>
       <Features />
       <Footer />
     </div>
