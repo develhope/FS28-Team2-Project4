@@ -11,7 +11,7 @@ function App() {
     <div
      className="min-h-screen bg-cover bg-center relative"
      style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(1, 40, 47, 0.6), rgba(1, 40, 47,0.6)), url(${backgroundImage})`
+        backgroundImage: `linear-gradient(to bottom, rgba(1, 40, 47, 0.5), rgba(1, 40, 47,0.5)), url(${backgroundImage})`
       }}
     >
       <Header />
