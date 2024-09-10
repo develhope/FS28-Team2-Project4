@@ -1,27 +1,27 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
-const Form = () => {
+const FormCliente = () => {
   const [step, setStep] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    gender: "",
-    email: "",
-    phone: "",
-    weight: "",
-    height: "",
-    allergies: "",
-    foodIntolerances: "",
-    activityLevel: "",
-    fitnessGoals: "",
-    workoutPreferences: "",
-    availableTime: "",
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    gender: '',
+    email: '',
+    phone: '',
+    weight: '',
+    height: '',
+    allergies: '',
+    foodIntolerances: '',
+    activityLevel: '',
+    fitnessGoals: '',
+    workoutPreferences: '',
+    availableTime: '',
     photo: null,
-    username: "",
-    password: "",
-    confirmPassword: "",
+    username: '',
+    password: '',
+    confirmPassword: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +30,7 @@ const Form = () => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -90,7 +90,7 @@ const Form = () => {
       setStep(step + 1);
     } else {
       alert(
-        "Compila tutti i campi obbligatori o assicurati che le password corrispondano."
+        'Compila tutti i campi obbligatori o assicurati che le password corrispondano.'
       );
     }
   };
@@ -99,23 +99,23 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (isSubmitted) {
-      alert("Modulo già inviato.");
+      alert('Modulo già inviato.');
       return;
     }
 
     if (isStepValid(step)) {
-      setIsSubmitted(true); 
-      alert("Modulo inviato con successo!");
+      setIsSubmitted(true);
+      alert('Modulo inviato con successo!');
     } else {
-      alert("La Password non corrisponde.");
+      alert('La Password non corrisponde.');
     }
   };
 
   const steps = [
     {
-      label: "Nome e Cognome",
+      label: 'Nome e Cognome',
       fields: (
         <>
           <label>Nome</label>
@@ -157,7 +157,7 @@ const Form = () => {
       ),
     },
     {
-      label: "Contatti",
+      label: 'Contatti',
       fields: (
         <>
           <label>Email</label>
@@ -178,7 +178,7 @@ const Form = () => {
       ),
     },
     {
-      label: "Misure",
+      label: 'Misure',
       fields: (
         <>
           <label>Peso (kg)</label>
@@ -201,7 +201,7 @@ const Form = () => {
       ),
     },
     {
-      label: "Allergie e Intolleranze",
+      label: 'Allergie e Intolleranze',
       fields: (
         <>
           <label>Allergie</label>
@@ -222,7 +222,7 @@ const Form = () => {
       ),
     },
     {
-      label: "Fitness",
+      label: 'Fitness',
       fields: (
         <>
           <label>Livello di Attività Fisica</label>
@@ -282,7 +282,7 @@ const Form = () => {
       ),
     },
     {
-      label: "Foto",
+      label: 'Foto',
       fields: (
         <>
           <label>Carica una Foto</label>
@@ -298,7 +298,7 @@ const Form = () => {
       ),
     },
     {
-      label: "Account",
+      label: 'Account',
       fields: (
         <div className="client-form">
           <label>Username</label>
@@ -311,7 +311,7 @@ const Form = () => {
           />
           <label>Password</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             name="password"
             value={formData.password}
             onChange={handleChange}
@@ -319,7 +319,7 @@ const Form = () => {
           />
           <label>Conferma Password</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
@@ -368,4 +368,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormCliente;

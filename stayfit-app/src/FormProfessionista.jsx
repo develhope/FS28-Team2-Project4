@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
-const Form = () => {
+const FormProfessionista = () => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -307,4 +307,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormProfessionista;
