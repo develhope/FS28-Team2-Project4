@@ -1,11 +1,12 @@
 import './App.css';
 import { TrySelect } from './MyComponents/TrySelect';
-import TextBox from './MyComponents/Textbox'
+import { ToggleSwitch } from './MyComponents/ToggleSwitch';
 
 const App = () => {
   return (
     <div className="App">
       <TrySelect></TrySelect>
+      <ToggleSwitch></ToggleSwitch>
     </div>
   );
 };

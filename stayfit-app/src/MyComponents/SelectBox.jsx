@@ -31,7 +31,7 @@ export const SelectBox = ({
         htmlFor={name}
         className={`absolute opacity-0 left-4 top-2 transition-all duration-200 ease-in-out bg-primary-blue px-0.5 bg-left bg-no-repeat ${
             isFocused || inputVal
-              ? 'opacity-100 top-[-8px] text-xs text-secondary-green glow-text bg-[length:100%_100%]'
+              ? 'opacity-100 top-[-8px] left-[0.75rem] text-xs text-secondary-green glow-text bg-[length:100%_100%]'
               : 'top-2 text-base text-secondary-gray cursor-text bg-[length:0%_100%]'
           }`}
       >
