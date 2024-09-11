@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Form = () => {
@@ -10,14 +10,6 @@ const Form = () => {
     confirmPassword: "", subscriptionType: "", socialNetwork: "", socialAccountName: "", termsAccepted: false,
     privacyPolicyAccepted: false, referral: "", receiveUpdates: false
   });
-
-  // Recupera i dati dal localStorage all'avvio
-  useEffect(() => {
-    const savedData = localStorage.getItem("formData");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-    }
-  }, []);
 
   const handleChange = ({ target: { name, value, type, checked, files } }) => {
     setFormData(prev => ({
@@ -51,14 +43,16 @@ const Form = () => {
 
   const handleSubmit = () => {
     if (steps.every((_, i) => isStepValid(i))) {
-      // Salva i dati nel localStorage
+      // Salva i dati del form in localStorage
       localStorage.setItem("formData", JSON.stringify(formData));
+      
       alert("Form inviato con successo e dati salvati in localStorage!");
-      // Qui puoi aggiungere la logica per inviare i dati ad un server, se necessario
+      // Puoi anche aggiungere un'eventuale logica per inviare i dati ad un server
     } else {
       alert("Compila tutti i campi obbligatori.");
     }
   };
+  
 
   const isStepValid = i => {
     let hasError = false;
@@ -84,7 +78,7 @@ const Form = () => {
         }
       }
       if (f === "socialNetwork") {
-        return formData.socialNetwork === "" || formData.socialNetwork !== "Seleziona"; 
+        return formData.socialNetwork === "" || formData.socialNetwork !== "Seleziona"; // Seleziona può essere ignorato.
       }
       if (f === "socialAccountName") {
         return formData.socialNetwork === "" || formData[f];
@@ -180,6 +174,7 @@ const Form = () => {
             <option value="+86">Cina (+86)</option>
             <option value="+91">India (+91)</option>
             <option value="+61">Australia (+61)</option>
+            {/* Aggiungi altri prefissi se necessario */}
           </select>
           <input 
             type="tel" 
@@ -189,8 +184,8 @@ const Form = () => {
             onChange={handleChange} 
             placeholder="Numero di Telefono" 
             required 
-            pattern="[0-9]*"
-            inputMode="numeric"
+            pattern="[0-9]*" // Permette solo numeri
+            inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
           />
         </div>
       ),
@@ -219,42 +214,46 @@ const Form = () => {
       )
     },
     {
-      label: "Crea un Nome Utente", fields: ["username"], component: (
+      label: "Username", fields: ["username"], component: (
         <input type="text" className="form-control col-md-6" name="username" value={formData.username} onChange={handleChange} required />
       )
     },
     {
-      label: "Crea una Password", fields: ["password"], component: (
+      label: "Password", fields: ["password"], component: (
         <input type={showPassword ? "text" : "password"} className="form-control col-md-6" name="password" value={formData.password} onChange={handleChange} required />
       )
     },
     {
-      label: "Conferma la Password", fields: ["confirmPassword"], component: (
+      label: "Conferma Password", fields: ["confirmPassword"], component: (
         <input type={showPassword ? "text" : "password"} className="form-control col-md-6" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
       )
     },
     {
-      label: "Scegli Tipologia Abbonamento", fields: ["subscriptionType"], component: (
-        <select className="form-select" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
+      label: "Tipologia di Abbonamento", fields: ["subscriptionType"], component: (
+        <select className="form-select col-md-6" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
           <option value="">Seleziona</option>
-          <option value="base">Base</option>
-          <option value="premium">Premium</option>
+          <option value="Base">Base</option>
+          <option value="Premium">Premium</option>
         </select>
       )
     },
     {
-      label: "Social Network (opzionale)", fields: ["socialNetwork"], component: (
-        <select className="form-select" name="socialNetwork" value={formData.socialNetwork} onChange={handleChange}>
-          <option value="Seleziona">Seleziona</option>
-          <option value="Instagram">Instagram</option>
-          <option value="LinkedIn">LinkedIn</option>
-          <option value="Facebook">Facebook</option>
-        </select>
-      )
-    },
-    {
-      label: "Nome Account Social (opzionale)", fields: ["socialAccountName"], component: (
-        <input type="text" className="form-control col-md-6" name="socialAccountName" value={formData.socialAccountName} onChange={handleChange} />
+      label: "Social Network (opzionale)", fields: ["socialNetwork", "socialAccountName"], component: (
+        <>
+          <select className="form-select col-md-6" name="socialNetwork" value={formData.socialNetwork} onChange={handleChange}>
+            <option value="Seleziona">Seleziona</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Instagram">Instagram</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Twitter">Twitter</option>
+          </select>
+          {formData.socialNetwork && formData.socialNetwork !== "Seleziona" && (
+            <div className="mt-2 col-md-6">
+              <label className="form-label">Nome account {formData.socialNetwork}</label>
+              <input type="text" className="form-control" name="socialAccountName" value={formData.socialAccountName} onChange={handleChange} required />
+            </div>
+          )}
+        </>
       )
     },
     {
@@ -266,39 +265,58 @@ const Form = () => {
       )
     },
     {
-      label: "Privacy Policy", fields: ["privacyPolicyAccepted"], component: (
+      label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
         <div className="form-check">
           <input type="checkbox" className="form-check-input" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} required />
-          <label className="form-check-label">Accetto l'Informativa sulla Privacy</label>
+          <label className="form-check-label">Accetto l&apos;Informativa Privacy</label>
         </div>
       )
     },
     {
-      label: "Referral (opzionale)", fields: ["referral"], component: (
-        <input type="text" className="form-control col-md-6" name="referral" value={formData.referral} onChange={handleChange} />
+      label: "Come hai conosciuto l'app", fields: ["referral"], component: (
+        <input type="text" className="form-control col-md-6" name="referral" value={formData.referral} onChange={handleChange} required />
       )
     },
     {
-      label: "Ricevere Aggiornamenti", fields: ["receiveUpdates"], component: (
+      label: "Ricevere Aggiornamenti dall'App", fields: [], component: (
         <div className="form-check">
           <input type="checkbox" className="form-check-input" name="receiveUpdates" checked={formData.receiveUpdates} onChange={handleChange} />
-          <label className="form-check-label">Ricevi aggiornamenti via email</label>
+          <label className="form-check-label">Ricevere Aggiornamenti dall&apos;App</label>
         </div>
       )
-    }
+    },
   ];
 
   return (
-    <div className="container mt-4">
-      <h2>Registrazione Professionista</h2>
-      <form>
-        {steps[step].component}
-        <div className="d-flex justify-content-between mt-4">
-          <button type="button" className="btn btn-secondary" disabled={step === 0} onClick={prevStep}>Indietro</button>
-          <button type="button" className="btn btn-primary" onClick={nextStep}>{step === steps.length - 1 ? "Invia" : "Avanti"}</button>
+    <form onSubmit={e => e.preventDefault()} className="container">
+      <div className="mb-3 text-center">
+        <label className="form-label">{steps[step].label}</label>
+        <div className="d-flex justify-content-center">
+          <div className="col-md-6">
+            {steps[step].component}
+
+            {/* Checkbox per mostrare la password */}
+            {["password", "confirmPassword"].includes(steps[step]?.fields[0]) && (
+              <div className="form-check mb-3 text-center">
+                <input type="checkbox" className="form-check-input" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
+                <label className="form-check-label" htmlFor="showPassword">Mostra Password</label>
+              </div>
+            )}
+
+            <div className="d-flex justify-content-between mt-4">
+              {step > 0 && (
+                <button type="button" className="btn btn-secondary w-50 me-1" onClick={prevStep}>
+                  Indietro
+                </button>
+              )}
+              <button type="button" className="btn btn-primary w-50 ms-1" onClick={nextStep}>
+                {step < steps.length - 1 ? "Avanti" : "Invia"}
+              </button>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
