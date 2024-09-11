@@ -1,13 +1,11 @@
 import './App.css';
-import FormCliente from './FormCliente';
-import Textbox from './MyComponents/Textbox';
+import { TrySelect } from './MyComponents/TrySelect';
+import TextBox from './MyComponents/Textbox'
 
 const App = () => {
   return (
     <div className="App">
-      <FormCliente>
-        <Textbox></Textbox>
-      </FormCliente>
+      <TrySelect></TrySelect>
     </div>
   );
 };
