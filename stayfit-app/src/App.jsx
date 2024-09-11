@@ -1,4 +1,4 @@
-import Form from './FormCliente';
+import Form from './FormProfessionista';
 import './App.css';
 
 const App = () => {
