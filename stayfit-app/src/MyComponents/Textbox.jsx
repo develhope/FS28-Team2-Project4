@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'; // Aggiungi questa importazione
+import PropTypes from 'prop-types';
 
 const Textbox = ({ label, type, id, value, onChange, ...props }) => {
-  const [inputVal, setInputVal] = useState(value || ''); // Valore iniziale passato da fuori
-  const [isFocused, setIsFocused] = useState(false); // Stato per il focus
+  const [inputVal, setInputVal] = useState(value || '');
+  const [isFocused, setIsFocused] = useState(false);
 
-  // Aggiorna lo stato locale quando il valore della prop `value` cambia
+
   useEffect(() => {
     setInputVal(value || '');
   }, [value]);
@@ -21,9 +21,9 @@ const Textbox = ({ label, type, id, value, onChange, ...props }) => {
   };
 
   const handleChange = (e) => {
-    setInputVal(e.target.value); // Aggiorna lo stato locale
+    setInputVal(e.target.value);
     if (onChange) {
-      onChange(e); // Chiama la funzione di onChange passata tramite le props
+      onChange(e);
     }
   };
 
@@ -40,7 +40,7 @@ const Textbox = ({ label, type, id, value, onChange, ...props }) => {
         caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
         duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
         glow-effect focus:transition-all focus:duration-300"
-        {...props} // Passa tutte le altre proprietà (required, etc.)
+        {...props}
       />
       <label
         htmlFor={id}
@@ -56,7 +56,6 @@ const Textbox = ({ label, type, id, value, onChange, ...props }) => {
   );
 };
 
-// Aggiungi PropTypes per validare le proprietà passate
 Textbox.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
