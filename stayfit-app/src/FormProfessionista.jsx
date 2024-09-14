@@ -17,29 +17,26 @@ const Form = () => {
       [name]: type === "checkbox" ? checked : (files ? files : value)
     }));
   };
+
   const nextStep = () => {
     if (isStepValid(step)) {
-      // Controlliamo se siamo nello step della conferma password
       if (step === steps.findIndex(s => s.fields.includes("confirmPassword"))) {
-        // Controlla anche le password
         if (formData.password !== formData.confirmPassword) {
           alert("Le password non corrispondono.");
-          return; // Ferma qui se le password non corrispondono
+          return;
         }
       }
-  
+
       // Se siamo all'ultimo passo, controlla anche le checkbox accettate
       if (step === steps.length - 1) {
         if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
           alert("Devi accettare i Termini e Condizioni e l'Informativa Privacy.");
-          return; // Ferma qui se le checkbox non sono accettate
+          return;
         }
         handleSubmit();
       } else {
         setStep(step + 1);
       }
-    } else {
-      alert("Compila tutti i campi obbligatori.");
     }
   };
 
@@ -47,25 +44,37 @@ const Form = () => {
 
   const handleSubmit = () => {
     if (steps.every((_, i) => isStepValid(i))) {
-      alert("Form inviato con successo!");
-      // Aggiungi qui la logica per l'invio effettivo del form, ad esempio con una chiamata API.
+      // Salva i dati del form in localStorage
+      localStorage.setItem("formData", JSON.stringify(formData));
+
+      alert("Form inviato con successo e dati salvati in localStorage!");
+      // Puoi anche aggiungere un'eventuale logica per inviare i dati ad un server
     } else {
       alert("Compila tutti i campi obbligatori.");
     }
   };
 
+
   const isStepValid = i => {
-    return steps[i].fields.every(f => {
+    let hasError = false;
+
+    for (const f of steps[i].fields) {
       if (f === "taxCode") {
-        if (formData.taxCode === "") return true; 
+        if (formData.taxCode === "") return true;
         if (!/^[0-9]{11}$/.test(formData.taxCode)) {
-          alert("Inserire le 11 cifre della partita IVA");
+          if (!hasError) {
+            alert("Inserire le 11 cifre della partita IVA");
+            hasError = true;
+          }
           return false;
         }
       }
       if (f === "phone") {
         if (!/^[0-9]*$/.test(formData.phone)) {
-          alert("Il numero di telefono deve contenere solo cifre.");
+          if (!hasError) {
+            alert("Il numero di telefono deve contenere solo cifre.");
+            hasError = true;
+          }
           return false;
         }
       }
@@ -78,12 +87,18 @@ const Form = () => {
       if (f === "certifications" || f === "profilePhoto") {
         return formData[f] && formData[f].length > 0;
       }
-      // Verifica che i termini e privacy policy siano accettati
       if (f === "termsAccepted" || f === "privacyPolicyAccepted") {
-        return formData[f] === true; // Assicurati che sia true, quindi accettato
+        return formData[f] === true;
       }
-      return formData[f] !== "" && formData[f] !== null;
-    });
+      if (formData[f] === "" || formData[f] === null) {
+        if (!hasError) {
+          alert("Compila tutti i campi obbligatori.");
+          hasError = true;
+        }
+        return false;
+      }
+    }
+    return true;
   };
 
   const renderFilePreview = files => Array.from(files).map(file => (
@@ -91,7 +106,6 @@ const Form = () => {
       {file.type.startsWith("image/") ? <img src={URL.createObjectURL(file)} alt={file.name} style={{ width: '300px' }} className="img-thumbnail" /> : <div>{file.name}</div>}
     </div>
   ));
-
 
   const steps = [
     {
@@ -121,11 +135,12 @@ const Form = () => {
           value={formData.taxCode}
           onChange={handleChange}
           placeholder="Solo numeri, 11 cifre"
-          pattern="\d{11}"
+          pattern="[0-9]*"
+          inputMode="numeric"
           maxLength={11}
         />
       )
-    },    
+    },
     {
       label: "Nome", fields: ["firstName"], component: (
         <input type="text" className="form-control col-md-6" name="firstName" value={formData.firstName} onChange={handleChange} required />
@@ -162,14 +177,14 @@ const Form = () => {
             <option value="+61">Australia (+61)</option>
             {/* Aggiungi altri prefissi se necessario */}
           </select>
-          <input 
-            type="tel" 
-            className="form-control" 
-            name="phone" 
-            value={formData.phone} 
-            onChange={handleChange} 
-            placeholder="Numero di Telefono" 
-            required 
+          <input
+            type="tel"
+            className="form-control"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Numero di Telefono"
+            required
             pattern="[0-9]*" // Permette solo numeri
             inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
           />
@@ -254,7 +269,7 @@ const Form = () => {
       label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
         <div className="form-check">
           <input type="checkbox" className="form-check-input" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} required />
-          <label className="form-check-label">Accetto l'Informativa Privacy</label>
+          <label className="form-check-label">Accetto l&apos;Informativa Privacy</label>
         </div>
       )
     },
@@ -267,13 +282,13 @@ const Form = () => {
       label: "Ricevere Aggiornamenti dall'App", fields: [], component: (
         <div className="form-check">
           <input type="checkbox" className="form-check-input" name="receiveUpdates" checked={formData.receiveUpdates} onChange={handleChange} />
-          <label className="form-check-label">Ricevere Aggiornamenti dall'App</label>
+          <label className="form-check-label">Ricevere Aggiornamenti dall&apos;App</label>
         </div>
       )
     },
   ];
 
-  
+
   return (
     <form onSubmit={e => e.preventDefault()} className="container">
       <div className="mb-3 text-center">
