@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from "react";
 
 const FormCliente = () => {
   const [step, setStep] = useState(0);
@@ -25,6 +25,18 @@ const FormCliente = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const savedFormData = JSON.parse(localStorage.getItem("formData"));
+    if (savedFormData) {
+      setFormData(savedFormData);
+    }
+  }, []);
+
+
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -107,7 +119,8 @@ const FormCliente = () => {
 
     if (isStepValid(step)) {
       setIsSubmitted(true);
-      alert('Modulo inviato con successo!');
+      alert("Modulo inviato con successo!");
+      localStorage.removeItem("formData");
     } else {
       alert('La Password non corrisponde.');
     }
@@ -236,7 +249,7 @@ const FormCliente = () => {
             <option value="sedentary">Sedentario</option>
             <option value="moderatelyActive">Moderatamente Attivo</option>
             <option value="active">Attivo</option>
-            <option value="veryActive"> Molto Attivo</option>
+            <option value="veryActive">Molto Attivo</option>
           </select>
           <label>Obiettivi di Fitness</label>
           <select

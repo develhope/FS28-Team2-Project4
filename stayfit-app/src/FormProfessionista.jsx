@@ -27,7 +27,6 @@ const FormProfessionista = () => {
         }
       }
 
-      // Se siamo all'ultimo passo, controlla anche le checkbox accettate
       if (step === steps.length - 1) {
         if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
           alert("Devi accettare i Termini e Condizioni e l'Informativa Privacy.");
@@ -287,7 +286,6 @@ const FormProfessionista = () => {
       )
     },
   ];
-
 
   return (
     <form onSubmit={e => e.preventDefault()} className="container">
