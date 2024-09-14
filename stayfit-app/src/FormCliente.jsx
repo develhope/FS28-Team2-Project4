@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from 'react';
+import Textbox from './MyComponents/Textbox.jsx';
 
 const FormCliente = () => {
   const [step, setStep] = useState(0);
@@ -119,8 +120,7 @@ const FormCliente = () => {
 
     if (isStepValid(step)) {
       setIsSubmitted(true);
-      alert("Modulo inviato con successo!");
-      localStorage.removeItem("formData");
+      alert('Modulo inviato con successo!');
     } else {
       alert('La Password non corrisponde.');
     }
@@ -131,36 +131,41 @@ const FormCliente = () => {
       label: 'Nome e Cognome',
       fields: (
         <>
-          <label>Nome</label>
-          <input
+          <Textbox
+            label="Nome"
             type="text"
+            id="firstName"
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
             required
           />
-          <label>Cognome</label>
-          <input
+          <Textbox
+            label="Cognome"
             type="text"
+            id="lastName"
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
             required
           />
-          <label>Data di Nascita</label>
-          <input
+          <Textbox
+            label="Data di Nascita"
             type="date"
             name="birthDate"
             value={formData.birthDate}
             onChange={handleChange}
             required
           />
-          <label>Sesso</label>
+          <label  className={'absolute left-3 top-2 transition-all duration-200 ease-in-out bg-primary-blue px-0.5 bg-left bg-no-repeat'}>Sesso</label>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleChange}
             required
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
           >
             <option value="">Seleziona</option>
             <option value="male">Maschio</option>
@@ -173,16 +178,19 @@ const FormCliente = () => {
       label: 'Contatti',
       fields: (
         <>
-          <label>Email</label>
-          <input
+          <Textbox
+            label="Email"
             type="email"
+            id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
+            required
           />
-          <label>Numero di Telefono</label>
-          <input
+          <Textbox
+            label="Numero di Telefono"
             type="tel"
+            id="phone"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
@@ -194,17 +202,19 @@ const FormCliente = () => {
       label: 'Misure',
       fields: (
         <>
-          <label>Peso (kg)</label>
-          <input
+          <Textbox
+            label="Peso (kg)"
             type="number"
+            id="weight"
             name="weight"
             value={formData.weight}
             onChange={handleChange}
             required
           />
-          <label>Altezza (cm)</label>
-          <input
+          <Textbox
+            label="Altezza (cm)"
             type="number"
+            id="height"
             name="height"
             value={formData.height}
             onChange={handleChange}
@@ -217,16 +227,18 @@ const FormCliente = () => {
       label: 'Allergie e Intolleranze',
       fields: (
         <>
-          <label>Allergie</label>
-          <input
+          <Textbox
+            label="Allergie"
             type="text"
+            id="allergies"
             name="allergies"
             value={formData.allergies}
             onChange={handleChange}
           />
-          <label>Intolleranze Alimentari</label>
-          <input
+          <Textbox
+            label="Intolleranze Alimentari"
             type="text"
+            id="foodIntolerances"
             name="foodIntolerances"
             value={formData.foodIntolerances}
             onChange={handleChange}
@@ -244,6 +256,9 @@ const FormCliente = () => {
             value={formData.activityLevel}
             onChange={handleChange}
             required
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
           >
             <option value="">Seleziona</option>
             <option value="sedentary">Sedentario</option>
@@ -251,12 +266,16 @@ const FormCliente = () => {
             <option value="active">Attivo</option>
             <option value="veryActive">Molto Attivo</option>
           </select>
+
           <label>Obiettivi di Fitness</label>
           <select
             name="fitnessGoals"
             value={formData.fitnessGoals}
             onChange={handleChange}
             required
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
           >
             <option value="">Seleziona</option>
             <option value="weightLoss">Perdita di peso</option>
@@ -270,22 +289,28 @@ const FormCliente = () => {
             </option>
             <option value="rehabilitation">Riabilitazione</option>
           </select>
+
           <label>Preferenze di Allenamento</label>
           <select
             name="workoutPreferences"
             value={formData.workoutPreferences}
             onChange={handleChange}
             required
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
           >
             <option value="">Seleziona</option>
             <option value="cardio">Cardio</option>
             <option value="flexibility">Flessibilità</option>
-            <option value="outdoorActivities">Attività all&#39;aperto</option>
+            <option value="outdoorActivities">Attività all&apos;aperto</option>
             <option value="gym">Palestra</option>
           </select>
-          <label>Pratichi già uno sport?</label>
-          <input
+
+          <Textbox
+            label="Pratichi già uno sport?"
             type="text"
+            id="availableTime"
             name="availableTime"
             value={formData.availableTime}
             onChange={handleChange}
@@ -314,25 +339,28 @@ const FormCliente = () => {
       label: 'Account',
       fields: (
         <div className="client-form">
-          <label>Username</label>
-          <input
+          <Textbox
+            label="Username"
             type="text"
+            id="username"
             name="username"
             value={formData.username}
             onChange={handleChange}
             required
           />
-          <label>Password</label>
-          <input
+          <Textbox
+            label="Password"
             type={showPassword ? 'text' : 'password'}
+            id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
           />
-          <label>Conferma Password</label>
-          <input
+          <Textbox
+            label="Conferma Password"
             type={showPassword ? 'text' : 'password'}
+            id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
