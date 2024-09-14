@@ -109,7 +109,7 @@ const FormProfessionista = ({ onClose }) => {
   const steps = [
     {
       label: "Tipo Professionista", fields: ["professionType"], component: (
-        <select className="form-select" name="professionType" value={formData.professionType} onChange={handleChange} required>
+        <select className="form-select text-dark-blue-shadow" name="professionType" value={formData.professionType} onChange={handleChange} required>
           <option value="">Seleziona</option>
           <option value="PT">Personal Trainer</option>
           <option value="Nutrizionista">Nutrizionista</option>
@@ -129,7 +129,7 @@ const FormProfessionista = ({ onClose }) => {
       label: "Partita IVA (opzionale)", fields: ["taxCode"], component: (
         <input
           type="text"
-          className="form-control"
+          className="form-control text-dark-blue-shadow"
           name="taxCode"
           value={formData.taxCode}
           onChange={handleChange}
@@ -142,27 +142,27 @@ const FormProfessionista = ({ onClose }) => {
     },
     {
       label: "Nome", fields: ["firstName"], component: (
-        <input type="text" className="form-control col-md-6" name="firstName" value={formData.firstName} onChange={handleChange} required />
+        <input type="text" className="form-control col-md-6 text-dark-blue-shadow" name="firstName" value={formData.firstName} onChange={handleChange} required />
       )
     },
     {
       label: "Cognome", fields: ["lastName"], component: (
-        <input type="text" className="form-control col-md-6" name="lastName" value={formData.lastName} onChange={handleChange} required />
+        <input type="text" className="form-control col-md-6 text-dark-blue-shadow" name="lastName" value={formData.lastName} onChange={handleChange} required />
       )
     },
     {
       label: "Data di Nascita", fields: ["birthDate"], component: (
-        <input type="date" className="form-control col-md-6" name="birthDate" value={formData.birthDate} onChange={handleChange} required />
+        <input type="date" className="form-control col-md-6 text-dark-blue-shadow" name="birthDate" value={formData.birthDate} onChange={handleChange} required />
       )
     },
     {
       label: "Email", fields: ["email"], component: (
-        <input type="email" className="form-control col-md-6" name="email" value={formData.email} onChange={handleChange} required />
+        <input type="email" className="form-control col-md-6 text-dark-blue-shadow" name="email" value={formData.email} onChange={handleChange} required />
       )
     },
     {
       label: "Numero di Telefono", fields: ["phonePrefix", "phone"], component: (
-        <div className="d-flex">
+        <div className="d-flex text-dark-blue-shadow">
           <select className="form-select me-2" name="phonePrefix" value={formData.phonePrefix} onChange={handleChange} required>
             <option value="">Seleziona il prefisso</option>
             <option value="+39">Italia (+39)</option>
@@ -192,45 +192,45 @@ const FormProfessionista = ({ onClose }) => {
     },
     {
       label: "Area Geografica di Lavoro", fields: ["workArea"], component: (
-        <input type="text" className="form-control col-md-6" name="workArea" value={formData.workArea} onChange={handleChange} required />
+        <input type="text" className="form-control col-md-6 text-dark-blue-shadow" name="workArea" value={formData.workArea} onChange={handleChange} required />
       )
     },
     {
       label: "Esperienza Professionale (anni)", fields: ["experience"], component: (
-        <input type="number" className="form-control col-md-6" name="experience" value={formData.experience} onChange={handleChange} required />
+        <input type="number" className="form-control col-md-6 text-dark-blue-shadow" name="experience" value={formData.experience} onChange={handleChange} required />
       )
     },
     {
       label: "Breve Descrizione Attività", fields: ["description"], component: (
-        <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} required />
+        <textarea className="form-control text-dark-blue-shadow" name="description" value={formData.description} onChange={handleChange} required />
       )
     },
     {
       label: "Foto Profilo", fields: ["profilePhoto"], component: (
         <>
-          <input type="file" className="form-control" name="profilePhoto" accept="image/*" onChange={handleChange} required />
+          <input type="file" className="form-control text-dark-blue-shadow" name="profilePhoto" accept="image/*" onChange={handleChange} required />
           {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
         </>
       )
     },
     {
       label: "Username", fields: ["username"], component: (
-        <input type="text" className="form-control col-md-6" name="username" value={formData.username} onChange={handleChange} required />
+        <input type="text" className="form-control col-md-6 text-dark-blue-shadow" name="username" value={formData.username} onChange={handleChange} required />
       )
     },
     {
       label: "Password", fields: ["password"], component: (
-        <input type={showPassword ? "text" : "password"} className="form-control col-md-6" name="password" value={formData.password} onChange={handleChange} required />
+        <input type={showPassword ? "text" : "password"} className="form-control col-md-6 text-dark-blue-shadow" name="password" value={formData.password} onChange={handleChange} required />
       )
     },
     {
       label: "Conferma Password", fields: ["confirmPassword"], component: (
-        <input type={showPassword ? "text" : "password"} className="form-control col-md-6" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+        <input type={showPassword ? "text" : "password"} className="form-control col-md-6 text-dark-blue-shadow" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
       )
     },
     {
       label: "Tipologia di Abbonamento", fields: ["subscriptionType"], component: (
-        <select className="form-select col-md-6" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
+        <select className="form-select col-md-6 text-dark-blue-shadow" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
           <option value="">Seleziona</option>
           <option value="Base">Base</option>
           <option value="Premium">Premium</option>
@@ -240,7 +240,7 @@ const FormProfessionista = ({ onClose }) => {
     {
       label: "Social Network (opzionale)", fields: ["socialNetwork", "socialAccountName"], component: (
         <>
-          <select className="form-select col-md-6" name="socialNetwork" value={formData.socialNetwork} onChange={handleChange}>
+          <select className="form-select col-md-6 text-dark-blue-shadow" name="socialNetwork" value={formData.socialNetwork} onChange={handleChange}>
             <option value="Seleziona">Seleziona</option>
             <option value="Facebook">Facebook</option>
             <option value="Instagram">Instagram</option>
@@ -249,8 +249,8 @@ const FormProfessionista = ({ onClose }) => {
           </select>
           {formData.socialNetwork && formData.socialNetwork !== "Seleziona" && (
             <div className="mt-2 col-md-6">
-              <label className="form-label">Nome account {formData.socialNetwork}</label>
-              <input type="text" className="form-control" name="socialAccountName" value={formData.socialAccountName} onChange={handleChange} required />
+              <label className="form-label text-dark-blue-shadow">Nome account {formData.socialNetwork}</label>
+              <input type="text" className="form-control text-dark-blue-shadow" name="socialAccountName" value={formData.socialAccountName} onChange={handleChange} required />
             </div>
           )}
         </>
@@ -274,7 +274,7 @@ const FormProfessionista = ({ onClose }) => {
     },
     {
       label: "Come hai conosciuto l'app", fields: ["referral"], component: (
-        <input type="text" className="form-control col-md-6" name="referral" value={formData.referral} onChange={handleChange} required />
+        <input type="text" className="form-control col-md-6 text-dark-blue-shadow" name="referral" value={formData.referral} onChange={handleChange} required />
       )
     },
     {

@@ -1,6 +1,6 @@
 const Button = ({ type, onClick, text }) => {
   return (
-    <div className="w-[300px] h-10">
+    <div className="flex justify-center md:justify-start items-center">
       <button
         type={type}
         onClick={onClick}

@@ -19,6 +19,5 @@ function LandingPage() {
       <Footer />
     </div>
   );
-};
-
+}
 export default LandingPage;
