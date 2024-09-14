@@ -1,26 +1,23 @@
-import './App.css';
-import Button from './MyComponents/Button';
-import MobileButton from './MyComponents/MobileButton';
-import Textbox from './MyComponents/Textbox';
-import { CardMenu } from './MyComponents/CardMenu';
-import { SubCards } from './MyComponents/subCards';
-import { CardProvider } from './MyComponents/CardProvider';
-import Form from './FormProfessionista';
-import { ToggleSwitch } from './MyComponents/ToggleSwitch';
 
-const App = () => {
+import Header from './Header';
+import Presentazione from './Parte1';
+import Features from './Features';
+import Footer from './Footer';
+import backgroundImage from './assets/img/background.jpg';
+
+
+function App() {
   return (
-    <div className="App">
-      <div className="flex flex-col gap-5">
-        {/* <Textbox id={'name'} type={'text'} label={'Nome'} />
-        <MobileButton />
-        <Button text={'Unisciti ora!'} />
-        <CardProvider>
-          <CardMenu></CardMenu>
-          <SubCards></SubCards>
-        </CardProvider> */}
-        <ToggleSwitch></ToggleSwitch>
-      </div>
+    <div
+     className="min-h-screen bg-cover bg-center relative"
+     style={{
+        backgroundImage: `linear-gradient(to bottom, rgba(1, 40, 47, 0.5), rgba(1, 40, 47,0.5)), url(${backgroundImage})`
+      }}
+    >
+      <Header />
+      <Presentazione />
+      <Features />
+      <Footer />
     </div>
   );
 };
