@@ -27,7 +27,7 @@ const FormProfessionista = () => {
           return; // Ferma qui se le password non corrispondono
         }
       }
-  
+
       // Se siamo all'ultimo passo, controlla anche le checkbox accettate
       if (step === steps.length - 1) {
         if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
@@ -57,7 +57,7 @@ const FormProfessionista = () => {
   const isStepValid = i => {
     return steps[i].fields.every(f => {
       if (f === "taxCode") {
-        if (formData.taxCode === "") return true; 
+        if (formData.taxCode === "") return true;
         if (!/^[0-9]{11}$/.test(formData.taxCode)) {
           alert("Inserire le 11 cifre della partita IVA");
           return false;
@@ -125,7 +125,7 @@ const FormProfessionista = () => {
           maxLength={11}
         />
       )
-    },    
+    },
     {
       label: "Nome", fields: ["firstName"], component: (
         <input type="text" className="form-control col-md-6" name="firstName" value={formData.firstName} onChange={handleChange} required />
@@ -162,14 +162,14 @@ const FormProfessionista = () => {
             <option value="+61">Australia (+61)</option>
             {/* Aggiungi altri prefissi se necessario */}
           </select>
-          <input 
-            type="tel" 
-            className="form-control" 
-            name="phone" 
-            value={formData.phone} 
-            onChange={handleChange} 
-            placeholder="Numero di Telefono" 
-            required 
+          <input
+            type="tel"
+            className="form-control"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Numero di Telefono"
+            required
             pattern="[0-9]*" // Permette solo numeri
             inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
           />
@@ -273,7 +273,7 @@ const FormProfessionista = () => {
     },
   ];
 
-  
+
   return (
     <form onSubmit={e => e.preventDefault()} className="container">
       <div className="mb-3 text-center">
