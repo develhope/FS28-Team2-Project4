@@ -1,4 +1,4 @@
-import STAYFit from './assets/img/STAYFit(transparent).png'
+import STAYFit from '../../assets/img/STAYFit(transparent).png'
 
 const Header = () => {
   return (

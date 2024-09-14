@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "./MyComponents/Button";
 
-const FormProfessionista = () => {
+const FormProfessionista = ({ onClose }) => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -316,6 +316,7 @@ const FormProfessionista = () => {
           </div>
         </div>
       </div>
+      <button onClick={onClose}>Chiudi</button>
     </form>
   );
 };

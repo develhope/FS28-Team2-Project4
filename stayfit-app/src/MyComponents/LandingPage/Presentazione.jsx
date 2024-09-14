@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Button from '../MyComponents/Button';
+import Button from '../Button';
 import FormProfessionista from '../../FormProfessionista';
 
 const Presentazione = () => {
