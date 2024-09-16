@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import Textbox from './MyComponents/Textbox.jsx';
 import { SelectBox } from './MyComponents/SelectBox.jsx';
+import Button from './MyComponents/Button.jsx';
 
 const Form = () => {
   const [step, setStep] = useState(0);
@@ -87,6 +88,9 @@ const Form = () => {
     [formData]
   );
 
+  const totalStep = 6;
+  const progress = (step / totalStep) * 100;
+
   const nextStep = () => {
     if (isStepValid(step)) {
       setStep(step + 1);
@@ -159,18 +163,14 @@ const Form = () => {
             onChange={handleChange}
             options={genderOptions}
             required
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
-          >
-          </SelectBox>
+          />
         </>
       ),
     },
     {
       label: 'Contatti',
       fields: (
-        <>
+        <div className="flex flex-col gap-5">
           <Textbox
             label="Email"
             type="email"
@@ -188,13 +188,13 @@ const Form = () => {
             value={formData.phone}
             onChange={handleChange}
           />
-        </>
+        </div>
       ),
     },
     {
       label: 'Misure',
       fields: (
-        <>
+        <div className="flex flex-col gap-5">
           <Textbox
             label="Peso (kg)"
             type="number"
@@ -213,13 +213,13 @@ const Form = () => {
             onChange={handleChange}
             required
           />
-        </>
+        </div>
       ),
     },
     {
       label: 'Allergie e Intolleranze',
       fields: (
-        <>
+        <div className="flex flex-col gap-5">
           <Textbox
             label="Allergie"
             type="text"
@@ -236,14 +236,16 @@ const Form = () => {
             value={formData.foodIntolerances}
             onChange={handleChange}
           />
-        </>
+        </div>
       ),
     },
     {
       label: 'Fitness',
       fields: (
-        <>
-          <label>Livello di Attività Fisica</label>
+        <div className="flex flex-col gap-5">
+          <label className="text-xl text-secondary-green">
+            Livello di Attività Fisica
+          </label>
           <select
             name="activityLevel"
             value={formData.activityLevel}
@@ -260,7 +262,9 @@ const Form = () => {
             <option value="veryActive">Molto Attivo</option>
           </select>
 
-          <label>Obiettivi di Fitness</label>
+          <label className="text-xl text-secondary-green">
+            Obiettivi di Fitness
+          </label>
           <select
             name="fitnessGoals"
             value={formData.fitnessGoals}
@@ -283,7 +287,9 @@ const Form = () => {
             <option value="rehabilitation">Riabilitazione</option>
           </select>
 
-          <label>Preferenze di Allenamento</label>
+          <label className="text-xl text-secondary-green">
+            Preferenze di Allenamento
+          </label>
           <select
             name="workoutPreferences"
             value={formData.workoutPreferences}
@@ -309,15 +315,15 @@ const Form = () => {
             onChange={handleChange}
             required
           />
-        </>
+        </div>
       ),
     },
     {
       label: 'Foto',
       fields: (
-        <>
-          <label>Carica una Foto</label>
-          <input
+        <div className="flex flex-col gap-5">
+          <label className="text-xl text-secondary-green">Carica una Foto</label>
+          <input className='w-[300px]'
             type="file"
             name="photo"
             accept="image/*"
@@ -325,13 +331,13 @@ const Form = () => {
             required
           />
           {formData.photo && <div>Foto Caricata: {formData.photo.name}</div>}
-        </>
+        </div>
       ),
     },
     {
       label: 'Account',
       fields: (
-        <div className="client-form">
+        <div className="flex flex-col gap-5">
           <Textbox
             label="Username"
             type="text"
@@ -359,7 +365,7 @@ const Form = () => {
             onChange={handleChange}
             required
           />
-          <label>
+          <label className="text-xl text-secondary-green">
             <input
               type="checkbox"
               checked={showPassword}
@@ -373,29 +379,38 @@ const Form = () => {
   ];
 
   return (
-    <div className="form-container">
-      <h2 className="titolo">Registrazione Cliente</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <h2>{steps[step].label}</h2>
-          {steps[step].fields}
+    <div className="h-screen w-screen flex flex-col justify-center items-center bg-primary-blue">
+      <h2 className="text-2xl text-secondary-green">REGISTRAZIONE CLIENTE</h2>
+      <div className="w-[300px] mb-10">
+        <div className="w-[300px] bg-[#001e23] rounded-full h-2.5">
+          <div
+            className="bg-secondary-green h-2.5 rounded-full"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
-        <div>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-5">{steps[step].fields}</div>
+        <div className="flex flex-col mt-10 gap-5">
           {step > 0 && (
-            <button type="button" onClick={prevStep}>
-              Indietro
-            </button>
+            <Button
+              type={'button'}
+              onClick={prevStep}
+              text={'Indietro'}
+            ></Button>
           )}
           {step < steps.length - 1 && (
-            <button
-              type="button"
+            <Button
+              type={'button'}
               onClick={nextStep}
               disabled={!isStepValid(step)}
+              text={'Avanti'}
             >
               Avanti
-            </button>
+            </Button>
           )}
-          {step === steps.length - 1 && <button type="submit">Invia</button>}
+          {step === steps.length - 1 && <Button type="submit" text={'Invia'}></Button>}
         </div>
       </form>
     </div>

@@ -2,17 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
 
 #root {
+  height: 100%;
+  width: 100%;
   margin: 0;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
-  background-color: #001e23;
 }
 
 .logo {
@@ -88,6 +92,20 @@ button:active.glow-button {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer utilities {
+  input:-webkit-autofill {
+    @apply bg-gray-800 text-gray-100 !important;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    box-shadow: 0 0 0px 1000px #001e23 inset !important;
+    -webkit-text-fill-color: #c5c5c5 !important;
+  }
 }
