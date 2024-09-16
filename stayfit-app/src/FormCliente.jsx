@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import Textbox from './MyComponents/Textbox.jsx';
+import { SelectBox } from './MyComponents/SelectBox.jsx';
 
 const Form = () => {
   const [step, setStep] = useState(0);
@@ -114,6 +115,12 @@ const Form = () => {
     }
   };
 
+  const genderOptions = [
+    { value: 'male', label: 'Maschio' },
+    { value: 'female', label: 'Femmina' },
+    { value: 'other', label: 'Altro' },
+  ];
+
   const steps = [
     {
       label: 'Nome e Cognome',
@@ -145,20 +152,18 @@ const Form = () => {
             onChange={handleChange}
             required
           />
-          <label  className={'absolute left-3 top-2 transition-all duration-200 ease-in-out bg-primary-blue px-0.5 bg-left bg-no-repeat'}>Sesso</label>
-          <select
+          <SelectBox
+            label="Sesso"
             name="gender"
             value={formData.gender}
             onChange={handleChange}
+            options={genderOptions}
             required
             className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
   text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
   duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
           >
-            <option value="">Seleziona</option>
-            <option value="male">Maschio</option>
-            <option value="female">Femmina</option>
-          </select>
+          </SelectBox>
         </>
       ),
     },

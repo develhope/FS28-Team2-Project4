@@ -468,7 +468,7 @@ const Form = () => {
             required
           />
           <label className="form-check-label">
-            Accetto l'Informativa Privacy
+            Accetto l&apos;Informativa Privacy
           </label>
         </div>
       ),
@@ -500,7 +500,7 @@ const Form = () => {
             onChange={handleChange}
           />
           <label className="form-check-label">
-            Ricevere Aggiornamenti dall'App
+            Ricevere Aggiornamenti dall&apos;App
           </label>
         </div>
       ),
