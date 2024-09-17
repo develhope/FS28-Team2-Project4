@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { SubCards } from './MyComponents/subCards';
 import { CardProvider } from './MyComponents/CardProvider';
+import Button from './MyComponents/Button';
+import Textbox from './MyComponents/Textbox';
 
 const Form = () => {
   const [step, setStep] = useState(0);
@@ -14,7 +15,6 @@ const Form = () => {
     lastName: '',
     birthDate: '',
     email: '',
-    phonePrefix: '',
     phone: '',
     workArea: '',
     experience: '',
@@ -23,7 +23,7 @@ const Form = () => {
     username: '',
     password: '',
     confirmPassword: '',
-    subscriptionType: '',
+    subscriptionType: null,
     socialNetwork: '',
     socialAccountName: '',
     termsAccepted: false,
@@ -32,12 +32,20 @@ const Form = () => {
     receiveUpdates: false,
   });
 
+  const totalStep = 7;
+  const progress = (step / totalStep) * 100;
+
   const handleChange = ({ target: { name, value, type, checked, files } }) => {
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : files ? files : value,
     }));
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const nextStep = () => {
     if (isStepValid(step)) {
       // Controlliamo se siamo nello step della conferma password
@@ -83,7 +91,7 @@ const Form = () => {
     return steps[i].fields.every((f) => {
       if (f === 'taxCode') {
         if (formData.taxCode === '') return true;
-        if (!/^[0-9]{11}$/.test(formData.taxCode)) {
+        if (!/^\d{11}$/.test(formData.taxCode)) {
           alert('Inserire le 11 cifre della partita IVA');
           return false;
         }
@@ -103,7 +111,11 @@ const Form = () => {
       if (f === 'socialAccountName') {
         return formData.socialNetwork === '' || formData[f];
       }
-      if (f === 'certifications' || f === 'profilePhoto') {
+      if (
+        f === 'certifications' ||
+        f === 'profilePhoto' ||
+        f === 'subscriptionType'
+      ) {
         return formData[f] && formData[f].length > 0;
       }
       // Verifica che i termini e privacy policy siano accettati
@@ -132,145 +144,67 @@ const Form = () => {
 
   const steps = [
     {
-      label: 'Tipo Professionista',
-      fields: ['professionType'],
+      label: 'Dati personali',
+      fields: [
+        'firstName',
+        'lastName',
+        'birthDate',
+        'taxCode',
+        'email',
+        'phone',
+      ],
       component: (
-        <select
-          className="form-select"
-          name="professionType"
-          value={formData.professionType}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Seleziona</option>
-          <option value="PT">Personal Trainer</option>
-          <option value="Nutrizionista">Nutrizionista</option>
-          <option value="Entrambi">Entrambi</option>
-        </select>
-      ),
-    },
-    {
-      label: 'Certificazioni',
-      fields: ['certifications'],
-      component: (
-        <>
-          <input
-            type="file"
-            className="form-control"
-            name="certifications"
-            accept="application/pdf, image/*"
-            multiple
+        <div className="flex flex-col gap-5">
+          <Textbox
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
+            label={'Nome'}
             onChange={handleChange}
             required
           />
-          {formData.certifications.length > 0 &&
-            renderFilePreview(formData.certifications)}
-        </>
-      ),
-    },
-    {
-      label: 'Partita IVA (opzionale)',
-      fields: ['taxCode'],
-      component: (
-        <input
-          type="text"
-          className="form-control"
-          name="taxCode"
-          value={formData.taxCode}
-          onChange={handleChange}
-          placeholder="Solo numeri, 11 cifre"
-          pattern="\d{11}"
-          maxLength={11}
-        />
-      ),
-    },
-    {
-      label: 'Nome',
-      fields: ['firstName'],
-      component: (
-        <input
-          type="text"
-          className="form-control col-md-6"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Cognome',
-      fields: ['lastName'],
-      component: (
-        <input
-          type="text"
-          className="form-control col-md-6"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Data di Nascita',
-      fields: ['birthDate'],
-      component: (
-        <input
-          type="date"
-          className="form-control col-md-6"
-          name="birthDate"
-          value={formData.birthDate}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Email',
-      fields: ['email'],
-      component: (
-        <input
-          type="email"
-          className="form-control col-md-6"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Numero di Telefono',
-      fields: ['phonePrefix', 'phone'],
-      component: (
-        <div className="d-flex">
-          <select
-            className="form-select me-2"
-            name="phonePrefix"
-            value={formData.phonePrefix}
+          <Textbox
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            label={'Cognome'}
             onChange={handleChange}
             required
-          >
-            <option value="">Seleziona il prefisso</option>
-            <option value="+39">Italia (+39)</option>
-            <option value="+33">Francia (+33)</option>
-            <option value="+44">Regno Unito (+44)</option>
-            <option value="+1">Stati Uniti (+1)</option>
-            <option value="+49">Germania (+49)</option>
-            <option value="+81">Giappone (+81)</option>
-            <option value="+86">Cina (+86)</option>
-            <option value="+91">India (+91)</option>
-            <option value="+61">Australia (+61)</option>
-            {/* Aggiungi altri prefissi se necessario */}
-          </select>
-          <input
+          />
+          <Textbox
+            type="date"
+            name="birthDate"
+            value={formData.birthDate}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="text"
+            name="taxCode"
+            id="taxCode"
+            value={formData.taxCode}
+            onChange={handleChange}
+            label={'Partita IVA (opzionale)'}
+            maxLength={11}
+          />
+          <Textbox
+            type="email"
+            name="email"
+            id="email"
+            label={'Email'}
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
             type="tel"
-            className="form-control"
+            id="phone"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            placeholder="Numero di Telefono"
+            label={'Numero di telefono'}
             required
             pattern="[0-9]*" // Permette solo numeri
             inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
@@ -279,31 +213,55 @@ const Form = () => {
       ),
     },
     {
-      label: 'Area Geografica di Lavoro',
-      fields: ['workArea'],
+      fields: ['professionType', 'certifications', 'workArea', 'experience'],
       component: (
-        <input
-          type="text"
-          className="form-control col-md-6"
-          name="workArea"
-          value={formData.workArea}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Esperienza Professionale (anni)',
-      fields: ['experience'],
-      component: (
-        <input
-          type="number"
-          className="form-control col-md-6"
-          name="experience"
-          value={formData.experience}
-          onChange={handleChange}
-          required
-        />
+        <div className="flex flex-col gap-5">
+          <select
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+            name="professionType"
+            value={formData.professionType}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Seleziona tipo professionista</option>
+            <option value="PT">Personal Trainer</option>
+            <option value="Nutrizionista">Nutrizionista</option>
+            <option value="Entrambi">Entrambi</option>
+          </select>
+
+          <Textbox
+            type="text"
+            name="workArea"
+            id="workArea"
+            label={'Sede lavorativa (città)'}
+            value={formData.workArea}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="number"
+            name="experience"
+            id="experience"
+            label={'Esperienza Professionale (anni)'}
+            value={formData.experience}
+            onChange={handleChange}
+            required
+          />
+          <div className="flex flex-col gap-2">
+            <p className="text-xl text-secondary-green">Certificazioni</p>
+            <input
+              type="file"
+              className="w-[300px] text-secondary-green"
+              name="certifications"
+              accept="application/pdf, image/*"
+              multiple
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
       ),
     },
     {
@@ -311,8 +269,11 @@ const Form = () => {
       fields: ['description'],
       component: (
         <textarea
-          className="form-control"
           name="description"
+          className="peer border-2 w-[300px] h-[200px] bg-transparent border-secondary-gray cursor-text
+        caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+        duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
+        glow-effect focus:transition-all focus:duration-300"
           value={formData.description}
           onChange={handleChange}
           required
@@ -320,62 +281,57 @@ const Form = () => {
       ),
     },
     {
-      label: 'Foto Profilo',
-      fields: ['profilePhoto'],
+      fields: ['username', 'password', 'confirmPassword', 'profilePhoto'],
       component: (
-        <>
-          <input
-            type="file"
-            className="form-control"
-            name="profilePhoto"
-            accept="image/*"
+        <div className="flex flex-col gap-5">
+          <Textbox
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
+            label={'Username'}
             onChange={handleChange}
             required
           />
-          {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
-        </>
-      ),
-    },
-    {
-      label: 'Username',
-      fields: ['username'],
-      component: (
-        <input
-          type="text"
-          className="form-control col-md-6"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Password',
-      fields: ['password'],
-      component: (
-        <input
-          type={showPassword ? 'text' : 'password'}
-          className="form-control col-md-6"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: 'Conferma Password',
-      fields: ['confirmPassword'],
-      component: (
-        <input
-          type={showPassword ? 'text' : 'password'}
-          className="form-control col-md-6"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+          <Textbox
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            id="password"
+            label={'Password'}
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type={showPassword ? 'text' : 'password'}
+            name="confirmPassword"
+            id="confirmPassword"
+            label={'Conferma Password'}
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+          <label className="text-xl text-secondary-green">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={togglePasswordVisibility}
+            />
+            Mostra Password
+          </label>
+          <div className="flex flex-col mt-5 gap-5">
+            <p className="text-xl text-secondary-green">Foto profilo</p>
+            <input
+              type="file"
+              name="profilePhoto"
+              className="w-[300px] text-secondary-green"
+              accept="image/*"
+              onChange={handleChange}
+              required
+            />
+            {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
+          </div>
+        </div>
       ),
     },
     {
@@ -384,7 +340,9 @@ const Form = () => {
       component: (
         <>
           <select
-            className="form-select col-md-6"
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[10px] pr-[10px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
             name="subscriptionType"
             value={formData.subscriptionType}
             onChange={handleChange}
@@ -406,8 +364,10 @@ const Form = () => {
       component: (
         <>
           <select
-            className="form-select col-md-6"
             name="socialNetwork"
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[10px] pr-[10px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
             value={formData.socialNetwork}
             onChange={handleChange}
           >
@@ -418,13 +378,12 @@ const Form = () => {
             <option value="Twitter">Twitter</option>
           </select>
           {formData.socialNetwork && formData.socialNetwork !== 'Seleziona' && (
-            <div className="mt-2 col-md-6">
-              <label className="form-label">
+            <div className="mt-5">
+              <label className="text-xl text-secondary-green">
                 Nome account {formData.socialNetwork}
               </label>
-              <input
+              <Textbox
                 type="text"
-                className="form-control"
                 name="socialAccountName"
                 value={formData.socialAccountName}
                 onChange={handleChange}
@@ -436,40 +395,33 @@ const Form = () => {
       ),
     },
     {
-      label: 'Termini e Condizioni',
-      fields: ['termsAccepted'],
+      fields: ['termsAccepted', 'privacyPolicyAccepted'],
       component: (
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            name="termsAccepted"
-            checked={formData.termsAccepted}
-            onChange={handleChange}
-            required
-          />
-          <label className="form-check-label">
-            Accetto i Termini e Condizioni
-          </label>
-        </div>
-      ),
-    },
-    {
-      label: 'Informativa Privacy',
-      fields: ['privacyPolicyAccepted'],
-      component: (
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            name="privacyPolicyAccepted"
-            checked={formData.privacyPolicyAccepted}
-            onChange={handleChange}
-            required
-          />
-          <label className="form-check-label">
-            Accetto l&apos;Informativa Privacy
-          </label>
+        <div className="flex flex-col items-center gap-5">
+          <div className="flex gap-2">
+            <input
+              type="checkbox"
+              name="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={handleChange}
+              required
+            />
+            <label className="text-xl text-secondary-green">
+              Accetto i Termini e Condizioni
+            </label>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="checkbox"
+              name="privacyPolicyAccepted"
+              checked={formData.privacyPolicyAccepted}
+              onChange={handleChange}
+              required
+            />
+            <label className="text-xl text-secondary-green">
+              Accetto l&apos;Informativa Privacy
+            </label>
+          </div>
         </div>
       ),
     },
@@ -477,84 +429,101 @@ const Form = () => {
       label: "Come hai conosciuto l'app",
       fields: ['referral'],
       component: (
-        <input
-          type="text"
-          className="form-control col-md-6"
-          name="referral"
-          value={formData.referral}
-          onChange={handleChange}
-          required
-        />
-      ),
-    },
-    {
-      label: "Ricevere Aggiornamenti dall'App",
-      fields: [],
-      component: (
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            name="receiveUpdates"
-            checked={formData.receiveUpdates}
+        <div className='flex flex-col items-center gap-5'>
+          <Textbox
+            type="text"
+            name="referral"
+            id="referral"
+            value={formData.referral}
             onChange={handleChange}
+            required
           />
-          <label className="form-check-label">
-            Ricevere Aggiornamenti dall&apos;App
-          </label>
+          <div className="flex gap-2">
+            <input
+              type="checkbox"
+              name="receiveUpdates"
+              checked={formData.receiveUpdates}
+              onChange={handleChange}
+            />
+            <label className="text-xl text-secondary-green">
+              Ricevere Aggiornamenti dall&apos;App
+            </label>
+          </div>
         </div>
       ),
     },
   ];
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="container">
-      <div className="mb-3 text-center">
-        <label className="form-label">{steps[step].label}</label>
-        <div className="d-flex justify-content-center">
-          <div className="col-md-6">
-            {steps[step].component}
+    <div className="h-screen w-screen flex flex-col justify-center items-center bg-primary-blue">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="flex flex-col items-center justify-center"
+      >
+        <h2 className="text-2xl text-secondary-green">
+          REGISTRAZIONE PROFESSIONISTA
+        </h2>
+        <div className="w-[395px] mb-10">
+          <div className="w-[395px] bg-[#001e23] rounded-full h-2.5">
+            <div
+              className="bg-secondary-green h-2.5 rounded-full"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+        <div className="mb-3 flex flex-col gap-5">
+          <label className="text-xl text-secondary-green">
+            {steps[step].label}
+          </label>
+          <div className="flex justify-center">
+            <div>
+              {steps[step].component}
 
-            {/* Checkbox per mostrare la password */}
-            {['password', 'confirmPassword'].includes(
-              steps[step]?.fields[0]
-            ) && (
-              <div className="form-check mb-3 text-center">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="showPassword"
-                  checked={showPassword}
-                  onChange={() => setShowPassword(!showPassword)}
-                />
-                <label className="form-check-label" htmlFor="showPassword">
-                  Mostra Password
-                </label>
-              </div>
-            )}
-
-            <div className="d-flex justify-content-between mt-4">
-              {step > 0 && (
-                <button
-                  type="button"
-                  className="btn btn-secondary w-50 me-1"
-                  onClick={prevStep}
-                >
-                  Indietro
-                </button>
+              {/* Checkbox per mostrare la password */}
+              {['password', 'confirmPassword'].includes(
+                steps[step]?.fields[0]
+              ) && (
+                <div className="mt-5 flex gap-2 justify-center items-center">
+                  <input
+                    type="checkbox"
+                    id="showPassword"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
+                  />
+                  <label
+                    className="text-xl text-secondary-green"
+                    htmlFor="showPassword"
+                  >
+                    Mostra Password
+                  </label>
+                </div>
               )}
-              <button
-                type="button"
-                className="btn btn-primary w-50 ms-1"
-                onClick={nextStep}
-              >
-                {step < steps.length - 1 ? 'Avanti' : 'Invia'}
-              </button>
+
+              <div className="flex flex-col gap-5 mt-10 justify-center items-center">
+                {step > 0 && (
+                  <Button
+                    type="button"
+                    onClick={prevStep}
+                    text={'Indietro'}
+                  ></Button>
+                )}
+                {step < steps.length - 1 && (
+                  <Button
+                    type={'button'}
+                    onClick={nextStep}
+                    disabled={!isStepValid(step)}
+                    text={'Avanti'}
+                  ></Button>
+                )}
+                {step === steps.length - 1 && (
+                  <Button type="submit" text={'Invia'}></Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

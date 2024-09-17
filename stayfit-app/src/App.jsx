@@ -1,5 +1,5 @@
 import './App.css';
-import Form from './FormCliente';
+import Form from './FormProfessionista';
 
 const App = () => {
   return (

@@ -407,7 +407,6 @@ const Form = () => {
               disabled={!isStepValid(step)}
               text={'Avanti'}
             >
-              Avanti
             </Button>
           )}
           {step === steps.length - 1 && <Button type="submit" text={'Invia'}></Button>}
