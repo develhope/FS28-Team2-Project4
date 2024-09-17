@@ -16,52 +16,43 @@ const LoginForm = ({ onClose }) => {
     );
 
     if (user) {
-      alert('Login avvenuto con successo!');
+      alert(`Bentornato ${user.name}!`);
       setErrorMessage('');
     } else {
       setErrorMessage('Email o password non corretti');
     }
   };
 
-  const handleOutsideClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
-      onClick={handleOutsideClick}
-    >
-      <div className='w-auto h-auto px-4 py-7 bg-primary-blue'>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <Textbox
-            label="Email"
-            type="email"
-            id="email"
-            hasError={errorMessage}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Textbox
-            label="Password"
-            type="password"
-            id="password"
-            hasError={errorMessage}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {errorMessage && (
-            <p className="text-red-700 text-sm">{errorMessage}</p>
-          )}
-          <Button
-            type="submit"
-            text="Login"
-            color="#C1FF72"
-            txtcolor="#001E23"
-          />
-        </form>
-        <button onClick={onClose}>Chiudi</button>
-      </div>
+    <div className="flex flex-col justify-center items-center w-fit h-fit px-9 py-9 bg-primary-blue border-2 border-secondary-green rounded-lg">
+      <h1 className="text-4xl font-extrabold text-white">Accedi</h1>
+      <p className="text-sm text-gray-400 mt-3">
+        Accedi utilizzando la tua email.
+      </p>
+      <form
+        className={'flex flex-col gap-5 justify-center items-center my-8'}
+        onSubmit={handleLogin}
+      >
+        <Textbox
+          label="Email"
+          type="email"
+          id="email"
+          hasError={errorMessage}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Textbox
+          label="Password"
+          type="password"
+          id="password"
+          hasError={errorMessage}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {errorMessage && <p className="text-red-700 text-sm">{errorMessage}</p>}
+        <Button type="submit" text="Login" color="#C1FF72" txtcolor="#001E23" />
+      </form>
+      <button className={'text-white mt-1 underline'} onClick={onClose}>
+        Chiudi
+      </button>
     </div>
   );
 };
