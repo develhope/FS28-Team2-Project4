@@ -49,32 +49,23 @@ const Presentazione = () => {
           onClick={handleOutsideClick}
           className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-10"
         >
-          <div className="relative z-20 p-10 w-[400px] h-auto bg-primary-blue border-2 border-secondary-green rounded-lg shadow-2xl">
-            <button
-              onClick={() => setRegisterOpen(false)}
-              className="absolute top-2 right-2 text-white"
-            >
-              X
-            </button>
+          {!isLoginOpen ? (
+            <FormProfessionista onClose={() => setRegisterOpen(false)} />
+          ) : (
+            <LoginForm onClose={() => setRegisterOpen(false)} />
+          )}
 
-            {!isLoginOpen ? (
-              <FormProfessionista onClose={() => setRegisterOpen(false)} />
-            ) : (
-              <LoginForm onClose={() => setRegisterOpen(false)} />
-            )}
-
-            {!isLoginOpen && (
-              <p className="text-white text-center mt-6">
-                Sei già iscritto?{' '}
-                <span
-                  onClick={handleLoginClick}
-                  className="text-secondary-green underline cursor-pointer"
-                >
-                  Login
-                </span>
-              </p>
-            )}
-          </div>
+          {!isLoginOpen && (
+            <p className="text-white text-center mt-6">
+              Sei già iscritto?{' '}
+              <span
+                onClick={handleLoginClick}
+                className="text-secondary-green underline cursor-pointer"
+              >
+                Login
+              </span>
+            </p>
+          )}
         </div>
       )}
     </section>
