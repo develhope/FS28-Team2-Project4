@@ -1,189 +1,204 @@
-import { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from 'react';
+import { SubCards } from './MyComponents/subCards';
+import { CardProvider } from './MyComponents/CardProvider';
+import Button from './MyComponents/Button';
+import Textbox from './MyComponents/Textbox';
 
 const Form = () => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    professionType: "", certifications: [], taxCode: "", firstName: "", lastName: "", birthDate: "", email: "",
-    phonePrefix: "", phone: "", workArea: "", experience: "", description: "", profilePhoto: null, username: "", password: "",
-    confirmPassword: "", subscriptionType: "", socialNetwork: "", socialAccountName: "", termsAccepted: false,
-    privacyPolicyAccepted: false, referral: "", receiveUpdates: false
+    professionType: '',
+    certifications: [],
+    taxCode: '',
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    email: '',
+    phone: '',
+    workArea: '',
+    experience: '',
+    description: '',
+    profilePhoto: null,
+    username: '',
+    password: '',
+    confirmPassword: '',
+    subscriptionType: null,
+    socialNetwork: '',
+    socialAccountName: '',
+    termsAccepted: false,
+    privacyPolicyAccepted: false,
+    referral: '',
+    receiveUpdates: false,
   });
 
+  const totalStep = 7;
+  const progress = (step / totalStep) * 100;
+
   const handleChange = ({ target: { name, value, type, checked, files } }) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : (files ? files : value)
+      [name]: type === 'checkbox' ? checked : files ? files : value,
     }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const nextStep = () => {
     if (isStepValid(step)) {
-      if (step === steps.findIndex(s => s.fields.includes("confirmPassword"))) {
+      // Controlliamo se siamo nello step della conferma password
+      if (
+        step === steps.findIndex((s) => s.fields.includes('confirmPassword'))
+      ) {
+        // Controlla anche le password
         if (formData.password !== formData.confirmPassword) {
-          alert("Le password non corrispondono.");
+          alert('Le password non corrispondono.');
           return;
         }
       }
 
+      // Se siamo all'ultimo passo, controlla anche le checkbox accettate
       if (step === steps.length - 1) {
         if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
-          alert("Devi accettare i Termini e Condizioni e l'Informativa Privacy.");
+          alert(
+            "Devi accettare i Termini e Condizioni e l'Informativa Privacy."
+          );
           return;
         }
         handleSubmit();
       } else {
         setStep(step + 1);
       }
+    } else {
+      alert('Compila tutti i campi obbligatori.');
     }
   };
 
   const prevStep = () => setStep(step - 1);
 
   const handleSubmit = () => {
-    if (steps.every((_, i) => isStepValid(i))) {
-      // Salva i dati del form in localStorage
-      localStorage.setItem("formData", JSON.stringify(formData));
-      
-      alert("Form inviato con successo e dati salvati in localStorage!");
-      // Puoi anche aggiungere un'eventuale logica per inviare i dati ad un server
-    } else {
-      alert("Compila tutti i campi obbligatori.");
-    }
+    // Salva i dati in localStorage
+    localStorage.setItem('formData', JSON.stringify(formData));
+    alert('Dati inviati correttamente!');
   };
-  
 
-  const isStepValid = i => {
-    let hasError = false;
+  // La funzione di validazione ora controlla la partita IVA solo alla pressione di "Avanti"
+  const isStepValid = (i) => {
+    return steps[i].fields.every((f) => {
+      // Controlla la partita IVA solo se è stata inserita e verifica che sia di 11 cifre
+      if (f === 'taxCode') {
+        if (formData.taxCode && !/^\d{11}$/.test(formData.taxCode)) {
+          alert('La partita IVA deve contenere esattamente 11 cifre.');
+          return false;
+        }
+        return true; // Se è vuoto, va bene perché opzionale
+      }
 
-    for (const f of steps[i].fields) {
-      if (f === "taxCode") {
-        if (formData.taxCode === "") return true; 
-        if (!/^[0-9]{11}$/.test(formData.taxCode)) {
-          if (!hasError) {
-            alert("Inserire le 11 cifre della partita IVA");
-            hasError = true;
-          }
+      // Validazione del numero di telefono
+      if (f === 'phone') {
+        if (!/^\d+$/.test(formData.phone)) {
+          alert('Il numero di telefono deve contenere solo cifre.');
           return false;
         }
       }
-      if (f === "phone") {
-        if (!/^[0-9]*$/.test(formData.phone)) {
-          if (!hasError) {
-            alert("Il numero di telefono deve contenere solo cifre.");
-            hasError = true;
-          }
-          return false;
-        }
+
+      // Per i campi opzionali, se sono vuoti va bene
+      if (f === 'socialNetwork' || f === 'socialAccountName') {
+        return true;
       }
-      if (f === "socialNetwork") {
-        return formData.socialNetwork === "" || formData.socialNetwork !== "Seleziona"; // Seleziona può essere ignorato.
-      }
-      if (f === "socialAccountName") {
-        return formData.socialNetwork === "" || formData[f];
-      }
-      if (f === "certifications" || f === "profilePhoto") {
-        return formData[f] && formData[f].length > 0;
-      }
-      if (f === "termsAccepted" || f === "privacyPolicyAccepted") {
+
+      // Per campi come termini e privacy policy, verifica che siano accettati
+      if (f === 'termsAccepted' || f === 'privacyPolicyAccepted') {
         return formData[f] === true;
       }
-      if (formData[f] === "" || formData[f] === null) {
-        if (!hasError) {
-          alert("Compila tutti i campi obbligatori.");
-          hasError = true;
-        }
-        return false;
-      }
-    }
-    return true;
+
+      // Se è obbligatorio, verifica che non sia vuoto
+      return formData[f] !== '' && formData[f] !== null;
+    });
   };
 
-  const renderFilePreview = files => Array.from(files).map(file => (
-    <div key={file.name} className="mt-2">
-      {file.type.startsWith("image/") ? <img src={URL.createObjectURL(file)} alt={file.name} style={{ width: '300px' }} className="img-thumbnail" /> : <div>{file.name}</div>}
-    </div>
-  ));
+  const renderFilePreview = (files) =>
+    Array.from(files).map((file) => (
+      <div key={file.name} className="mt-2">
+        {file.type.startsWith('image/') ? (
+          <img
+            src={URL.createObjectURL(file)}
+            alt={file.name}
+            style={{ width: '300px' }}
+            className="img-thumbnail"
+          />
+        ) : (
+          <div>{file.name}</div>
+        )}
+      </div>
+    ));
 
   const steps = [
     {
-      label: "Tipo Professionista", fields: ["professionType"], component: (
-        <select className="form-select" name="professionType" value={formData.professionType} onChange={handleChange} required>
-          <option value="">Seleziona</option>
-          <option value="PT">Personal Trainer</option>
-          <option value="Nutrizionista">Nutrizionista</option>
-          <option value="Entrambi">Entrambi</option>
-        </select>
-      )
-    },
-    {
-      label: "Certificazioni", fields: ["certifications"], component: (
-        <>
-          <input type="file" className="form-control" name="certifications" accept="application/pdf, image/*" multiple onChange={handleChange} required />
-          {formData.certifications.length > 0 && renderFilePreview(formData.certifications)}
-        </>
-      )
-    },
-    {
-      label: "Partita IVA (opzionale)", fields: ["taxCode"], component: (
-        <input
-          type="text"
-          className="form-control"
-          name="taxCode"
-          value={formData.taxCode}
-          onChange={handleChange}
-          placeholder="Solo numeri, 11 cifre"
-          pattern="[0-9]*"
-          inputMode="numeric"
-          maxLength={11}
-        />
-      )
-    },
-    {
-      label: "Nome", fields: ["firstName"], component: (
-        <input type="text" className="form-control col-md-6" name="firstName" value={formData.firstName} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Cognome", fields: ["lastName"], component: (
-        <input type="text" className="form-control col-md-6" name="lastName" value={formData.lastName} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Data di Nascita", fields: ["birthDate"], component: (
-        <input type="date" className="form-control col-md-6" name="birthDate" value={formData.birthDate} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Email", fields: ["email"], component: (
-        <input type="email" className="form-control col-md-6" name="email" value={formData.email} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Numero di Telefono", fields: ["phonePrefix", "phone"], component: (
-        <div className="d-flex">
-          <select className="form-select me-2" name="phonePrefix" value={formData.phonePrefix} onChange={handleChange} required>
-            <option value="">Seleziona il prefisso</option>
-            <option value="+39">Italia (+39)</option>
-            <option value="+33">Francia (+33)</option>
-            <option value="+44">Regno Unito (+44)</option>
-            <option value="+1">Stati Uniti (+1)</option>
-            <option value="+49">Germania (+49)</option>
-            <option value="+81">Giappone (+81)</option>
-            <option value="+86">Cina (+86)</option>
-            <option value="+91">India (+91)</option>
-            <option value="+61">Australia (+61)</option>
-            {/* Aggiungi altri prefissi se necessario */}
-          </select>
-          <input 
-            type="tel" 
-            className="form-control" 
-            name="phone" 
-            value={formData.phone} 
-            onChange={handleChange} 
-            placeholder="Numero di Telefono" 
-            required 
+      label: 'Dati personali',
+      fields: [
+        'firstName',
+        'lastName',
+        'birthDate',
+        'taxCode',
+        'email',
+        'phone',
+      ],
+      component: (
+        <div className="flex flex-col gap-5">
+          <Textbox
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
+            label={'Nome'}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            label={'Cognome'}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="date"
+            name="birthDate"
+            value={formData.birthDate}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="text"
+            name="taxCode"
+            id="taxCode"
+            value={formData.taxCode}
+            onChange={handleChange}
+            label={'Partita IVA (opzionale)'}
+            maxLength={11}
+          />
+          <Textbox
+            type="email"
+            name="email"
+            id="email"
+            label={'Email'}
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="tel"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            label={'Numero di telefono'}
+            required
             pattern="[0-9]*" // Permette solo numeri
             inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
           />
@@ -191,132 +206,321 @@ const Form = () => {
       ),
     },
     {
-      label: "Area Geografica di Lavoro", fields: ["workArea"], component: (
-        <input type="text" className="form-control col-md-6" name="workArea" value={formData.workArea} onChange={handleChange} required />
-      )
+      fields: ['professionType', 'certifications', 'workArea', 'experience'],
+      component: (
+        <div className="flex flex-col gap-5">
+          <select
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+            name="professionType"
+            value={formData.professionType}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Seleziona tipo professionista</option>
+            <option value="PT">Personal Trainer</option>
+            <option value="Nutrizionista">Nutrizionista</option>
+            <option value="Entrambi">Entrambi</option>
+          </select>
+
+          <Textbox
+            type="text"
+            name="workArea"
+            id="workArea"
+            label={'Sede lavorativa (città)'}
+            value={formData.workArea}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type="number"
+            name="experience"
+            id="experience"
+            label={'Esperienza Professionale (anni)'}
+            value={formData.experience}
+            onChange={handleChange}
+            required
+          />
+          <div className="flex flex-col gap-2">
+            <p className="text-xl text-secondary-green">Certificazioni</p>
+            <input
+              type="file"
+              className="w-[300px] text-secondary-green"
+              name="certifications"
+              accept="application/pdf, image/*"
+              multiple
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+      ),
     },
     {
-      label: "Esperienza Professionale (anni)", fields: ["experience"], component: (
-        <input type="number" className="form-control col-md-6" name="experience" value={formData.experience} onChange={handleChange} required />
-      )
+      label: 'Breve Descrizione Attività',
+      fields: ['description'],
+      component: (
+        <textarea
+          name="description"
+          className="peer border-2 w-[300px] h-[200px] bg-transparent border-secondary-gray cursor-text
+        caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+        duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
+        glow-effect focus:transition-all focus:duration-300"
+          value={formData.description}
+          onChange={handleChange}
+          required
+        />
+      ),
     },
     {
-      label: "Breve Descrizione Attività", fields: ["description"], component: (
-        <textarea className="form-control" name="description" value={formData.description} onChange={handleChange} required />
-      )
+      fields: ['username', 'password', 'confirmPassword', 'profilePhoto'],
+      component: (
+        <div className="flex flex-col gap-5">
+          <Textbox
+            type="text"
+            name="username"
+            id="username"
+            value={formData.username}
+            label={'Username'}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            id="password"
+            label={'Password'}
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <Textbox
+            type={showPassword ? 'text' : 'password'}
+            name="confirmPassword"
+            id="confirmPassword"
+            label={'Conferma Password'}
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+          <label className="text-xl text-secondary-green">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={togglePasswordVisibility}
+            />
+            Mostra Password
+          </label>
+          <div className="flex flex-col mt-5 gap-5">
+            <p className="text-xl text-secondary-green">Foto profilo</p>
+            <input
+              type="file"
+              name="profilePhoto"
+              className="w-[300px] text-secondary-green"
+              accept="image/*"
+              onChange={handleChange}
+              required
+            />
+            {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
+          </div>
+        </div>
+      ),
     },
     {
-      label: "Foto Profilo", fields: ["profilePhoto"], component: (
+      label: 'Tipologia di Abbonamento',
+      fields: ['subscriptionType'],
+      component: (
         <>
-          <input type="file" className="form-control" name="profilePhoto" accept="image/*" onChange={handleChange} required />
-          {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
+          <select
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[10px] pr-[10px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+            name="subscriptionType"
+            value={formData.subscriptionType}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Seleziona</option>
+            <option value="Base">Base</option>
+            <option value="Premium">Premium</option>
+          </select>
+          <CardProvider>
+            <SubCards></SubCards>
+          </CardProvider>
         </>
-      )
+      ),
     },
     {
-      label: "Username", fields: ["username"], component: (
-        <input type="text" className="form-control col-md-6" name="username" value={formData.username} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Password", fields: ["password"], component: (
-        <input type={showPassword ? "text" : "password"} className="form-control col-md-6" name="password" value={formData.password} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Conferma Password", fields: ["confirmPassword"], component: (
-        <input type={showPassword ? "text" : "password"} className="form-control col-md-6" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Tipologia di Abbonamento", fields: ["subscriptionType"], component: (
-        <select className="form-select col-md-6" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
-          <option value="">Seleziona</option>
-          <option value="Base">Base</option>
-          <option value="Premium">Premium</option>
-        </select>
-      )
-    },
-    {
-      label: "Social Network (opzionale)", fields: ["socialNetwork", "socialAccountName"], component: (
+      label: 'Social Network (opzionale)',
+      fields: ['socialNetwork', 'socialAccountName'],
+      component: (
         <>
-          <select className="form-select col-md-6" name="socialNetwork" value={formData.socialNetwork} onChange={handleChange}>
+          <select
+            name="socialNetwork"
+            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
+  text-[#C5C5C5] pl-[10px] pr-[10px] rounded-[6px] outline-none transition-all
+  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+            value={formData.socialNetwork}
+            onChange={handleChange}
+          >
             <option value="Seleziona">Seleziona</option>
             <option value="Facebook">Facebook</option>
             <option value="Instagram">Instagram</option>
             <option value="LinkedIn">LinkedIn</option>
             <option value="Twitter">Twitter</option>
           </select>
-          {formData.socialNetwork && formData.socialNetwork !== "Seleziona" && (
-            <div className="mt-2 col-md-6">
-              <label className="form-label">Nome account {formData.socialNetwork}</label>
-              <input type="text" className="form-control" name="socialAccountName" value={formData.socialAccountName} onChange={handleChange} required />
+          {formData.socialNetwork && formData.socialNetwork !== 'Seleziona' && (
+            <div className="mt-5">
+              <label className="text-xl text-secondary-green">
+                Nome account {formData.socialNetwork}
+              </label>
+              <Textbox
+                type="text"
+                name="socialAccountName"
+                value={formData.socialAccountName}
+                onChange={handleChange}
+                required
+              />
             </div>
           )}
         </>
-      )
+      ),
     },
     {
-      label: "Termini e Condizioni", fields: ["termsAccepted"], component: (
-        <div className="form-check">
-          <input type="checkbox" className="form-check-input" name="termsAccepted" checked={formData.termsAccepted} onChange={handleChange} required />
-          <label className="form-check-label">Accetto i Termini e Condizioni</label>
+      fields: ['termsAccepted', 'privacyPolicyAccepted'],
+      component: (
+        <div className="flex flex-col items-center gap-5">
+          <div className="flex gap-2">
+            <input
+              type="checkbox"
+              name="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={handleChange}
+              required
+            />
+            <label className="text-xl text-secondary-green">
+              Accetto i Termini e Condizioni
+            </label>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="checkbox"
+              name="privacyPolicyAccepted"
+              checked={formData.privacyPolicyAccepted}
+              onChange={handleChange}
+              required
+            />
+            <label className="text-xl text-secondary-green">
+              Accetto l&apos;Informativa Privacy
+            </label>
+          </div>
         </div>
-      )
+      ),
     },
     {
-      label: "Informativa Privacy", fields: ["privacyPolicyAccepted"], component: (
-        <div className="form-check">
-          <input type="checkbox" className="form-check-input" name="privacyPolicyAccepted" checked={formData.privacyPolicyAccepted} onChange={handleChange} required />
-          <label className="form-check-label">Accetto l&apos;Informativa Privacy</label>
+      label: "Come hai conosciuto l'app",
+      fields: ['referral'],
+      component: (
+        <div className='flex flex-col items-center gap-5'>
+          <Textbox
+            type="text"
+            name="referral"
+            id="referral"
+            value={formData.referral}
+            onChange={handleChange}
+            required
+          />
+          <div className="flex gap-2">
+            <input
+              type="checkbox"
+              name="receiveUpdates"
+              checked={formData.receiveUpdates}
+              onChange={handleChange}
+            />
+            <label className="text-xl text-secondary-green">
+              Ricevere Aggiornamenti dall&apos;App
+            </label>
+          </div>
         </div>
-      )
-    },
-    {
-      label: "Come hai conosciuto l'app", fields: ["referral"], component: (
-        <input type="text" className="form-control col-md-6" name="referral" value={formData.referral} onChange={handleChange} required />
-      )
-    },
-    {
-      label: "Ricevere Aggiornamenti dall'App", fields: [], component: (
-        <div className="form-check">
-          <input type="checkbox" className="form-check-input" name="receiveUpdates" checked={formData.receiveUpdates} onChange={handleChange} />
-          <label className="form-check-label">Ricevere Aggiornamenti dall&apos;App</label>
-        </div>
-      )
+      ),
     },
   ];
 
   return (
-    <form onSubmit={e => e.preventDefault()} className="container">
-      <div className="mb-3 text-center">
-        <label className="form-label">{steps[step].label}</label>
-        <div className="d-flex justify-content-center">
-          <div className="col-md-6">
-            {steps[step].component}
+    <div className="h-screen w-screen flex flex-col justify-center items-center bg-primary-blue">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="flex flex-col items-center justify-center"
+      >
+        <h2 className="text-2xl text-secondary-green">
+          REGISTRAZIONE PROFESSIONISTA
+        </h2>
+        <div className="w-[395px] mb-10">
+          <div className="w-[395px] bg-[#001e23] rounded-full h-2.5">
+            <div
+              className="bg-secondary-green h-2.5 rounded-full"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+        <div className="mb-3 flex flex-col gap-5">
+          <label className="text-xl text-secondary-green">
+            {steps[step].label}
+          </label>
+          <div className="flex justify-center">
+            <div>
+              {steps[step].component}
 
-            {/* Checkbox per mostrare la password */}
-            {["password", "confirmPassword"].includes(steps[step]?.fields[0]) && (
-              <div className="form-check mb-3 text-center">
-                <input type="checkbox" className="form-check-input" id="showPassword" checked={showPassword} onChange={() => setShowPassword(!showPassword)} />
-                <label className="form-check-label" htmlFor="showPassword">Mostra Password</label>
-              </div>
-            )}
-
-            <div className="d-flex justify-content-between mt-4">
-              {step > 0 && (
-                <button type="button" className="btn btn-secondary w-50 me-1" onClick={prevStep}>
-                  Indietro
-                </button>
+              {/* Checkbox per mostrare la password */}
+              {['password', 'confirmPassword'].includes(
+                steps[step]?.fields[0]
+              ) && (
+                <div className="mt-5 flex gap-2 justify-center items-center">
+                  <input
+                    type="checkbox"
+                    id="showPassword"
+                    checked={showPassword}
+                    onChange={() => setShowPassword(!showPassword)}
+                  />
+                  <label
+                    className="text-xl text-secondary-green"
+                    htmlFor="showPassword"
+                  >
+                    Mostra Password
+                  </label>
+                </div>
               )}
-              <button type="button" className="btn btn-primary w-50 ms-1" onClick={nextStep}>
-                {step < steps.length - 1 ? "Avanti" : "Invia"}
-              </button>
+
+              <div className="flex flex-col gap-5 mt-10 justify-center items-center">
+                {step > 0 && (
+                  <Button
+                    type="button"
+                    onClick={prevStep}
+                    text={'Indietro'}
+                  ></Button>
+                )}
+                {step < steps.length - 1 && (
+                  <Button
+                    type={'button'}
+                    onClick={nextStep}
+                    disabled={!isStepValid(step)}
+                    text={'Avanti'}
+                  ></Button>
+                )}
+                {step === steps.length - 1 && (
+                  <Button
+                    type="submit"
+                    onClick={handleSubmit}
+                    text={'Invia'}
+                  ></Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
