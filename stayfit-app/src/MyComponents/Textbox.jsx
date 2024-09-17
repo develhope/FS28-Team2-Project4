@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'; // Aggiungi questa importazione
+import PropTypes from 'prop-types';
 
 const Textbox = ({ label, type, id, hasError, onChange }) => {
   const [inputVal, setInputVal] = useState('');
@@ -16,9 +16,9 @@ const Textbox = ({ label, type, id, hasError, onChange }) => {
   };
 
   const handleChange = (e) => {
-    setInputVal(e.target.value); // Aggiorna lo stato locale
+    setInputVal(e.target.value);
     if (onChange) {
-      onChange(e); // Chiama la funzione di onChange passata tramite le props
+      onChange(e);
     }
   };
 
@@ -53,7 +53,6 @@ const Textbox = ({ label, type, id, hasError, onChange }) => {
   );
 };
 
-// Aggiungi PropTypes per validare le proprietà passate
 Textbox.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
