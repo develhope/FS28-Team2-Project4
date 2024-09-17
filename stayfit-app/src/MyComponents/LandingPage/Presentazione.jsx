@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Button from '../Button';
 import FormProfessionista from '../../FormProfessionista';
+import LoginForm from '../LoginForm';
 
 const Presentazione = () => {
   const [isRegisterOpen, setRegisterOpen] = useState(false);
@@ -59,7 +60,7 @@ const Presentazione = () => {
             {!isLoginOpen ? (
               <FormProfessionista onClose={() => setRegisterOpen(false)} />
             ) : (
-              <FormProfessionista onClose={() => setRegisterOpen(false)} />
+              <LoginForm onClose={() => setRegisterOpen(false)} />
             )}
 
             {!isLoginOpen && (
