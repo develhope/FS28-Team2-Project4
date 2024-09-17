@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
+=======
+import { useState } from 'react';
+>>>>>>> formsnew
 
 export const SelectBox = ({
   label,
