@@ -4,7 +4,7 @@ import { CardProvider } from './MyComponents/CardProvider';
 import Button from './MyComponents/Button';
 import Textbox from './MyComponents/Textbox';
 
-const FormProfessionista = ({ onClose }) => {
+const FormProfessionista = () => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -36,9 +36,9 @@ const FormProfessionista = ({ onClose }) => {
   const progress = (step / totalStep) * 100;
 
   const handleChange = ({ target: { name, value, type, checked, files } }) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : (files ? files : value)
+      [name]: type === 'checkbox' ? checked : files ? files : value,
     }));
   };
 
@@ -48,22 +48,31 @@ const FormProfessionista = ({ onClose }) => {
 
   const nextStep = () => {
     if (isStepValid(step)) {
-      if (step === steps.findIndex(s => s.fields.includes("confirmPassword"))) {
+      // Controlliamo se siamo nello step della conferma password
+      if (
+        step === steps.findIndex((s) => s.fields.includes('confirmPassword'))
+      ) {
+        // Controlla anche le password
         if (formData.password !== formData.confirmPassword) {
-          alert("Le password non corrispondono.");
-          return;
+          alert('Le password non corrispondono.');
+          return; // Ferma qui se le password non corrispondono
         }
       }
 
+      // Se siamo all'ultimo passo, controlla anche le checkbox accettate
       if (step === steps.length - 1) {
         if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
-          alert("Devi accettare i Termini e Condizioni e l'Informativa Privacy.");
-          return;
+          alert(
+            "Devi accettare i Termini e Condizioni e l'Informativa Privacy."
+          );
+          return; // Ferma qui se le checkbox non sono accettate
         }
         handleSubmit();
       } else {
         setStep(step + 1);
       }
+    } else {
+      alert('Compila tutti i campi obbligatori.');
     }
   };
 
@@ -71,13 +80,10 @@ const FormProfessionista = ({ onClose }) => {
 
   const handleSubmit = () => {
     if (steps.every((_, i) => isStepValid(i))) {
-      // Salva i dati del form in localStorage
-      localStorage.setItem("formData", JSON.stringify(formData));
-
-      alert("Form inviato con successo e dati salvati in localStorage!");
-      // Puoi anche aggiungere un'eventuale logica per inviare i dati ad un server
+      alert('Form inviato con successo!');
+      // Aggiungi qui la logica per l'invio effettivo del form, ad esempio con una chiamata API.
     } else {
-      alert("Compila tutti i campi obbligatori.");
+      alert('Compila tutti i campi obbligatori.');
     }
   };
 
@@ -90,20 +96,20 @@ const FormProfessionista = ({ onClose }) => {
           return false;
         }
       }
-      if (f === "phone") {
+      if (f === 'phone') {
         if (!/^[0-9]*$/.test(formData.phone)) {
-          if (!hasError) {
-            alert("Il numero di telefono deve contenere solo cifre.");
-            hasError = true;
-          }
+          alert('Il numero di telefono deve contenere solo cifre.');
           return false;
         }
       }
-      if (f === "socialNetwork") {
-        return formData.socialNetwork === "" || formData.socialNetwork !== "Seleziona"; // Seleziona può essere ignorato.
+      if (f === 'socialNetwork') {
+        return (
+          formData.socialNetwork === '' ||
+          formData.socialNetwork !== 'Seleziona'
+        ); // Seleziona può essere ignorato.
       }
-      if (f === "socialAccountName") {
-        return formData.socialNetwork === "" || formData[f];
+      if (f === 'socialAccountName') {
+        return formData.socialNetwork === '' || formData[f];
       }
       if (
         f === 'certifications' ||
@@ -112,25 +118,29 @@ const FormProfessionista = ({ onClose }) => {
       ) {
         return formData[f] && formData[f].length > 0;
       }
-      if (f === "termsAccepted" || f === "privacyPolicyAccepted") {
-        return formData[f] === true;
+      // Verifica che i termini e privacy policy siano accettati
+      if (f === 'termsAccepted' || f === 'privacyPolicyAccepted') {
+        return formData[f] === true; // Assicurati che sia true, quindi accettato
       }
-      if (formData[f] === "" || formData[f] === null) {
-        if (!hasError) {
-          alert("Compila tutti i campi obbligatori.");
-          hasError = true;
-        }
-        return false;
-      }
-    }
-    return true;
+      return formData[f] !== '' && formData[f] !== null;
+    });
   };
 
-  const renderFilePreview = files => Array.from(files).map(file => (
-    <div key={file.name} className="mt-2">
-      {file.type.startsWith("image/") ? <img src={URL.createObjectURL(file)} alt={file.name} style={{ width: '300px' }} className="img-thumbnail" /> : <div>{file.name}</div>}
-    </div>
-  ));
+  const renderFilePreview = (files) =>
+    Array.from(files).map((file) => (
+      <div key={file.name} className="mt-2">
+        {file.type.startsWith('image/') ? (
+          <img
+            src={URL.createObjectURL(file)}
+            alt={file.name}
+            style={{ width: '300px' }}
+            className="img-thumbnail"
+          />
+        ) : (
+          <div>{file.name}</div>
+        )}
+      </div>
+    ));
 
   const steps = [
     {
@@ -325,16 +335,9 @@ const FormProfessionista = ({ onClose }) => {
       ),
     },
     {
-      label: "Tipologia di Abbonamento", fields: ["subscriptionType"], component: (
-        <select className="form-select col-md-6 text-dark-blue-shadow" name="subscriptionType" value={formData.subscriptionType} onChange={handleChange} required>
-          <option value="">Seleziona</option>
-          <option value="Base">Base</option>
-          <option value="Premium">Premium</option>
-        </select>
-      )
-    },
-    {
-      label: "Social Network (opzionale)", fields: ["socialNetwork", "socialAccountName"], component: (
+      label: 'Tipologia di Abbonamento',
+      fields: ['subscriptionType'],
+      component: (
         <>
           <select
             className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
@@ -389,7 +392,7 @@ const FormProfessionista = ({ onClose }) => {
             </div>
           )}
         </>
-      )
+      ),
     },
     {
       fields: ['termsAccepted', 'privacyPolicyAccepted'],
@@ -420,13 +423,13 @@ const FormProfessionista = ({ onClose }) => {
             </label>
           </div>
         </div>
-      )
+      ),
     },
     {
       label: "Come hai conosciuto l'app",
       fields: ['referral'],
       component: (
-        <div className='flex flex-col items-center gap-5'>
+        <div className="flex flex-col items-center gap-5">
           <Textbox
             type="text"
             name="referral"
@@ -447,19 +450,20 @@ const FormProfessionista = ({ onClose }) => {
             </label>
           </div>
         </div>
-      )
+      ),
     },
   ];
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center bg-primary-blue">
+    <div className="flex flex-col justify-center items-center w-fit h-fit px-9 py-9 bg-primary-blue border-2 border-secondary-green rounded-lg">
       <form
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col items-center justify-center"
       >
-        <h2 className="text-2xl text-secondary-green">
-          REGISTRAZIONE PROFESSIONISTA
-        </h2>
+        <h2 className="text-4xl font-extrabold text-white">Registrati ora!</h2>
+        <p className="text-sm text-gray-400 mt-3">
+          Registrati in pochi semplici passi!
+        </p>
         <div className="w-[395px] mb-10">
           <div className="w-[395px] bg-[#001e23] rounded-full h-2.5">
             <div
