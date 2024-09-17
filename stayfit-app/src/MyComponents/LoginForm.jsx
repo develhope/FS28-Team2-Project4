@@ -3,7 +3,7 @@ import Textbox from './Textbox';
 import Button from './Button';
 import users from '../../database/dbProfessionista.json';
 
-const LoginForm = () => {
+const LoginForm = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -23,32 +23,46 @@ const LoginForm = () => {
     }
   };
 
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-      <form onSubmit={handleLogin} className="space-y-4">
-        <Textbox
-          label="Email"
-          type="email"
-          id="email"
-          hasError={errorMessage}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Textbox
-          label="Password"
-          type="password"
-          id="password"
-          hasError={errorMessage}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errorMessage && (
-          <p className="text-red-700 text-sm">{errorMessage}</p>
-        )}
-        <Button
-          type="submit"
-          text="Login"
-          color="#C1FF72"
-          txtcolor="#001E23"
-        />
-      </form>
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+      onClick={handleOutsideClick}
+    >
+      <div className='w-auto h-auto px-4 py-7 bg-primary-blue'>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <Textbox
+            label="Email"
+            type="email"
+            id="email"
+            hasError={errorMessage}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Textbox
+            label="Password"
+            type="password"
+            id="password"
+            hasError={errorMessage}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {errorMessage && (
+            <p className="text-red-700 text-sm">{errorMessage}</p>
+          )}
+          <Button
+            type="submit"
+            text="Login"
+            color="#C1FF72"
+            txtcolor="#001E23"
+          />
+        </form>
+        <button onClick={onClose}>Chiudi</button>
+      </div>
+    </div>
   );
 };
 
