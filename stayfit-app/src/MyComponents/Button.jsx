@@ -8,9 +8,8 @@ const Button = ({ type, onClick, text, color, txtcolor }) => {
                 glow-button transition-all duration-300 ease-in-out active:bg-transparent
                 active:text-secondary-green active:border-opacity-60`}
         style={{
-          backgroundColor: color,
-          color: txtcolor,
-          borderColor: color,
+          backgroundColor: color || '#C1FF72',
+          color: txtcolor || '#001E23'
         }}
       >
         {text}
