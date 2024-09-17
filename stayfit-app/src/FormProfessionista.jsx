@@ -523,7 +523,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             </div>
           </div>
         </div>
-        <div className='flex flex-col gap-3 text-white text-sm mt-2'>
+        <div className='flex flex-col justify-center items-center gap-3 text-white text-sm mt-2'>
           <p>
             Sei già iscritto? <span onClick={onChange} className='text-secondary-green hover:underline cursor-pointer'>Accedi</span>
           </p>
