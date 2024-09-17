@@ -1,10 +1,10 @@
 import './App.css';
-import Form from './FormProfessionista';
+import FormProfessionista from './FormProfessionista';
 
 const App = () => {
   return (
     <div className="App">
-      <Form></Form>
+      <FormProfessionista></FormProfessionista>
     </div>
   );
 };

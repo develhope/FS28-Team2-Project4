@@ -4,7 +4,7 @@ import { CardProvider } from './MyComponents/CardProvider';
 import Button from './MyComponents/Button';
 import Textbox from './MyComponents/Textbox';
 
-const Form = () => {
+const FormProfessionista = () => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -528,4 +528,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormProfessionista;
