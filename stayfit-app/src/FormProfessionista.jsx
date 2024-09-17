@@ -4,7 +4,7 @@ import { CardProvider } from './MyComponents/CardProvider';
 import Button from './MyComponents/Button';
 import Textbox from './MyComponents/Textbox';
 
-const FormProfessionista = () => {
+const FormProfessionista = ({ onClose, onChange }) => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -522,6 +522,12 @@ const FormProfessionista = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className='flex flex-col justify-center items-center gap-3 text-white text-sm mt-2'>
+          <p>
+            Sei già iscritto? <span onClick={onChange} className='text-secondary-green hover:underline cursor-pointer'>Accedi</span>
+          </p>
+          <p onClick={onClose} className='underline cursor-pointer'>Chiudi</p>
         </div>
       </form>
     </div>

@@ -50,21 +50,9 @@ const Presentazione = () => {
           className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-10"
         >
           {!isLoginOpen ? (
-            <FormProfessionista onClose={() => setRegisterOpen(false)} />
+            <FormProfessionista onClose={() => setRegisterOpen(false)} onChange={handleLoginClick}/>
           ) : (
             <LoginForm onClose={() => setRegisterOpen(false)} />
-          )}
-
-          {!isLoginOpen && (
-            <p className="text-white text-center mt-6">
-              Sei già iscritto?{' '}
-              <span
-                onClick={handleLoginClick}
-                className="text-secondary-green underline cursor-pointer"
-              >
-                Login
-              </span>
-            </p>
           )}
         </div>
       )}
