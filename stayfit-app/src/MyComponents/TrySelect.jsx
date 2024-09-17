@@ -33,7 +33,7 @@ export const TrySelect = () => {
         options={genderOptions}
         required
       />
-      <Button type={'submit'} onClick={''} text={'Invia ora!'}></Button>
+      <Button type={'submit'} onClick={''} text={'Invia ora!'} color={'grey'} txtcolor={'#001E23'}></Button>
     </form>
   );
 };

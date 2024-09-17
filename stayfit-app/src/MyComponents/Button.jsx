@@ -1,12 +1,17 @@
-const Button = ({ type, onClick, text }) => {
+const Button = ({ type, onClick, text, color, txtcolor }) => {
   return (
     <div className="w-[300px] h-10">
       <button
         type={type}
         onClick={onClick}
-        className="w-[300px] h-10 border-2 rounded-[6px] outline-none border-secondary-green text-primary-blue font-bold
-                bg-secondary-green glow-button transition-all duration-300 ease-in-out active:bg-transparent
-                active:text-secondary-green active:border-opacity-60"
+        className={`w-[300px] h-10 border-2 rounded-[6px] outline-none font-bold
+                glow-button transition-all duration-300 ease-in-out active:bg-transparent
+                active:text-secondary-green active:border-opacity-60`}
+        style={{
+          backgroundColor: color,
+          color: txtcolor,
+          borderColor: color,
+        }}
       >
         {text}
       </button>
