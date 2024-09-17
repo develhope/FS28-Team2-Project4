@@ -429,7 +429,7 @@ const Form = () => {
       label: "Come hai conosciuto l'app",
       fields: ['referral'],
       component: (
-        <div className='flex flex-col items-center gap-5'>
+        <div className="flex flex-col items-center gap-5">
           <Textbox
             type="text"
             name="referral"
@@ -455,14 +455,15 @@ const Form = () => {
   ];
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center bg-primary-blue">
+    <div className="flex flex-col justify-center items-center w-fit h-fit px-9 py-9 bg-primary-blue border-2 border-secondary-green rounded-lg">
       <form
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col items-center justify-center"
       >
-        <h2 className="text-2xl text-secondary-green">
-          REGISTRAZIONE PROFESSIONISTA
-        </h2>
+        <h2 className="text-4xl font-extrabold text-white">Registrati ora!</h2>
+        <p className="text-sm text-gray-400 mt-3">
+          Registrati in pochi semplici passi!
+        </p>
         <div className="w-[395px] mb-10">
           <div className="w-[395px] bg-[#001e23] rounded-full h-2.5">
             <div
