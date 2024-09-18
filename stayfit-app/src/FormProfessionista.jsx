@@ -152,22 +152,6 @@ const FormProfessionista = ({ onClose, onChange }) => {
     return !hasErrors;
   };
 
-  const renderFilePreview = (files) =>
-    Array.from(files).map((file) => (
-      <div key={file.name} className="mt-2">
-        {file.type.startsWith('image/') ? (
-          <img
-            src={URL.createObjectURL(file)}
-            alt={file.name}
-            style={{ width: '300px' }}
-            className="img-thumbnail"
-          />
-        ) : (
-          <div>{file.name}</div>
-        )}
-      </div>
-    ));
-
   const professionOptions = [
     { value: 'personalTrainer', label: 'Personal Trainer' },
     { value: 'nutrizionista', label: 'Nutrizionista' },
@@ -392,7 +376,6 @@ const FormProfessionista = ({ onClose, onChange }) => {
               onChange={handleChange}
               required
             />
-            {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
             {errors.profilePhoto && (
               <p className="text-red-500">{errors.profilePhoto}</p>
             )}
@@ -515,6 +498,8 @@ const FormProfessionista = ({ onClose, onChange }) => {
       ),
     },
   ];
+
+  console.log(formData);
 
   return (
     <div className="flex flex-col justify-center items-center w-fit h-fit px-9 py-9 bg-primary-blue border-2 border-secondary-green rounded-lg">
