@@ -9,7 +9,8 @@ const iconPaths = {
   stats: '/src/assets/img/icons/stats.svg',
   starter: '/src/assets/img/icons/starter-plan.svg',
   premium: '/src/assets/img/icons/premium-plan.svg',
-  advanced: '/src/assets/img/icons/advanced-plan.svg',    
+  advanced: '/src/assets/img/icons/advanced-plan.svg',
+  notifications: '/src/assets/img/icons/notifications.svg'
 };
 
 export const Icon = ({ type, className, ...props }) => {

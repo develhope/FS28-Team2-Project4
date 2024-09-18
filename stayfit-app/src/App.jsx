@@ -8,7 +8,7 @@ import Header from './MyComponents/Header.jsx'
 
 const App = () => {
   return (
-    <div className="App flex flex-col justify-center items-center gap-9 min-h-screen">
+    <div className="App flex flex-col gap-9 min-h-screen">
     <Header/>
       <CardProvider>
         <CardMenu></CardMenu>
