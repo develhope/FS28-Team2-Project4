@@ -6,6 +6,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background-color: #001e23;
 }
 
 input:-webkit-autofill,
@@ -22,7 +23,7 @@ input:-webkit-autofill:active {
 
 #root {
   margin: 0;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
   background-color: #001e23;
 }
