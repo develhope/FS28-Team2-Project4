@@ -30,8 +30,8 @@ export const SubCards = ({ onSubscriptionChange }) => {
   ];
 
   const handleCardClick = (plan) => {
-    handleClick(plan.id); // Seleziona la card
-    onSubscriptionChange(plan.value); // Aggiorna il form con il valore dell'abbonamento selezionato
+    handleClick(plan.id);
+    onSubscriptionChange(plan.titolo);
   };
 
   return (
@@ -44,7 +44,7 @@ export const SubCards = ({ onSubscriptionChange }) => {
             description={plan.descrizione}
             icon={plan.icona}
             status={isSelected === plan.id}
-            onSelect={() => handleCardClick(plan.id)}
+            onSelect={() => handleCardClick(plan)}
           />
         );
       })}
