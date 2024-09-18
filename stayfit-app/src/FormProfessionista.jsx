@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubCards } from './MyComponents/subCards';
 import { CardProvider } from './MyComponents/CardProvider';
 import Button from './MyComponents/Button';
 import Textbox from './MyComponents/Textbox';
+import { SelectBox } from './MyComponents/SelectBox';
 
 const FormProfessionista = ({ onClose, onChange }) => {
   const [step, setStep] = useState(0);
@@ -32,6 +33,15 @@ const FormProfessionista = ({ onClose, onChange }) => {
     receiveUpdates: false,
   });
 
+  const [errors, setErrors] = useState({}); // Stato per gestire gli errori
+
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('formData');
+    if (savedFormData) {
+      setFormData(JSON.parse(savedFormData));
+    }
+  }, []);
+
   const totalStep = 7;
   const progress = (step / totalStep) * 100;
 
@@ -39,6 +49,18 @@ const FormProfessionista = ({ onClose, onChange }) => {
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : files ? files : value,
+    }));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: '', // Resetta l'errore quando l'utente cambia il campo
+    }));
+  };
+
+  const handleSubscriptionChange = (subscriptionType) => {
+    setFormData((prev) => ({ ...prev, subscriptionType }));
+    setErrors((prev) => ({
+      ...prev,
+      subscriptionType: '', // Resetta l'errore relativo a subscriptionType
     }));
   };
 
@@ -48,31 +70,35 @@ const FormProfessionista = ({ onClose, onChange }) => {
 
   const nextStep = () => {
     if (isStepValid(step)) {
-      // Controlliamo se siamo nello step della conferma password
       if (
         step === steps.findIndex((s) => s.fields.includes('confirmPassword'))
       ) {
-        // Controlla anche le password
         if (formData.password !== formData.confirmPassword) {
-          alert('Le password non corrispondono.');
+          setErrors((prev) => ({
+            ...prev,
+            confirmPassword: 'Le password non corrispondono.',
+          }));
           return;
         }
       }
 
-      // Se siamo all'ultimo passo, controlla anche le checkbox accettate
       if (step === steps.length - 1) {
         if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
-          alert(
-            "Devi accettare i Termini e Condizioni e l'Informativa Privacy."
-          );
+          setErrors((prev) => ({
+            ...prev,
+            termsAccepted: !formData.termsAccepted
+              ? 'Devi accettare i Termini e Condizioni.'
+              : '',
+            privacyPolicyAccepted: !formData.privacyPolicyAccepted
+              ? "Devi accettare l'Informativa Privacy."
+              : '',
+          }));
           return;
         }
         handleSubmit();
       } else {
         setStep(step + 1);
       }
-    } else {
-      alert('Compila tutti i campi obbligatori.');
     }
   };
 
@@ -84,39 +110,46 @@ const FormProfessionista = ({ onClose, onChange }) => {
     alert('Dati inviati correttamente!');
   };
 
-  // La funzione di validazione ora controlla la partita IVA solo alla pressione di "Avanti"
   const isStepValid = (i) => {
-    return steps[i].fields.every((f) => {
-      // Controlla la partita IVA solo se è stata inserita e verifica che sia di 11 cifre
+    let stepErrors = {};
+    let hasErrors = false;
+
+    steps[i].fields.forEach((f) => {
       if (f === 'taxCode') {
         if (formData.taxCode && !/^\d{11}$/.test(formData.taxCode)) {
-          alert('La partita IVA deve contenere esattamente 11 cifre.');
-          return false;
-        }
-        return true; // Se è vuoto, va bene perché opzionale
-      }
-
-      // Validazione del numero di telefono
-      if (f === 'phone') {
-        if (!/^\d+$/.test(formData.phone)) {
-          alert('Il numero di telefono deve contenere solo cifre.');
-          return false;
+          stepErrors.taxCode =
+            'La partita IVA deve contenere esattamente 11 cifre.';
+          hasErrors = true;
         }
       }
 
-      // Per i campi opzionali, se sono vuoti va bene
-      if (f === 'socialNetwork' || f === 'socialAccountName') {
-        return true;
+      if (f === 'phone' && !/^\d+$/.test(formData.phone)) {
+        stepErrors.phone = 'Il numero di telefono deve contenere solo cifre.';
+        hasErrors = true;
       }
 
-      // Per campi come termini e privacy policy, verifica che siano accettati
-      if (f === 'termsAccepted' || f === 'privacyPolicyAccepted') {
-        return formData[f] === true;
+      if (f === 'subscriptionType' && !formData.subscriptionType) {
+        stepErrors[f] = 'Devi selezionare un piano di abbonamento.';
+        hasErrors = true;
       }
 
-      // Se è obbligatorio, verifica che non sia vuoto
-      return formData[f] !== '' && formData[f] !== null;
+      if (
+        !formData[f] &&
+        f !== 'taxCode' &&
+        f !== 'socialNetwork' &&
+        f !== 'socialAccountName'
+      ) {
+        stepErrors[f] = 'Questo campo è obbligatorio.';
+        hasErrors = true;
+      }
     });
+
+    if (Object.keys(stepErrors).length > 0 && !stepErrors.taxCode) {
+      stepErrors.stepError = 'Compila tutti i campi obbligatori.';
+    }
+
+    setErrors(stepErrors);
+    return !hasErrors;
   };
 
   const renderFilePreview = (files) =>
@@ -134,6 +167,19 @@ const FormProfessionista = ({ onClose, onChange }) => {
         )}
       </div>
     ));
+
+  const professionOptions = [
+    { value: 'personalTrainer', label: 'Personal Trainer' },
+    { value: 'nutrizionista', label: 'Nutrizionista' },
+    { value: 'entrambi', label: 'Entrambi' },
+  ];
+
+  const socialOptions = [
+    { value: 'facebook', label: 'Facebook' },
+    { value: 'instagram', label: 'Instagram' },
+    { value: 'twitter', label: 'Twitter' },
+    { value: 'linkedin', label: 'LinkedIn' },
+  ];
 
   const steps = [
     {
@@ -157,6 +203,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.firstName && (
+            <p className="text-red-500">{errors.firstName}</p>
+          )}
           <Textbox
             type="text"
             name="lastName"
@@ -166,13 +215,19 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
           <Textbox
             type="date"
             name="birthDate"
+            id="birthDate"
+            label="Data di nascita"
             value={formData.birthDate}
             onChange={handleChange}
             required
           />
+          {errors.birthDate && (
+            <p className="text-red-500">{errors.birthDate}</p>
+          )}
           <Textbox
             type="text"
             name="taxCode"
@@ -182,6 +237,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             label={'Partita IVA (opzionale)'}
             maxLength={11}
           />
+          {errors.taxCode && <p className="text-red-500">{errors.taxCode}</p>}
           <Textbox
             type="email"
             name="email"
@@ -191,6 +247,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.email && <p className="text-red-500">{errors.email}</p>}
           <Textbox
             type="tel"
             id="phone"
@@ -200,8 +257,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
             label={'Numero di telefono'}
             required
             pattern="[0-9]*" // Permette solo numeri
-            inputMode="numeric" // Migliora l'esperienza su dispositivi mobili
+            inputMode="numeric"
           />
+          {errors.phone && <p className="text-red-500">{errors.phone}</p>}
         </div>
       ),
     },
@@ -209,21 +267,17 @@ const FormProfessionista = ({ onClose, onChange }) => {
       fields: ['professionType', 'certifications', 'workArea', 'experience'],
       component: (
         <div className="flex flex-col gap-5">
-          <select
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+          <SelectBox
             name="professionType"
             value={formData.professionType}
             onChange={handleChange}
+            label={'Seleziona tipo professionista'}
+            options={professionOptions}
             required
-          >
-            <option value="">Seleziona tipo professionista</option>
-            <option value="PT">Personal Trainer</option>
-            <option value="Nutrizionista">Nutrizionista</option>
-            <option value="Entrambi">Entrambi</option>
-          </select>
-
+          ></SelectBox>
+          {errors.professionType && (
+            <p className="text-red-500">{errors.professionType}</p>
+          )}
           <Textbox
             type="text"
             name="workArea"
@@ -233,6 +287,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.workArea && <p className="text-red-500">{errors.workArea}</p>}
           <Textbox
             type="number"
             name="experience"
@@ -242,6 +297,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.experience && (
+            <p className="text-red-500">{errors.experience}</p>
+          )}
           <div className="flex flex-col gap-2">
             <p className="text-xl text-secondary-green">Certificazioni</p>
             <input
@@ -253,6 +311,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
               onChange={handleChange}
               required
             />
+            {errors.certifications && (
+              <p className="text-red-500">{errors.certifications}</p>
+            )}
           </div>
         </div>
       ),
@@ -261,16 +322,20 @@ const FormProfessionista = ({ onClose, onChange }) => {
       label: 'Breve Descrizione Attività',
       fields: ['description'],
       component: (
-        <textarea
-          name="description"
-          className="peer border-2 w-[300px] h-[200px] bg-transparent border-secondary-gray cursor-text
-        caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-        duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
-        glow-effect focus:transition-all focus:duration-300"
-          value={formData.description}
-          onChange={handleChange}
-          required
-        />
+        <div>
+          <textarea
+            name="description"
+            className="peer border-2 w-[300px] h-[200px] bg-transparent border-secondary-gray cursor-text
+              caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+              duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+          {errors.description && (
+            <p className="text-red-500">{errors.description}</p>
+          )}
+        </div>
       ),
     },
     {
@@ -286,6 +351,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.username && <p className="text-red-500">{errors.username}</p>}
           <Textbox
             type={showPassword ? 'text' : 'password'}
             name="password"
@@ -295,6 +361,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.password && <p className="text-red-500">{errors.password}</p>}
           <Textbox
             type={showPassword ? 'text' : 'password'}
             name="confirmPassword"
@@ -304,6 +371,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.confirmPassword && (
+            <p className="text-red-500">{errors.confirmPassword}</p>
+          )}
           <label className="text-xl text-secondary-green">
             <input
               type="checkbox"
@@ -323,6 +393,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
               required
             />
             {formData.profilePhoto && renderFilePreview(formData.profilePhoto)}
+            {errors.profilePhoto && (
+              <p className="text-red-500">{errors.profilePhoto}</p>
+            )}
           </div>
         </div>
       ),
@@ -331,45 +404,32 @@ const FormProfessionista = ({ onClose, onChange }) => {
       label: 'Tipologia di Abbonamento',
       fields: ['subscriptionType'],
       component: (
-        <>
-          <select
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[10px] pr-[10px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
-            name="subscriptionType"
-            value={formData.subscriptionType}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Seleziona</option>
-            <option value="Base">Base</option>
-            <option value="Premium">Premium</option>
-          </select>
+        <div>
           <CardProvider>
-            <SubCards></SubCards>
+            <SubCards onSubscriptionChange={handleSubscriptionChange} />
           </CardProvider>
-        </>
+          {!formData.subscriptionType && errors.subscriptionType && (
+            <p className="text-red-500">{errors.subscriptionType}</p>
+          )}
+        </div>
       ),
     },
     {
       label: 'Social Network (opzionale)',
       fields: ['socialNetwork', 'socialAccountName'],
       component: (
-        <>
-          <select
+        <div>
+          <SelectBox
             name="socialNetwork"
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[10px] pr-[10px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
             value={formData.socialNetwork}
             onChange={handleChange}
-          >
-            <option value="Seleziona">Seleziona</option>
-            <option value="Facebook">Facebook</option>
-            <option value="Instagram">Instagram</option>
-            <option value="LinkedIn">LinkedIn</option>
-            <option value="Twitter">Twitter</option>
-          </select>
+            label={'Seleziona social network'}
+            options={socialOptions}
+            required
+          ></SelectBox>
+          {errors.socialNetwork && (
+            <p className="text-red-500">{errors.socialNetwork}</p>
+          )}
           {formData.socialNetwork && formData.socialNetwork !== 'Seleziona' && (
             <div className="mt-5">
               <label className="text-xl text-secondary-green">
@@ -380,11 +440,13 @@ const FormProfessionista = ({ onClose, onChange }) => {
                 name="socialAccountName"
                 value={formData.socialAccountName}
                 onChange={handleChange}
-                required
               />
+              {errors.socialAccountName && (
+                <p className="text-red-500">{errors.socialAccountName}</p>
+              )}
             </div>
           )}
-        </>
+        </div>
       ),
     },
     {
@@ -403,6 +465,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
               Accetto i Termini e Condizioni
             </label>
           </div>
+          {errors.termsAccepted && (
+            <p className="text-red-500">{errors.termsAccepted}</p>
+          )}
           <div className="flex gap-2">
             <input
               type="checkbox"
@@ -412,9 +477,12 @@ const FormProfessionista = ({ onClose, onChange }) => {
               required
             />
             <label className="text-xl text-secondary-green">
-              Accetto l&apos;Informativa Privacy
+              Accetto l'Informativa Privacy
             </label>
           </div>
+          {errors.privacyPolicyAccepted && (
+            <p className="text-red-500">{errors.privacyPolicyAccepted}</p>
+          )}
         </div>
       ),
     },
@@ -431,6 +499,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             onChange={handleChange}
             required
           />
+          {errors.referral && <p className="text-red-500">{errors.referral}</p>}
           <div className="flex gap-2">
             <input
               type="checkbox"
@@ -439,7 +508,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
               onChange={handleChange}
             />
             <label className="text-xl text-secondary-green">
-              Ricevere Aggiornamenti dall&apos;App
+              Vuoi ricevere aggiornamenti dall&apos;app?
             </label>
           </div>
         </div>
@@ -457,7 +526,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
         <p className="text-sm text-gray-400 mt-3">
           Registrati in pochi semplici passi!
         </p>
-        <div className="w-[395px] mb-10">
+        <div className="w-[395px] mb-10 mt-5">
           <div className="w-[395px] bg-[#001e23] rounded-full h-2.5">
             <div
               className="bg-secondary-green h-2.5 rounded-full"
@@ -471,51 +540,49 @@ const FormProfessionista = ({ onClose, onChange }) => {
           </label>
           <div className="flex justify-center">
             <div>
-              {steps[step].component}
-
-              {/* Checkbox per mostrare la password */}
-              {['password', 'confirmPassword'].includes(
-                steps[step]?.fields[0]
-              ) && (
-                <div className="mt-5 flex gap-2 justify-center items-center">
-                  <input
-                    type="checkbox"
-                    id="showPassword"
-                    checked={showPassword}
-                    onChange={() => setShowPassword(!showPassword)}
-                  />
-                  <label
-                    className="text-xl text-secondary-green"
-                    htmlFor="showPassword"
-                  >
-                    Mostra Password
-                  </label>
+              <div>
+                {steps[step].component}
+                {errors.stepError && (
+                  <p className="text-red-500">{errors.stepError}</p>
+                )}
+                {/* Checkbox per mostrare la password */}
+                {['password', 'confirmPassword'].includes(
+                  steps[step]?.fields[0]
+                ) && (
+                  <div className="mt-5 flex gap-2 justify-center items-center">
+                    <input
+                      type="checkbox"
+                      id="showPassword"
+                      checked={showPassword}
+                      onChange={() => setShowPassword(!showPassword)}
+                    />
+                    <label
+                      className="text-xl text-secondary-green"
+                      htmlFor="showPassword"
+                    >
+                      Mostra Password
+                    </label>
+                  </div>
+                )}
+                <div className="flex flex-col gap-5 mt-10 justify-center items-center">
+                  {step > 0 && (
+                    <Button
+                      type="button"
+                      onClick={prevStep}
+                      text={'Indietro'}
+                    />
+                  )}
+                  {step < steps.length - 1 && (
+                    <Button type="button" onClick={nextStep} text={'Avanti'} />
+                  )}
+                  {step === steps.length - 1 && (
+                    <Button
+                      type="submit"
+                      onClick={handleSubmit}
+                      text={'Invia'}
+                    />
+                  )}
                 </div>
-              )}
-
-              <div className="flex flex-col gap-5 mt-10 justify-center items-center">
-                {step > 0 && (
-                  <Button
-                    type="button"
-                    onClick={prevStep}
-                    text={'Indietro'}
-                  ></Button>
-                )}
-                {step < steps.length - 1 && (
-                  <Button
-                    type={'button'}
-                    onClick={nextStep}
-                    disabled={!isStepValid(step)}
-                    text={'Avanti'}
-                  ></Button>
-                )}
-                {step === steps.length - 1 && (
-                  <Button
-                    type="submit"
-                    onClick={handleSubmit}
-                    text={'Invia'}
-                  ></Button>
-                )}
               </div>
             </div>
           </div>
