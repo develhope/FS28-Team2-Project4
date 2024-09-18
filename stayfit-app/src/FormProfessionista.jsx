@@ -55,7 +55,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
         // Controlla anche le password
         if (formData.password !== formData.confirmPassword) {
           alert('Le password non corrispondono.');
-          return; // Ferma qui se le password non corrispondono
+          return;
         }
       }
 
@@ -65,7 +65,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
           alert(
             "Devi accettare i Termini e Condizioni e l'Informativa Privacy."
           );
-          return; // Ferma qui se le checkbox non sono accettate
+          return;
         }
         handleSubmit();
       } else {
@@ -79,49 +79,42 @@ const FormProfessionista = ({ onClose, onChange }) => {
   const prevStep = () => setStep(step - 1);
 
   const handleSubmit = () => {
-    if (steps.every((_, i) => isStepValid(i))) {
-      alert('Form inviato con successo!');
-      // Aggiungi qui la logica per l'invio effettivo del form, ad esempio con una chiamata API.
-    } else {
-      alert('Compila tutti i campi obbligatori.');
-    }
+    // Salva i dati in localStorage
+    localStorage.setItem('formData', JSON.stringify(formData));
+    alert('Dati inviati correttamente!');
   };
 
+  // La funzione di validazione ora controlla la partita IVA solo alla pressione di "Avanti"
   const isStepValid = (i) => {
     return steps[i].fields.every((f) => {
+      // Controlla la partita IVA solo se è stata inserita e verifica che sia di 11 cifre
       if (f === 'taxCode') {
-        if (formData.taxCode === '') return true;
-        if (!/^\d{11}$/.test(formData.taxCode)) {
-          alert('Inserire le 11 cifre della partita IVA');
+        if (formData.taxCode && !/^\d{11}$/.test(formData.taxCode)) {
+          alert('La partita IVA deve contenere esattamente 11 cifre.');
           return false;
         }
+        return true; // Se è vuoto, va bene perché opzionale
       }
+
+      // Validazione del numero di telefono
       if (f === 'phone') {
-        if (!/^[0-9]*$/.test(formData.phone)) {
+        if (!/^\d+$/.test(formData.phone)) {
           alert('Il numero di telefono deve contenere solo cifre.');
           return false;
         }
       }
-      if (f === 'socialNetwork') {
-        return (
-          formData.socialNetwork === '' ||
-          formData.socialNetwork !== 'Seleziona'
-        ); // Seleziona può essere ignorato.
+
+      // Per i campi opzionali, se sono vuoti va bene
+      if (f === 'socialNetwork' || f === 'socialAccountName') {
+        return true;
       }
-      if (f === 'socialAccountName') {
-        return formData.socialNetwork === '' || formData[f];
-      }
-      if (
-        f === 'certifications' ||
-        f === 'profilePhoto' ||
-        f === 'subscriptionType'
-      ) {
-        return formData[f] && formData[f].length > 0;
-      }
-      // Verifica che i termini e privacy policy siano accettati
+
+      // Per campi come termini e privacy policy, verifica che siano accettati
       if (f === 'termsAccepted' || f === 'privacyPolicyAccepted') {
-        return formData[f] === true; // Assicurati che sia true, quindi accettato
+        return formData[f] === true;
       }
+
+      // Se è obbligatorio, verifica che non sia vuoto
       return formData[f] !== '' && formData[f] !== null;
     });
   };
@@ -517,17 +510,29 @@ const FormProfessionista = ({ onClose, onChange }) => {
                   ></Button>
                 )}
                 {step === steps.length - 1 && (
-                  <Button type="submit" text={'Invia'}></Button>
+                  <Button
+                    type="submit"
+                    onClick={handleSubmit}
+                    text={'Invia'}
+                  ></Button>
                 )}
               </div>
             </div>
           </div>
         </div>
-        <div className='flex flex-col justify-center items-center gap-3 text-white text-sm mt-2'>
+        <div className="flex flex-col justify-center items-center gap-3 text-white text-sm mt-2">
           <p>
-            Sei già iscritto? <span onClick={onChange} className='text-secondary-green hover:underline cursor-pointer'>Accedi</span>
+            Sei già iscritto?{' '}
+            <span
+              onClick={onChange}
+              className="text-secondary-green hover:underline cursor-pointer"
+            >
+              Accedi
+            </span>
           </p>
-          <p onClick={onClose} className='underline cursor-pointer'>Chiudi</p>
+          <p onClick={onClose} className="underline cursor-pointer">
+            Chiudi
+          </p>
         </div>
       </form>
     </div>
