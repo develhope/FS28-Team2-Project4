@@ -1,0 +1,3056 @@
+{
+  "pettorali": [
+    {
+      "id": 1,
+      "name": "Panca Piana con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Pettorali",
+        "Tricipiti",
+        "Deltoidi Anteriori"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 3,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 2,
+      "name": "Panca Inclinata con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere",
+        "Panca Inclinata"
+      ],
+      "musclesTargeted": [
+        "Pettorali Superiori",
+        "Tricipiti",
+        "Deltoidi Anteriori"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 65
+    },
+    {
+      "id": 3,
+      "name": "Croci ai Cavi",
+      "type": [
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Pettorali"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 4,
+      "name": "Spinte su Panca Decline con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca Decline"
+      ],
+      "musclesTargeted": [
+        "Pettorali Inferiori",
+        "Tricipiti",
+        "Deltoidi Anteriori"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "forza": 240,
+        "ipertrofia": 180,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 5,
+      "name": "Chest Press su Macchina",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Macchina Chest Press"
+      ],
+      "musclesTargeted": [
+        "Pettorali",
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Neofita",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 6,
+      "name": "Panca Inclinata con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca Inclinata"
+      ],
+      "musclesTargeted": [
+        "Pettorali Superiori",
+        "Tricipiti",
+        "Deltoidi Anteriori"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 7,
+      "name": "Spinte con Manubri su Panca Piana",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Pettorali",
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 8,
+      "name": "Panca Piana con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Pettorali",
+        "Tricipiti",
+        "Deltoidi Anteriori"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 9,
+      "name": "Chest Press",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Macchina Chest Press"
+      ],
+      "musclesTargeted": [
+        "Pettorali",
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Neofita",
+      "caloriesBurned": 45
+    }
+  ],
+  "spalle": [
+    {
+      "id": 1,
+      "name": "Lento Avanti con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Deltoide Anteriore",
+        "Deltoide Laterale",
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": "10-12"
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 2,
+      "name": "Alzate Laterali con Manubri",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Deltoide Laterale"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 3,
+      "name": "Distensioni con Manubri sopra la Testa",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Deltoide Anteriore",
+        "Deltoide Laterale",
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 4,
+      "name": "Face Pull ai Cavi",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Deltoide Posteriore",
+        "Trapezio"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 5,
+      "name": "Alzate Frontali con Manubri",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Deltoide Anteriore"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Neofita",
+      "caloriesBurned": 35
+    },
+    {
+      "id": 6,
+      "name": "Arnold Press",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Deltoide Anteriore",
+        "Deltoide Laterale",
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 7,
+      "name": "Pulley per Deltoidi Posteriori",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Puleggia"
+      ],
+      "musclesTargeted": [
+        "Deltoide Posteriore"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 8,
+      "name": "Alzate Laterali al Cavo",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Deltoide Laterale"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": "10-12"
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 38
+    }
+  ],
+  "tricipiti": [
+    {
+      "id": 1,
+      "name": "Estensioni con Bilanciere sopra la Testa",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 3,
+      "name": "Estensioni con Manubri su Panca Inclinata",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 4,
+      "name": "Pushdown ai Cavi",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 5,
+      "name": "Estensioni ai Cavi con Treccione",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": "10-12"
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 35
+    },
+    {
+      "id": 6,
+      "name": "French Press con Bilanciere EZ",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere EZ"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 7,
+      "name": "French Press Braccio Singolo",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Neofita",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 8,
+      "name": "Kickback ai Cavi",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Tricipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 42
+    }
+  ],
+  "bicipiti": [
+    {
+      "id": 1,
+      "name": "Curl con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 2,
+      "name": "Curl con Manubri su Panca Inclinata",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 3,
+      "name": "Curl Concentrato con Manubrio",
+      "type": [
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 4,
+      "name": "Curl ai Cavi Bassi",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 5,
+      "name": "Curl con Bilanciere EZ",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere EZ"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 6,
+      "name": "Hammer Curl con Manubri",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Bicipiti",
+        "Brachiale"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 7,
+      "name": "Curl al Cavo con Maniglia Singola",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Cavi"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 4,
+          "reps": "10-12"
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 42
+    },
+    {
+      "id": 8,
+      "name": "Curl Scott con Bilanciere EZ",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere EZ",
+        "Panca Scott"
+      ],
+      "musclesTargeted": [
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 240,
+        "ipertrofia": 180,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 50
+    }
+  ],
+  "dorsali": [
+    {
+      "id": 1,
+      "name": "Lat Machine Presa Larga",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Lat Machine"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 2,
+      "name": "Pulley Basso",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Pulley Basso"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Romboidi",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 3,
+      "name": "Rematore con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Romboidi",
+        "Trapezio"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": "5-6"
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 240,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 70
+    },
+    {
+      "id": 4,
+      "name": "Pullover con Manubrio",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubrio",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Gran Pettorale"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 5,
+      "name": "Trazioni alla Sbarra",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Sbarra per Trazioni"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "forza": 240,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": true,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 75
+    },
+    {
+      "id": 6,
+      "name": "Rematore con Manubri",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Romboidi",
+        "Trapezio"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 65
+    },
+    {
+      "id": 7,
+      "name": "Lat Machine Presa Stretta",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Lat Machine"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 8,
+      "name": "T-Bar Row Presa larga",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "T-Bar"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Romboidi",
+        "Trapezio",
+        "Bicipiti",
+        "Deltoide Posteriore"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "forza": 240,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 70
+    },
+    {
+      "id": 9,
+      "name": "Lat Machine Presa Inversa",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Lat Machine"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 10,
+      "name": "Lat Machine con Triangolo",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Lat Machine"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 8,
+      "name": "T-Bar Row Presa Stretta",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "T-Bar"
+      ],
+      "musclesTargeted": [
+        "Dorsali",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 10
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": true,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 70
+    }
+  ],
+  "quadricipiti": [
+    {
+      "id": 1,
+      "name": "Squat con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 90
+    },
+    {
+      "id": 2,
+      "name": "Leg Press",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Leg Press"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti",
+        "Glutei"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 80
+    },
+    {
+      "id": 3,
+      "name": "Affondi con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 85
+    },
+    {
+      "id": 4,
+      "name": "Hack Squat",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Hack Squat Machine"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti",
+        "Glutei"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 240,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 95
+    },
+    {
+      "id": 5,
+      "name": "Leg Extension",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Leg Extension Machine"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "8-10"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 70
+    },
+    {
+      "id": 6,
+      "name": "Squat Bulgaro",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 150,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 85
+    },
+    {
+      "id": 7,
+      "name": "Step-up con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 75
+    },
+    {
+      "id": 8,
+      "name": "Leg Press a Piedi Stretti",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Leg Press"
+      ],
+      "musclesTargeted": [
+        "Quadricipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 120,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 80
+    }
+  ],
+  "femorali": [
+    {
+      "id": 1,
+      "name": "Stacco da Terra",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 150,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 120
+    },
+    {
+      "id": 2,
+      "name": "Leg Curl",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Leg Curl Machine"
+      ],
+      "musclesTargeted": [
+        "Femorali"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 3,
+      "name": "Stacco Rumeno",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 100
+    },
+    {
+      "id": 4,
+      "name": "Good Morning",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 85
+    },
+    {
+      "id": 5,
+      "name": "Nordic Hamstring Curl",
+      "type": [
+        "Ipertrofia",
+        "Forza"
+      ],
+      "equipment": [
+        "Panca",
+        "Supporto per le gambe"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 8
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 90
+    },
+    {
+      "id": 6,
+      "name": "Ponte Glutei con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Bilanciere",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": true,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 75
+    },
+    {
+      "id": 7,
+      "name": "Affondi a Inverso",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": "6-8"
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 85
+    },
+    {
+      "id": 8,
+      "name": "Stacco a Gambe Tese",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Femorali",
+        "Glutei",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 6
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 180,
+        "ipertrofia": 120,
+        "dimagrimento": 90
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 95
+    }
+  ],
+  "polpacci": [
+    {
+      "id": 1,
+      "name": "Calf Raise alla Macchina",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Calf Raise Machine"
+      ],
+      "musclesTargeted": [
+        "Polpacci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 60,
+        "dimagrimento": 45
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 2,
+      "name": "Calf Raise con Manubri",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Polpacci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 10
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 15
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "15-20"
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 3,
+      "name": "Calf Raise su Panca con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere",
+        "Panca"
+      ],
+      "musclesTargeted": [
+        "Polpacci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 4,
+      "name": "Calf Raise alla Leg Press",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Pressa"
+      ],
+      "musclesTargeted": [
+        "Polpacci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 5,
+      "name": "Calf Raise alla Smith Machine",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Smith Machine"
+      ],
+      "musclesTargeted": [
+        "Polpacci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "15-20"
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 6,
+      "name": "Calf Raise a Una Gamba con Manubrio",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubrio"
+      ],
+      "musclesTargeted": [
+        "Polpacci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 10
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 15
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "15-20"
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 60
+    }
+  ],
+  "avambracci": [
+    {
+      "id": 1,
+      "name": "Wrist Curl con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Avambracci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 10
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 15
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "15-20"
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 2,
+      "name": "Reverse Wrist Curl con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Avambracci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 10
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 15
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "15-20"
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 40
+    },
+    {
+      "id": 3,
+      "name": "Wrist Roller",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Wrist Roller"
+      ],
+      "musclesTargeted": [
+        "Avambracci"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 3,
+          "reps": 5
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "6-8"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "10-12"
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 35
+    },
+    {
+      "id": 4,
+      "name": "Reverse Curl con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Avambracci",
+        "Bicipiti"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 15
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 5,
+      "name": "Farmer's Walk con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Avambracci",
+        "Trapezi",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": "30 secondi"
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": "45 secondi"
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "60 secondi"
+        }
+      },
+      "restTime": {
+        "forza": 120,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 60
+    }
+  ],
+  "addominali": [
+    {
+      "id": 1,
+      "name": "Crunch a Terra",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Nessuno"
+      ],
+      "musclesTargeted": [
+        "Retto Addominale"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 15
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 20
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 25
+        }
+      },
+      "restTime": {
+        "forza": 60,
+        "ipertrofia": 45,
+        "dimagrimento": 30
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 30
+    },
+    {
+      "id": 2,
+      "name": "Plank",
+      "type": [
+        "Forza",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Nessuno"
+      ],
+      "musclesTargeted": [
+        "Core",
+        "Retto Addominale",
+        "Trasverso"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 1
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 1
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 1
+        }
+      },
+      "restTime": {
+        "forza": 60,
+        "ipertrofia": 45,
+        "dimagrimento": 30
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    },
+    {
+      "id": 3,
+      "name": "Crunch Inverso",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Nessuno"
+      ],
+      "musclesTargeted": [
+        "Retto Addominale",
+        "Ileo-Psoas"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 15
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 20
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 25
+        }
+      },
+      "restTime": {
+        "forza": 60,
+        "ipertrofia": 45,
+        "dimagrimento": 30
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Neofita",
+      "caloriesBurned": 35
+    },
+    {
+      "id": 4,
+      "name": "Leg Raise Appeso",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Sbarra per Trazioni"
+      ],
+      "musclesTargeted": [
+        "Retto Addominale",
+        "Ileo-Psoas"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 10
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 15
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 20
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 60
+    },
+    {
+      "id": 5,
+      "name": "Russian Twist con Manubrio",
+      "type": [
+        "Ipertrofia",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Manubrio"
+      ],
+      "musclesTargeted": [
+        "Obliqui",
+        "Retto Addominale"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 15
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 20
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 25
+        }
+      },
+      "restTime": {
+        "forza": 60,
+        "ipertrofia": 45,
+        "dimagrimento": 30
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 6,
+      "name": "Mountain Climbers",
+      "type": [
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Nessuno"
+      ],
+      "musclesTargeted": [
+        "Core",
+        "Retto Addominale",
+        "Ileo-Psoas"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 20
+        },
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 30
+        },
+        "dimagrimento": {
+          "sets": 4,
+          "reps": 40
+        }
+      },
+      "restTime": {
+        "forza": 60,
+        "ipertrofia": 45,
+        "dimagrimento": 30
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 70
+    },
+    {
+      "id": 7,
+      "name": "V-Ups",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Nessuno"
+      ],
+      "musclesTargeted": [
+        "Retto Addominale",
+        "Ileo-Psoas"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 10
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 15
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 20
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 60,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Avanzato",
+      "caloriesBurned": 55
+    },
+    {
+      "id": 8,
+      "name": "Side Plank",
+      "type": [
+        "Forza",
+        "Dimagrimento"
+      ],
+      "equipment": [
+        "Nessuno"
+      ],
+      "musclesTargeted": [
+        "Obliqui",
+        "Core"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 1
+        },
+        "ipertrofia": {
+          "sets": 3,
+          "reps": 1
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 1
+        }
+      },
+      "restTime": {
+        "forza": 60,
+        "ipertrofia": 45,
+        "dimagrimento": 30
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    }
+  ],
+  "trapezio": [
+    {
+      "id": 1,
+      "name": "Scrollate con Manubri",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Manubri"
+      ],
+      "musclesTargeted": [
+        "Trapezio"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 12
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": "12-15"
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 45
+    },
+    {
+      "id": 2,
+      "name": "Tirate al Mento con Bilanciere",
+      "type": [
+        "Forza",
+        "Ipertrofia"
+      ],
+      "equipment": [
+        "Bilanciere"
+      ],
+      "musclesTargeted": [
+        "Trapezio",
+        "Deltoide Laterale"
+      ],
+      "setsReps": {
+        "forza": {
+          "sets": 4,
+          "reps": 8
+        },
+        "ipertrofia": {
+          "sets": 4,
+          "reps": 10
+        },
+        "dimagrimento": {
+          "sets": 3,
+          "reps": 12
+        }
+      },
+      "restTime": {
+        "forza": 90,
+        "ipertrofia": 90,
+        "dimagrimento": 60
+      },
+      "kneeIssue": false,
+      "heartIssue": false,
+      "shoulderIssue": false,
+      "difficulty": "Intermedio",
+      "caloriesBurned": 50
+    }
+  ]
+}
