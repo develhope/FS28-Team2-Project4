@@ -4,6 +4,7 @@ import { CardContext } from './CardProvider';
 import { Clienti } from './Clienti';
 import { Iscrizione } from './Iscrizione';
 import { Supporto } from './Supporto';
+import { Account } from './Account';
 
 export const CardMenu = () => {
   const { isSelected, handleClick } = useContext(CardContext);
