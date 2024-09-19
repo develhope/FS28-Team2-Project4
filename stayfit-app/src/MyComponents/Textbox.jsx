@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Textbox = ({ label, type, id, hasError, onChange }) => {
+const Textbox = ({ label, type, id, name, hasError, onChange }) => {
   const [inputVal, setInputVal] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -28,6 +28,7 @@ const Textbox = ({ label, type, id, hasError, onChange }) => {
           id={id}
           type={type}
           value={inputVal}
+          name={name}
           onChange={(e) => {
             setInputVal(e.target.value);
             onChange(e);

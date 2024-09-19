@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
 import { useState } from 'react';
->>>>>>> formsnew
 
 export const SelectBox = ({
   label,
@@ -35,10 +31,10 @@ export const SelectBox = ({
         {label}
       </label>
       <select
-        className="custom-select peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-text
+        className="custom-select peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray
           caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
           duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
-          glow-effect focus:transition-all focus:duration-300"
+          glow-effect focus:transition-all focus:duration-300 cursor-pointer"
         name={name}
         value={value}
         onChange={onChange}
