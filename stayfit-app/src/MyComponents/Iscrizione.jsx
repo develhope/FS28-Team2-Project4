@@ -5,14 +5,14 @@ export const Iscrizione = () => {
 
         {/* Sezione Informazioni di fatturazione */}
         <div className="bg-activated-card p-6 rounded-lg">
-          <h4 className="font-bold mb-4">Informazioni di fatturazione:</h4>
+          <h4 className="font-bold mb-4 text-secondary-green">Informazioni di fatturazione:</h4>
           <p className='py-2'>Metodo di pagamento:</p>
           <p className='py-2'>Mastercard 5555 4444 3333 2222</p>
           <p>Scadenza: 08/24</p>
-          <a href="#" className="text-green-400 mt-2 block p-2 underline" aria-label="Aggiungi un metodo di pagamento">
+          <a href="#" className="text-secondary-green mt-2 block p-2 underline" aria-label="Aggiungi un metodo di pagamento">
             + Aggiungi un metodo di pagamento
           </a>
-          <h4 className='font-bold p-2'>Esenzione fiscale:</h4>
+          <h4 className='font-bold p-2 text-secondary-green py-9'>Esenzione fiscale:</h4>
           <p>Per ricevere le fatture per esenzione fiscale, inserisci il tuo codice fiscale o la tua P. IVA</p>
           <input
             type="text"
@@ -24,13 +24,13 @@ export const Iscrizione = () => {
 
         {/* Dettagli dell'abbonamento */}
         <div className="bg-activated-card p-6 rounded-lg">
-          <h4 className="font-bold mb-4">I dettagli del tuo abbonamento:</h4>
+          <h4 className="font-bold mb-4 text-secondary-green">I dettagli del tuo abbonamento:</h4>
           <p className='py-3'>Hai sottoscritto il nostro piano: Annuale</p>
           <p>Nome: Mario</p>
           <p>Cognome: Rossi</p>
           <p className='py-3'>Professione: Nutrizionista</p>
           <p>Scadenza: 12/24</p>
-          <a href="#" className="text-green-400 mt-2 block py-3 underline" aria-label="Rinnova in anticipo">
+          <a href="#" className="text-secondary-green mt-2 block py-3 underline" aria-label="Rinnova in anticipo">
             Rinnova in anticipo
           </a>
           <a href="#" className="text-red-400 mt-2 block py-3 underline" aria-label="Annulla la tua iscrizione">
@@ -40,7 +40,7 @@ export const Iscrizione = () => {
 
         {/* Informazioni di fatturazione aggiuntive */}
         <div className="bg-activated-card p-6 rounded-lg">
-          <h4 className="font-bold mb-4">Informazioni di fatturazione aggiuntive:</h4>
+          <h4 className="font-bold mb-4 p-2 text-secondary-green">Informazioni di fatturazione aggiuntive:</h4>
           <input
             type="text"
             className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md"
@@ -61,7 +61,7 @@ export const Iscrizione = () => {
             placeholder="Indirizzo e-mail"
             aria-label="Indirizzo e-mail"
           />
-          <a href="#" className="text-green-400 mt-2 block underline" aria-label="Aggiungi un nuovo contatto">
+          <a href="#" className="text-secondary-green mt-2 block underline" aria-label="Aggiungi un nuovo contatto">
             + Aggiungi un nuovo contatto
           </a>
         </div>
