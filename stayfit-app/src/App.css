@@ -116,7 +116,7 @@ button:active.glow-button {
 
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
+
 
 @layer utilities {
   input:-webkit-autofill {

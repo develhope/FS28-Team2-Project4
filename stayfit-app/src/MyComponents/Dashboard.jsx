@@ -4,7 +4,7 @@ import { CardMenu } from "./CardMenu";
 
 const Dashboard = () => {
   return (
-    <div className="flex flex-col gap-9 min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <Header/>
       <CardProvider>
         <CardMenu></CardMenu>

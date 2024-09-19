@@ -57,7 +57,7 @@ export const CardMenu = () => {
   }, [isSelected]);
 
   return (
-    <div className="card-list overflow-x-auto w-dvw h-fit fixed lg:static border-t-2 lg:border-t-0 lg:border-b-2 border-secondary-green bottom-0 left-0 lg:top-0 shadow-[0_-4px_20px_#01181B] lg:shadow-[0_4px_20px_#01181B] bg-primary-blue">
+    <div className="card-list overflow-x-auto w-dvw h-fit fixed lg:static border-t-2 lg:border-t-0 lg:border-b-2 border-secondary-green bottom-0 left-0 lg:top-0 shadow-[0_-4px_20px_#01181B] lg:shadow-[0_20px_20px_#01181B] bg-primary-blue">
       <div
         ref={menuRef}
         className="flex gap-8 items-center overflow-x-auto no-scrollbar snap-x h-44 md:h-64 lg:h-80 px-5"
