@@ -11,7 +11,7 @@ export const CardMenu = () => {
   const menuRef = useRef(null);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
-  const dataCard = [
+const dataCard = [
     {
       titolo: 'Clienti',
       descrizione: `Visualizza l'elenco dei tuoi clienti`,
@@ -62,9 +62,15 @@ export const CardMenu = () => {
   }, [isSelected]);
 
   const handleCardClick = (index) => {
-    setSelectedCardIndex(index);
-    handleClick(index);
+    if (selectedCardIndex === index) {
+      setSelectedCardIndex(null);
+      handleClick(null);
+    } else {
+      setSelectedCardIndex(index);
+      handleClick(index);
+    }
   };
+
 
   const renderContent = () => {
     switch (selectedCardIndex) {
