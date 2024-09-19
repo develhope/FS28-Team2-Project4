@@ -1,7 +1,3 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from './Button';
-
 export const Iscrizione = () => {
   return (
     <div className="bg-activated-card text-white text-left p-6 rounded-lg shadow-md mt-6 dropdown">

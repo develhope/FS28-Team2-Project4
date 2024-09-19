@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from './Icon';
 import Button from './Button';
+import users from '../../database/dbProfessionista.json';
 
 const Header = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleNotifications = () => {
     setIsNotificationsOpen(!isNotificationsOpen);
@@ -64,7 +67,7 @@ const Header = () => {
         <div className='w-32'>
           <Button
             type={''}
-            onClick={''}
+            onClick={() => navigate('/')}
             text={'Logout'}
             color={'#800E13'}
             txtcolor={'#FFF'}

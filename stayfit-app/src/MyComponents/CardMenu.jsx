@@ -2,7 +2,7 @@ import { useContext, useRef, useEffect, useState } from 'react';
 import { Card } from './Card';
 import { CardContext } from './CardProvider';
 import { Clienti } from './Clienti';
-import { Iscrizione} from './Iscrizione'
+import { Iscrizione } from './Iscrizione'
 export const CardMenu = () => {
   const { isSelected, handleClick } = useContext(CardContext);
   const menuRef = useRef(null);
@@ -70,7 +70,7 @@ export const CardMenu = () => {
       case 1:
         return <Schede />;
       case 2:
-        return <Iscrizione />
+        return <Iscrizione />;
       case 3:
         return <Statistiche />;
       case 4:
