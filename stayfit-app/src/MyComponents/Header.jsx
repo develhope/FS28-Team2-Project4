@@ -59,7 +59,7 @@ const Header = () => {
             className="h-12 w-12 rounded-full"
           />
           <span className="hidden md:block text-white hover:text-secondary-green">
-            Nome Utente
+            Mario Rossi
           </span>
         </div>
 
