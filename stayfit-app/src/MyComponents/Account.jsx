@@ -2,7 +2,7 @@ import Button from "./Button";
 
 export const Account = () => {
     return (
-      <div className="bg-activated-card text-white text-left p-6 rounded-lg shadow-md mt-6 dropdown md:flex md:flex-col md:items-center">
+      <div className="bg-activated-card text-white text-left p-6 rounded-lg shadow-md dropdown md:flex md:flex-col md:items-center">
           <section className="flex justify-center items-center gap-5">
             <img src="src/assets/img/avatar.webp" alt="profile-picture" className="w-32 h-32" />
             <div className="flex flex-col">

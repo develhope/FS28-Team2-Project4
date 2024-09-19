@@ -1,6 +1,6 @@
 export const Iscrizione = () => {
     return (
-    <div className="bg-activated-card text-white text-left p-6 rounded-lg shadow-md mt-6 dropdown">
+    <div className="bg-activated-card text-white text-left p-6 rounded-lg shadow-md dropdown">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
         {/* Sezione Informazioni di fatturazione */}

@@ -10,7 +10,7 @@ export const Clienti = () => {
   };
 
   return (
-    <div className="card-details flex flex-col justify-center items-center w-full h-full p-4 mt-4">
+    <div className="card-details flex flex-col justify-center items-center w-full h-full p-4">
       <Button
         type="button"
         onClick={handleClick}
