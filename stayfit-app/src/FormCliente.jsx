@@ -136,6 +136,13 @@ const FormCliente = () => {
     { value: 'other', label: 'Altro' },
   ];
 
+  const activityOptions = [
+    { value: 'sedentario', label: 'Sedentario' },
+    { value: 'modAttivo', label: 'Moderatamente attivo' },
+    { value: 'attivo', label: 'Attivo' },
+    { value: 'moltoAttivo', label: 'Molto attivo'}
+  ]
+
   const steps = [
     {
       label: 'Nome e Cognome',
@@ -254,25 +261,15 @@ const FormCliente = () => {
       label: 'Fitness',
       fields: (
         <div className="flex flex-col gap-5">
-          <label className="text-xl text-secondary-green">
-            Livello di Attività Fisica
-          </label>
-          <select
+          <SelectBox
             name="activityLevel"
             value={formData.activityLevel}
             onChange={handleChange}
             required
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-              text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-              duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+            options={activityOptions}
+            label={'Livello di Attività fisica'}
           >
-            <option value="">Seleziona</option>
-            <option value="sedentary">Sedentario</option>
-            <option value="moderatelyActive">Moderatamente Attivo</option>
-            <option value="active">Attivo</option>
-            <option value="veryActive">Molto Attivo</option>
-          </select>
-
+          </SelectBox>
           <Textbox
             label="Obiettivi Fitness"
             type="text"
@@ -306,7 +303,7 @@ const FormCliente = () => {
     {
       label: 'Foto',
       fields: (
-        <Textbox
+        <input
           label="Carica una Foto"
           type="file"
           id="photo"
