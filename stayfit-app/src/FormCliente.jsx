@@ -30,14 +30,14 @@ const FormCliente = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    const savedFormData = JSON.parse(localStorage.getItem("formData"));
+    const savedFormData = JSON.parse(localStorage.getItem('formData'));
     if (savedFormData) {
       setFormData(savedFormData);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
+    localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
 
   const handleChange = (e) => {
@@ -126,7 +126,9 @@ const FormCliente = () => {
       setIsSubmitted(true);
       alert('Modulo inviato con successo!');
     } else {
-      alert('Assicurati che tutti i campi siano compilati e che le password corrispondano.');
+      alert(
+        'Assicurati che tutti i campi siano compilati e che le password corrispondano.'
+      );
     }
   };
 
@@ -140,8 +142,37 @@ const FormCliente = () => {
     { value: 'sedentario', label: 'Sedentario' },
     { value: 'modAttivo', label: 'Moderatamente attivo' },
     { value: 'attivo', label: 'Attivo' },
-    { value: 'moltoAttivo', label: 'Molto attivo'}
-  ]
+    { value: 'moltoAttivo', label: 'Molto attivo' },
+  ];
+
+  const fitnessOptions = [
+    { value: 'perdita', label: 'Perdita di peso' },
+    { value: 'aumentoMassa', label: 'Aumento di massa muscolare' },
+    { value: 'flessibilita', label: 'Flessibilità' },
+    { value: 'salute', label: 'Salute generale' },
+    { value: 'incrementoForza', label: 'Incremento della forza' },
+    { value: 'vitaAttiva', label: 'Vita attiva e sana' },
+    {
+      value: 'miglioramPrestazione',
+      label: 'Miglioramento delle prestazioni sportive',
+    },
+    { value: 'riabilitazione', label: 'Riabilitazione' },
+  ];
+
+  const workoutOptions = [
+    { value: 'cardio', label: 'Cardio' },
+    { value: 'flessibilita', label: 'Flessibilità' },
+    { value: 'sportSquadra', label: 'Sport di squadra' },
+    { value: 'attivitaAperto', label: `Attività all'aperto` },
+    { value: 'palestra', label: 'Palestra' },
+  ];
+
+  const weeklyTimeOptions = [
+    { value: 'due', label: '2' },
+    { value: 'tre', label: '3' },
+    { value: 'quattro', label: '4' },
+    { value: 'piu', label: '5+' },
+  ];
 
   const steps = [
     {
@@ -168,6 +199,7 @@ const FormCliente = () => {
           />
           <Textbox
             label="Data di Nascita"
+            id="birthDate"
             type="date"
             name="birthDate"
             value={formData.birthDate}
@@ -205,6 +237,7 @@ const FormCliente = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
+            required
           />
         </div>
       ),
@@ -245,6 +278,7 @@ const FormCliente = () => {
             name="allergies"
             value={formData.allergies}
             onChange={handleChange}
+            required
           />
           <Textbox
             label="Intolleranze Alimentari"
@@ -253,6 +287,7 @@ const FormCliente = () => {
             name="foodIntolerances"
             value={formData.foodIntolerances}
             onChange={handleChange}
+            required
           />
         </div>
       ),
@@ -262,39 +297,35 @@ const FormCliente = () => {
       fields: (
         <div className="flex flex-col gap-5">
           <SelectBox
+            label={'Livello di Attività fisica'}
             name="activityLevel"
             value={formData.activityLevel}
             onChange={handleChange}
-            required
             options={activityOptions}
-            label={'Livello di Attività fisica'}
-          >
-          </SelectBox>
-          <Textbox
+            required
+          />
+          <SelectBox
             label="Obiettivi Fitness"
-            type="text"
-            id="fitnessGoals"
             name="fitnessGoals"
             value={formData.fitnessGoals}
             onChange={handleChange}
+            options={fitnessOptions}
             required
           />
-          <Textbox
+          <SelectBox
             label="Preferenze di Allenamento"
-            type="text"
-            id="workoutPreferences"
             name="workoutPreferences"
             value={formData.workoutPreferences}
             onChange={handleChange}
+            options={workoutOptions}
             required
           />
-          <Textbox
-            label="Tempo Disponibile"
-            type="text"
-            id="availableTime"
+          <SelectBox
+            label="Quanti giorni a settimana?"
             name="availableTime"
             value={formData.availableTime}
             onChange={handleChange}
+            options={weeklyTimeOptions}
             required
           />
         </div>
@@ -303,14 +334,16 @@ const FormCliente = () => {
     {
       label: 'Foto',
       fields: (
-        <input
-          label="Carica una Foto"
-          type="file"
-          id="photo"
-          name="photo"
-          onChange={handleFileChange}
-          required
-        />
+        <div className="flex gap-2 items-center">
+          <input
+            className="w-[350px] text-xl text-secondary-green"
+            type="file"
+            id="photo"
+            name="photo"
+            onChange={handleFileChange}
+            required
+          />
+        </div>
       ),
     },
     {
@@ -354,23 +387,34 @@ const FormCliente = () => {
 
   return (
     <>
-    <div
-          className="w-full min bg-secondary-green h-2 rounded-full"
-          style={{ width: `${progress}%` }}
-        ></div>
-    <form className="flex flex-col justify-center items-center gap-5 text-white h-svh" onSubmit={handleSubmit}>
-      <div className="mb-6">
-        <h2 className="text-xl font-bold mt-4">{steps[step].label}</h2>
-      </div>
-      {steps[step].fields}
-      <div className="flex flex-col gap-5 justify-between mt-6">
-        {step > 0 && (
-          <Button onClick={prevStep} type="button" color={'grey'} text={'Indietro'}></Button>
-        )}
-          <Button onClick={nextStep} type="button" text={step === totalStep ? 'Invia' : 'Avanti'}>
-        </Button>
-      </div>
-    </form>
+      <div
+        className="w-full min bg-secondary-green h-2 rounded-full"
+        style={{ width: `${progress}%` }}
+      ></div>
+      <form
+        className="flex flex-col justify-center items-center gap-5 text-white h-svh"
+        onSubmit={handleSubmit}
+      >
+        <div className="mb-6">
+          <h2 className="text-xl font-bold mt-4">{steps[step].label}</h2>
+        </div>
+        {steps[step].fields}
+        <div className="flex flex-col gap-5 justify-between mt-6">
+          {step > 0 && (
+            <Button
+              onClick={prevStep}
+              type="button"
+              color={'grey'}
+              text={'Indietro'}
+            ></Button>
+          )}
+          <Button
+            onClick={nextStep}
+            type="button"
+            text={step === totalStep ? 'Invia' : 'Avanti'}
+          ></Button>
+        </div>
+      </form>
     </>
   );
 };
