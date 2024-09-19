@@ -1,16 +1,17 @@
 import { useContext, useRef, useEffect, useState } from 'react';
 import { Card } from './Card';
 import { CardContext } from './CardProvider';
-
+import { Clienti } from './Clienti';
+import { Iscrizione} from './Iscrizione'
 export const CardMenu = () => {
   const { isSelected, handleClick } = useContext(CardContext);
   const menuRef = useRef(null);
-  const [showSubscriptionDetails, setShowSubscriptionDetails] = useState(false);
+  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
   const dataCard = [
     {
       titolo: 'Clienti',
-      descrizione: "Visualizza l'elenco dei tuoi clienti",
+      descrizione: `Visualizza l'elenco dei tuoi clienti`,
       icona: 'customer',
     },
     {
@@ -55,10 +56,31 @@ export const CardMenu = () => {
         behavior: 'smooth',
       });
     }
-
-    // Gestione della visualizzazione dei dettagli dell'iscrizione
-    setShowSubscriptionDetails(isSelected === 2);
   }, [isSelected]);
+
+  const handleCardClick = (index) => {
+    setSelectedCardIndex(index);
+    handleClick(index);
+  };
+
+  const renderContent = () => {
+    switch (selectedCardIndex) {
+      case 0:
+        return <Clienti />;
+      case 1:
+        return <Schede />;
+      case 2:
+        return <Iscrizione />
+      case 3:
+        return <Statistiche />;
+      case 4:
+        return <Supporto />;
+      case 5:
+        return <Account />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div>
@@ -74,80 +96,14 @@ export const CardMenu = () => {
               description={data.descrizione}
               icon={data.icona}
               status={isSelected === idx}
-              onSelect={() => handleClick(idx)}
+              onSelect={() => handleCardClick(idx)}
             />
           ))}
         </div>
       </div>
-
-      {/* Mostra i dettagli dell'iscrizione quando la card "Iscrizione" è selezionata */}
-      {showSubscriptionDetails && (
-        <div className="bg-activated-card text-white text-left p-6 rounded-lg shadow-md mt-6 dropdown">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-
-            {/* Sezione Informazioni di fatturazione */}
-            <div className="bg-activated-card p-6 rounded-lg">
-              <h4 className="font-bold mb-4">Informazioni di fatturazione:</h4>
-              <p className='py-2'>Metodo di pagamento:</p>
-              <p className='py-2'>Mastercard 5555 4444 3333 2222</p>
-              <p>Scadenza: 08/24</p>
-              <a href="#" className="text-green-400 mt-2 block p-2 underline" aria-label="Aggiungi un metodo di pagamento">
-                + Aggiungi un metodo di pagamento
-              </a>
-              <h4 className='font-bold p-2'>Esenzione fiscale:</h4>
-              <p>Per ricevere le fatture per esenzione fiscale, inserisci il tuo codice fiscale o la tua P. IVA</p>
-              <input
-                type="text"
-                className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md border-white"
-                placeholder="Cod. Fiscale/P. IVA"
-                aria-label="Cod. Fiscale/P. IVA"
-              />
-            </div>
-
-            {/* Dettagli dell'abbonamento */}
-            <div className="bg-activated-card p-6 rounded-lg">
-              <h4 className="font-bold mb-4">I dettagli del tuo abbonamento:</h4>
-              <p className='py-3'>Hai sottoscritto il nostro piano: Annuale</p>
-              <p>Nome: Mario</p>
-              <p>Cognome: Rossi</p>
-              <p className='py-3'>Professione: Nutrizionista</p>
-              <p>Scadenza: 12/24</p>
-              <a href="#" className="text-green-400 mt-2 block py-3 underline" aria-label="Rinnova in anticipo">
-                Rinnova in anticipo
-              </a>
-              <a href="#" className="text-red-400 mt-2 block py-3 underline" aria-label="Annulla la tua iscrizione">
-                Annulla la tua iscrizione
-              </a>
-            </div>
-
-            {/* Informazioni di fatturazione aggiuntive */}
-            <div className="bg-activated-card p-6 rounded-lg">
-              <h4 className="font-bold mb-4">Informazioni di fatturazione aggiuntive:</h4>
-              <input
-                type="text"
-                className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md"
-                placeholder="Nome azienda"
-                aria-label="Nome azienda"
-              />
-              <textarea
-                className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md p-5"
-                placeholder="Indirizzo di fatturazione"
-                aria-label="Indirizzo di fatturazione"
-              ></textarea>
-              <p className='py-3'>Tutte le e-mail relative alla fatturazione verranno
-              inviate al tuo indirizzo e-mail e a questi contatti di
-              fatturazione</p>
-              <input
-                type="email"
-                className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md"
-                placeholder="Indirizzo e-mail"
-                aria-label="Indirizzo e-mail"
-              />
-              <a href="#" className="text-green-400 mt-2 block underline" aria-label="Aggiungi un nuovo contatto">
-                + Aggiungi un nuovo contatto
-              </a>
-            </div>
-          </div>
+      {selectedCardIndex !== null && (
+        <div className=" w-full h-full bg-light-blue-shadow">
+          {renderContent()}
         </div>
       )}
     </div>
