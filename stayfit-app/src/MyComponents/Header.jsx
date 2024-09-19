@@ -41,7 +41,7 @@ const Header = () => {
               <div className="p-6">
                 <h2 className="text-white font-bold">Notifiche</h2>
                 <ul className="mt-4 p-3 space-y-2 cursor-pointer hover:bg-light-blue-shadow">
-                  <li className="text-white">Notifica 1</li>
+                  <li className="text-white hover:text-secondary-green">Benvenuti nella Dashboard!</li>
                 </ul>
               </div>
             </div>
