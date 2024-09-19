@@ -1,11 +1,24 @@
-import LandingPage from "./LandingPage";
-import './App.css'
+import './App.css';
+import { TrySelect } from './MyComponents/TrySelect';
+import { ToggleSwitch } from './MyComponents/ToggleSwitch';
+import { CardMenu } from './MyComponents/CardMenu';
+import { SubCards } from './MyComponents/SubCards';
+import { CardProvider } from './MyComponents/CardProvider';
+import Header from './MyComponents/Header.jsx'
 
-
-function App() {
+const App = () => {
   return (
-    <LandingPage/>
+    <div className="App flex flex-col gap-9 min-h-screen">
+    <Header/>
+      <CardProvider>
+        <CardMenu></CardMenu>
+        <SubCards></SubCards>
+      </CardProvider>
+    </div>
   );
 }
 
 export default App;
+
+
+
