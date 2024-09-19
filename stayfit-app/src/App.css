@@ -29,6 +29,7 @@ input:-webkit-autofill:active {
   width: 100%;
   margin: 0;
   padding: 0;
+  padding: 0;
   text-align: center;
 }
 
@@ -109,6 +110,10 @@ button:active.glow-button {
 }
 
 .no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

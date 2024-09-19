@@ -1,9 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useRef, useEffect } from 'react';
 import { Card } from './Card';
 import { CardContext } from './CardProvider';
 
 export const CardMenu = () => {
   const { isSelected, handleClick } = useContext(CardContext);
+  const menuRef = useRef(null);
 
   const dataCard = [
     {
@@ -12,8 +13,8 @@ export const CardMenu = () => {
       icona: 'customer',
     },
     {
-      titolo: 'I tuoi piani',
-      descrizione: 'Esplora e modifica i piani personalizzati dei tuoi clienti',
+      titolo: 'Schede',
+      descrizione: 'Tutti i piani personalizzati dei tuoi clienti',
       icona: 'plans',
     },
     {
@@ -22,14 +23,14 @@ export const CardMenu = () => {
       icona: 'payment',
     },
     {
-      titolo: 'Supporto',
-      descrizione: 'Stai riscontrando un problema? Contattaci!',
-      icona: 'support',
-    },
-    {
       titolo: 'Statistiche',
       descrizione: 'Visualizza i progressi dei tuoi clienti',
       icona: 'stats',
+    },
+    {
+      titolo: 'Supporto',
+      descrizione: 'Stai riscontrando un problema? Contattaci!',
+      icona: 'support',
     },
     {
       titolo: 'Account',
@@ -38,9 +39,29 @@ export const CardMenu = () => {
     },
   ];
 
+  useEffect(() => {
+    if (menuRef.current && isSelected !== null) {
+      const menu = menuRef.current;
+      const selectedCard = menu.children[isSelected];
+      const cardWidth = selectedCard.offsetWidth;
+      const menuWidth = menu.offsetWidth;
+
+      const scrollAmount =
+        selectedCard.offsetLeft - menuWidth / 2 + cardWidth / 2;
+
+      menu.scrollTo({
+        left: scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  }, [isSelected]);
+
   return (
-    <div className="card-list overflow-x-hidden">
-      <div className="flex gap-4 items-center overflow-x-auto no-scrollbar snap-x h-80 px-5">
+    <div className="card-list overflow-x-auto w-dvw h-fit fixed lg:static border-t-2 lg:border-t-0 lg:border-b-2 border-secondary-green bottom-0 left-0 lg:top-0 shadow-[0_-4px_20px_#01181B] lg:shadow-[0_4px_20px_#01181B] bg-primary-blue">
+      <div
+        ref={menuRef}
+        className="flex gap-8 items-center overflow-x-auto no-scrollbar snap-x h-44 md:h-64 lg:h-80 px-5"
+      >
         {dataCard.map((data, idx) => (
           <Card
             key={idx}
