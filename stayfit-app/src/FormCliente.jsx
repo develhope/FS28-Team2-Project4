@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Textbox from './MyComponents/Textbox.jsx';
 import { SelectBox } from './MyComponents/SelectBox.jsx';
 import Button from './MyComponents/Button.jsx';
@@ -35,7 +35,6 @@ const FormCliente = () => {
       setFormData(savedFormData);
     }
   }, []);
-
 
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
@@ -127,7 +126,7 @@ const FormCliente = () => {
       setIsSubmitted(true);
       alert('Modulo inviato con successo!');
     } else {
-      alert('La Password non corrisponde.');
+      alert('Assicurati che tutti i campi siano compilati e che le password corrispondano.');
     }
   };
 
@@ -264,8 +263,8 @@ const FormCliente = () => {
             onChange={handleChange}
             required
             className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
+              text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
+              duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
           >
             <option value="">Seleziona</option>
             <option value="sedentary">Sedentario</option>
@@ -274,52 +273,26 @@ const FormCliente = () => {
             <option value="veryActive">Molto Attivo</option>
           </select>
 
-          <label className="text-xl text-secondary-green">
-            Obiettivi di Fitness
-          </label>
-          <select
+          <Textbox
+            label="Obiettivi Fitness"
+            type="text"
+            id="fitnessGoals"
             name="fitnessGoals"
             value={formData.fitnessGoals}
             onChange={handleChange}
             required
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
-          >
-            <option value="">Seleziona</option>
-            <option value="weightLoss">Perdita di peso</option>
-            <option value="muscleGain">Aumento della massa muscolare</option>
-            <option value="flexibility">Flessibilità</option>
-            <option value="generalHealth">Salute generale</option>
-            <option value="strengthIncrease">Incremento della forza</option>
-            <option value="activeLife">Vita attiva e sana</option>
-            <option value="performanceImprovement">
-              Miglioramento delle prestazioni sportive
-            </option>
-            <option value="rehabilitation">Riabilitazione</option>
-          </select>
-
-          <label className="text-xl text-secondary-green">
-            Preferenze di Allenamento
-          </label>
-          <select
+          />
+          <Textbox
+            label="Preferenze di Allenamento"
+            type="text"
+            id="workoutPreferences"
             name="workoutPreferences"
             value={formData.workoutPreferences}
             onChange={handleChange}
             required
-            className="peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray cursor-pointer
-  text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
-  duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
-          >
-            <option value="">Seleziona</option>
-            <option value="cardio">Cardio</option>
-            <option value="flexibility">Flessibilità</option>
-            <option value="outdoorActivities">Attività all&apos;aperto</option>
-            <option value="gym">Palestra</option>
-          </select>
-
+          />
           <Textbox
-            label="Pratichi già uno sport?"
+            label="Tempo Disponibile"
             type="text"
             id="availableTime"
             name="availableTime"
@@ -333,25 +306,22 @@ const FormCliente = () => {
     {
       label: 'Foto',
       fields: (
-        <div className="flex flex-col gap-5">
-          <label className="text-xl text-secondary-green">Carica una Foto</label>
-          <input className='w-[300px]'
-            type="file"
-            name="photo"
-            accept="image/*"
-            onChange={handleFileChange}
-            required
-          />
-          {formData.photo && <div>Foto Caricata: {formData.photo.name}</div>}
-        </div>
+        <Textbox
+          label="Carica una Foto"
+          type="file"
+          id="photo"
+          name="photo"
+          onChange={handleFileChange}
+          required
+        />
       ),
     },
     {
-      label: 'Account',
+      label: 'Credenziali',
       fields: (
         <div className="flex flex-col gap-5">
           <Textbox
-            label="Username"
+            label="Nome Utente"
             type="text"
             id="username"
             name="username"
@@ -368,6 +338,9 @@ const FormCliente = () => {
             onChange={handleChange}
             required
           />
+          <button type="button" onClick={togglePasswordVisibility}>
+            {showPassword ? 'Nascondi Password' : 'Mostra Password'}
+          </button>
           <Textbox
             label="Conferma Password"
             type={showPassword ? 'text' : 'password'}
@@ -377,54 +350,31 @@ const FormCliente = () => {
             onChange={handleChange}
             required
           />
-          <label className="text-xl text-secondary-green">
-            <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={togglePasswordVisibility}
-            />
-            Mostra Password
-          </label>
         </div>
       ),
     },
   ];
 
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center bg-primary-blue">
-      <h2 className="text-2xl text-secondary-green">REGISTRAZIONE CLIENTE</h2>
-      <div className="w-[300px] mb-10">
-        <div className="w-[300px] bg-[#001e23] rounded-full h-2.5">
-          <div
-            className="bg-secondary-green h-2.5 rounded-full"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
+    <>
+    <div
+          className="w-full min bg-secondary-green h-2 rounded-full"
+          style={{ width: `${progress}%` }}
+        ></div>
+    <form className="flex flex-col justify-center items-center gap-5 text-white h-svh" onSubmit={handleSubmit}>
+      <div className="mb-6">
+        <h2 className="text-xl font-bold mt-4">{steps[step].label}</h2>
       </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-5">{steps[step].fields}</div>
-        <div className="flex flex-col mt-10 gap-5">
-          {step > 0 && (
-            <Button
-              type={'button'}
-              onClick={prevStep}
-              text={'Indietro'}
-            ></Button>
-          )}
-          {step < steps.length - 1 && (
-            <Button
-              type={'button'}
-              onClick={nextStep}
-              disabled={!isStepValid(step)}
-              text={'Avanti'}
-            >
-            </Button>
-          )}
-          {step === steps.length - 1 && <Button type="submit" text={'Invia'}></Button>}
-        </div>
-      </form>
-    </div>
+      {steps[step].fields}
+      <div className="flex flex-col gap-5 justify-between mt-6">
+        {step > 0 && (
+          <Button onClick={prevStep} type="button" color={'grey'} text={'Indietro'}></Button>
+        )}
+          <Button onClick={nextStep} type="button" text={step === totalStep ? 'Invia' : 'Avanti'}>
+        </Button>
+      </div>
+    </form>
+    </>
   );
 };
 

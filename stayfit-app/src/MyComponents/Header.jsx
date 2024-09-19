@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Icon } from './Icon';
 import Button from './Button';
+import users from '../../database/dbProfessionista.json';
 
 const Header = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);

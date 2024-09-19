@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Textbox from './Textbox';
 import Button from './Button';
 import users from '../../database/dbProfessionista.json';
@@ -7,6 +8,7 @@ const LoginForm = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -16,8 +18,8 @@ const LoginForm = ({ onClose }) => {
     );
 
     if (user) {
-      alert(`Bentornato ${user.name}!`);
       setErrorMessage('');
+      navigate('/dashboard');
     } else {
       setErrorMessage('Email o password non corretti');
     }
