@@ -555,6 +555,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
                       type="button"
                       onClick={prevStep}
                       text={'Indietro'}
+                      color={'grey'}
                     />
                   )}
                   {step < steps.length - 1 && (
