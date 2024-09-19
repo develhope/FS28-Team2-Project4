@@ -20,11 +20,11 @@ export const Clienti = () => {
       />
       {showLink && (
         <>
-          <Link to="/form-cliente" className="mt-4 text-blue-500 underline">
+          <Link to="/form-cliente" className="mt-6 text-white underline">
             http://stayfit.com/random-link-registrati-dai/
           </Link>
-          <p>oppure</p>
-          <Link to="/form-cliente" className="mt-4 text-blue-500 underline">
+          <p className='text-white mt-4'>oppure</p>
+          <Link to="/form-cliente" className="mt-4 text-white underline">
             Vai direttamente al form
           </Link>
         </>
