@@ -111,7 +111,7 @@ const dataCard = [
         </div>
       </div>
       {selectedCardIndex !== null && (
-        <div className=" w-full h-full bg-light-blue-shadow">
+        <div className=" w-full h-full pb-44 md:pb-64 lg:pb-0 bg-light-blue-shadow">
           {renderContent()}
         </div>
       )}
