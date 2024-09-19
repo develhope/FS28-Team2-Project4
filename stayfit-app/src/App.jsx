@@ -12,7 +12,6 @@ const App = () => {
     <Header/>
       <CardProvider>
         <CardMenu></CardMenu>
-        <SubCards></SubCards>
       </CardProvider>
     </div>
   );
