@@ -1,18 +1,10 @@
 import './App.css';
-import { TrySelect } from './MyComponents/TrySelect';
-import { ToggleSwitch } from './MyComponents/ToggleSwitch';
-import { CardMenu } from './MyComponents/CardMenu';
-import { SubCards } from './MyComponents/SubCards';
-import { CardProvider } from './MyComponents/CardProvider';
-import Header from './MyComponents/Header.jsx'
+import Dashboard from './MyComponents/Dashboard.jsx';
 
 const App = () => {
   return (
-    <div className="App flex flex-col gap-9 min-h-screen">
-    <Header/>
-      <CardProvider>
-        <CardMenu></CardMenu>
-      </CardProvider>
+    <div className="App">
+    <Dashboard />
     </div>
   );
 }
