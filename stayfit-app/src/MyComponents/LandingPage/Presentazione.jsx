@@ -23,15 +23,15 @@ const Presentazione = () => {
   };
 
   return (
-    <section className="text-white text-center md:text-left p-12 py-20 w-full">
-      <h2 className="text-5xl font-bold mb-4">
+    <section className="text-white text-center md:text-left p-8 py-14 md:p-10 md:py-16 lg:p-12 lg:py-20 w-full">
+      <h2 className="text-4xl lg:text-5xl font-bold mb-4">
         IL BENESSERE,
         <br />
         PERSONALIZZATO.
         <br />
         SEMPLIFICATO
       </h2>
-      <p className="text-xl text-white mb-6">
+      <p className="text-[15px] lg:text-lg text-white mb-6">
         Unisciti anche tu alla rivoluzione del Fitness, gestisci e monitora i
         piani di allenamento
         <br />e nutrizione dei tuoi clienti, offrendo soluzioni personalizzate
