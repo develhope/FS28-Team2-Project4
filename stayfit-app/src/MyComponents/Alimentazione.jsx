@@ -1,10 +1,17 @@
-// src/components/NutritionTable.js
+import { useState } from "react";
 
+const Alimentazione = () => {
+    // Rimuoviamo il livello extra di array
+    const [dieta, setDieta] = useState([
+        { "giorno": "Allenante", "grammatura": 150, "alimento": "Riso" },
+        { "giorno": "Riposo", "grammatura": 100, "alimento": "Insalata" },
+        { "giorno": "Allenante", "grammatura": 200, "alimento": "Pollo" },
+        { "giorno": "Riposo", "grammatura": 250, "alimento": "Pasta" }
+    ]);
 
-const Alimentazione = ({ nutrition }) => {
     return (
         <div className="overflow-x-auto mt-4">
-            <table className="min-w-full border-collapse border border-gray-300">
+            <table className="min-w-full border-collapse border border-green-700">
                 <thead>
                     <tr className="bg-gray-200">
                         <th className="border border-gray-300 p-2">Giorno</th>
@@ -13,7 +20,7 @@ const Alimentazione = ({ nutrition }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {nutrition.map((item, index) => (
+                    {dieta.map((item, index) => (
                         <tr key={index}>
                             <td className="border border-gray-300 p-2">{item.giorno}</td>
                             <td className="border border-gray-300 p-2">{item.grammatura}</td>
@@ -27,3 +34,5 @@ const Alimentazione = ({ nutrition }) => {
 };
 
 export default Alimentazione;
+
+
