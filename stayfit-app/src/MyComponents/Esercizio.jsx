@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 const Esercizio = () => {
-  // Stato che contiene i dati degli esercizi
   const [exercises, setExercises] = useState([
     { giorno: 'Lunedì', esercizio: 'Squat', set: 4, rep: 10, rest: 1.5 },
     { giorno: 'Martedì', esercizio: 'Panca Piana', set: 3, rep: 8, rest: 2 },
@@ -24,7 +23,7 @@ const Esercizio = () => {
         </thead>
         <tbody>
           {exercises.map((exercise, index) => (
-            <tr key={index}>
+            <tr className='text-white' key={index}>
               <td className="border border-secondary-gray p-2">{exercise.giorno}</td>
               <td className="border border-secondary-gray p-2">{exercise.esercizio}</td>
               <td className="border border-secondary-gray p-2">{exercise.set}</td>
