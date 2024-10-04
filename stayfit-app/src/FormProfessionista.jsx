@@ -502,7 +502,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
   console.log(formData);
 
   return (
-    <div className="flex flex-col justify-center items-center w-fit h-fit px-9 py-9 bg-primary-blue border-2 border-secondary-green rounded-lg">
+    <div className="flex flex-col justify-center items-center w-fit h-fit px-2 py-5 bg-primary-blue border-2 border-secondary-green rounded-lg">
       <form
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col items-center justify-center"
@@ -511,7 +511,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
         <p className="text-sm text-gray-400 mt-3">
           Registrati in pochi semplici passi!
         </p>
-        <div className="w-[395px] mb-10 mt-5">
+        <div className="w-[395px] mb-5 mt-5">
           <div className="w-[395px] bg-[#001e23] rounded-full h-2.5">
             <div
               className="bg-secondary-green h-2.5 rounded-full"
