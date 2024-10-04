@@ -89,7 +89,7 @@ app.put('/users/:id', (req, res) => {
     return res.status(400).json({ error: error.details[0].message });
   }
 
-  users = users.map(user => user.id === Number(id) ? ({ ...user, ...value }) : user);
+  users = users.map(user => user.id === id ? ({ ...user, ...value }) : user);
 
   res.status(200).json({ msg: 'User updated successfully' });
 });
@@ -103,7 +103,7 @@ app.delete('/users/:id', (req, res) => {
     return res.status(404).json({ msg: 'User not found' });
   }
 
-  users = users.filter(user => user.id !== Number(id));
+  users = users.filter(user => user.id !== id);
 
   res.status(200).json({ msg: 'User deleted successfully' });
 });
