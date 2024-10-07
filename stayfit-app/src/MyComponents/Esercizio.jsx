@@ -92,9 +92,7 @@ const Esercizio = () => {
     <div className="overflow-x-auto mt-4 font-nowalt">
       {giorniOptions.map((giorno) => (
         <div key={giorno} className="mb-8">
-          <h2 className="text-xl font-bold text-white">
-            {giorno}
-          </h2>
+          <h2 className="text-xl font-bold text-white">{giorno}</h2>
           <button
             className="bg-secondary-green hover:bg-green-700 text-primary-blue font-bold py-1 px-2 rounded mt-2 mb-4 shadow-card"
             onClick={() => addExercise(giorno)}
@@ -263,4 +261,3 @@ const Esercizio = () => {
 };
 
 export default Esercizio;
-
