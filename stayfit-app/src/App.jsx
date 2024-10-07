@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Alimentazione from './MyComponents/Alimentazione';
-import Esercizio from './MyComponents/Esercizio';
 import './App.css';
+import { CardCliente } from './MyComponents/LandingPage/CardCliente';
 
 const App = () => {
   return (
@@ -9,7 +9,7 @@ const App = () => {
       <div className="container mx-auto p-4">
         <Routes>
           <Route path="/" element={<Alimentazione />} />
-          <Route path="/esercizio" element={<Esercizio />} />
+          <Route path="/cardcliente" element={<CardCliente />} />
         </Routes>
       </div>
     </Router>
