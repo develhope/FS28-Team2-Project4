@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Alimentazione from './MyComponents/Alimentazione';
 import './App.css';
-import { CardCliente } from './MyComponents/LandingPage/CardCliente';
+import { CardCliente } from './MyComponents/CardCliente';
 
 const App = () => {
   return (
