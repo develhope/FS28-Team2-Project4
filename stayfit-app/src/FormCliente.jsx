@@ -2,10 +2,13 @@ import { useState, useEffect, useCallback } from 'react';
 import Textbox from './MyComponents/Textbox.jsx';
 import { SelectBox } from './MyComponents/SelectBox.jsx';
 import Button from './MyComponents/Button.jsx';
+import { useNavigate } from 'react-router-dom';
+import camelcaseKeys from 'camelcase-keys';
+
+const professionalId = localStorage.getItem('userId');
 
 const FormCliente = () => {
   const [step, setStep] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,10 +27,14 @@ const FormCliente = () => {
     photo: null,
     username: '',
     password: '',
-    confirmPassword: '',
+    professionalId: professionalId,
   });
 
+  console.log(formData);
+
+
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedFormData = JSON.parse(localStorage.getItem('formData'));
@@ -102,9 +109,13 @@ const FormCliente = () => {
   const totalStep = 6;
   const progress = (step / totalStep) * 100;
 
-  const nextStep = () => {
+  const nextStep = (e) => {
     if (isStepValid(step)) {
-      setStep(step + 1);
+      if (step === totalStep) {
+        handleSubmit(e);
+      } else {
+        setStep((prevStep) => Math.min(prevStep + 1, totalStep));
+      }
     } else {
       alert(
         'Compila tutti i campi obbligatori o assicurati che le password corrispondano.'
@@ -112,67 +123,45 @@ const FormCliente = () => {
     }
   };
 
-  const prevStep = () => setStep(step - 1);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (isSubmitted) {
-      alert('Modulo già inviato.');
-      return;
-    }
-
-    if (isStepValid(step)) {
-      setIsSubmitted(true);
-      alert('Modulo inviato con successo!');
-    } else {
-      alert(
-        'Assicurati che tutti i campi siano compilati e che le password corrispondano.'
-      );
+  const prevStep = () => {
+    if (step > 0) {
+      setStep((prevStep) => Math.max(prevStep - 1, 0));
     }
   };
 
-  const genderOptions = [
-    { value: 'male', label: 'Maschio' },
-    { value: 'female', label: 'Femmina' },
-    { value: 'other', label: 'Altro' },
-  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const activityOptions = [
-    { value: 'sedentario', label: 'Sedentario' },
-    { value: 'modAttivo', label: 'Moderatamente attivo' },
-    { value: 'attivo', label: 'Attivo' },
-    { value: 'moltoAttivo', label: 'Molto attivo' },
-  ];
+    const toSnakeCase = (data) => {
+      const convertKey = (key) => key.replace(/([A-Z])/g, '_$1').toLowerCase();
 
-  const fitnessOptions = [
-    { value: 'perdita', label: 'Perdita di peso' },
-    { value: 'aumentoMassa', label: 'Aumento di massa muscolare' },
-    { value: 'flessibilita', label: 'Flessibilità' },
-    { value: 'salute', label: 'Salute generale' },
-    { value: 'incrementoForza', label: 'Incremento della forza' },
-    { value: 'vitaAttiva', label: 'Vita attiva e sana' },
-    {
-      value: 'miglioramPrestazione',
-      label: 'Miglioramento delle prestazioni sportive',
-    },
-    { value: 'riabilitazione', label: 'Riabilitazione' },
-  ];
+      return Object.entries(data).reduce((acc, [key, value]) => {
+        acc[convertKey(key)] = value;
+        return acc;
+      }, {});
+    };
 
-  const workoutOptions = [
-    { value: 'cardio', label: 'Cardio' },
-    { value: 'flessibilita', label: 'Flessibilità' },
-    { value: 'sportSquadra', label: 'Sport di squadra' },
-    { value: 'attivitaAperto', label: `Attività all'aperto` },
-    { value: 'palestra', label: 'Palestra' },
-  ];
+    try {
+      const snakeCaseData = toSnakeCase(formData);
 
-  const weeklyTimeOptions = [
-    { value: 'due', label: '2' },
-    { value: 'tre', label: '3' },
-    { value: 'quattro', label: '4' },
-    { value: 'piu', label: '5+' },
-  ];
+      const response = await fetch('http://localhost:3000/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(snakeCaseData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Cliente creato:', data);
+        navigate('/dashboard');
+      } else {
+        console.error('Errore nella creazione:', data.error);
+      }
+    } catch (error) {
+      console.error('Errore di rete:', error);
+    }
+  };
 
   const steps = [
     {
@@ -211,7 +200,11 @@ const FormCliente = () => {
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            options={genderOptions}
+            options={[
+              { value: 'male', label: 'Maschio' },
+              { value: 'female', label: 'Femmina' },
+              { value: 'other', label: 'Altro' },
+            ]}
             required
           />
         </>
@@ -301,7 +294,12 @@ const FormCliente = () => {
             name="activityLevel"
             value={formData.activityLevel}
             onChange={handleChange}
-            options={activityOptions}
+            options={[
+              { value: 'sedentario', label: 'Sedentario' },
+              { value: 'modAttivo', label: 'Moderatamente attivo' },
+              { value: 'attivo', label: 'Attivo' },
+              { value: 'moltoAttivo', label: 'Molto attivo' },
+            ]}
             required
           />
           <SelectBox
@@ -309,7 +307,14 @@ const FormCliente = () => {
             name="fitnessGoals"
             value={formData.fitnessGoals}
             onChange={handleChange}
-            options={fitnessOptions}
+            options={[
+              { value: 'perdita', label: 'Perdita di peso' },
+              { value: 'aumentoMassa', label: 'Aumento di massa muscolare' },
+              { value: 'flessibilita', label: 'Flessibilità' },
+              { value: 'salute', label: 'Salute generale' },
+              { value: 'incrementoForza', label: 'Incremento della forza' },
+              { value: 'vitaAttiva', label: 'Vita attiva' },
+            ]}
             required
           />
           <SelectBox
@@ -317,15 +322,24 @@ const FormCliente = () => {
             name="workoutPreferences"
             value={formData.workoutPreferences}
             onChange={handleChange}
-            options={workoutOptions}
+            options={[
+              { value: 'attivitaAllAperta', label: 'Attività all\'aperto' },
+              { value: 'palestra', label: 'Palestra' },
+            ]}
             required
           />
           <SelectBox
-            label="Quanti giorni a settimana?"
+            label="Tempo Disponibile"
             name="availableTime"
             value={formData.availableTime}
             onChange={handleChange}
-            options={weeklyTimeOptions}
+            options={[
+              { value: 'menoDi1h', label: 'Meno di 1 ora' },
+              { value: '1h', label: '1 ora' },
+              { value: '2h', label: '2 ore' },
+              { value: '3h', label: '3 ore' },
+              { value: 'piuDi3h', label: 'Più di 3 ore' },
+            ]}
             required
           />
         </div>
@@ -334,20 +348,23 @@ const FormCliente = () => {
     {
       label: 'Foto',
       fields: (
-        <div className="flex gap-2 items-center">
+        <>
+          <label className="text-white" htmlFor="photo">
+            Carica una foto:
+          </label>
           <input
-            className="w-[350px] text-xl text-secondary-green"
             type="file"
             id="photo"
             name="photo"
+            accept="image/*"
             onChange={handleFileChange}
             required
           />
-        </div>
+        </>
       ),
     },
     {
-      label: 'Credenziali',
+      label: 'Registrazione',
       fields: (
         <div className="flex flex-col gap-5">
           <Textbox
@@ -368,7 +385,11 @@ const FormCliente = () => {
             onChange={handleChange}
             required
           />
-          <button type="button" onClick={togglePasswordVisibility}>
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="text-blue-500"
+          >
             {showPassword ? 'Nascondi Password' : 'Mostra Password'}
           </button>
           <Textbox
@@ -395,10 +416,16 @@ const FormCliente = () => {
         className="flex flex-col justify-center items-center gap-5 text-white h-svh"
         onSubmit={handleSubmit}
       >
-        <div className="mb-6">
-          <h2 className="text-xl font-bold mt-4">{steps[step].label}</h2>
-        </div>
-        {steps[step].fields}
+        {step >= 0 && step < steps.length ? (
+          <>
+            <div className="mb-6">
+              <h2 className="text-xl font-bold mt-4">{steps[step].label}</h2>
+            </div>
+            {steps[step].fields}
+          </>
+        ) : (
+          <div>Passo non valido</div>
+        )}
         <div className="flex flex-col gap-5 justify-between mt-6">
           {step > 0 && (
             <Button
@@ -409,7 +436,7 @@ const FormCliente = () => {
             ></Button>
           )}
           <Button
-            onClick={nextStep}
+            onClick={(e) => nextStep(e)}
             type="button"
             text={step === totalStep ? 'Invia' : 'Avanti'}
           ></Button>

@@ -1,12 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from './Icon';
 import Button from './Button';
 import users from '../../database/dbProfessionista.json';
 
 const Header = () => {
+  const [userInfo, setUserInfo] = useState(null)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const userId = localStorage.getItem('userId');
+
+      if (userId) {
+        try {
+          const res = await fetch(`http://localhost:3000/professionals/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            setUserInfo(data);
+          } else {
+            setErrorMessage('Impossibile recuperare le informazioni dell\'utente');
+          }
+        } catch (error) {
+          console.error('Errore durante il recupero delle informazioni dell\'utente:', error);
+          setErrorMessage('Si è verificato un errore durante il recupero delle informazioni');
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
 
   const toggleNotifications = () => {
     setIsNotificationsOpen(!isNotificationsOpen);
@@ -44,7 +75,9 @@ const Header = () => {
               <div className="p-6">
                 <h2 className="text-white font-bold">Notifiche</h2>
                 <ul className="mt-4 p-3 space-y-2 cursor-pointer hover:bg-light-blue-shadow">
-                  <li className="text-white hover:text-secondary-green">Benvenuti nella Dashboard!</li>
+                  <li className="text-white hover:text-secondary-green">
+                    Benvenuti nella Dashboard!
+                  </li>
                 </ul>
               </div>
             </div>
@@ -59,12 +92,12 @@ const Header = () => {
             className="h-12 w-12 rounded-full"
           />
           <span className="hidden md:block text-white hover:text-secondary-green">
-            Mario Rossi
+            {userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Caricamento...'}
           </span>
         </div>
 
         {/* Logout */}
-        <div className='w-32'>
+        <div className="w-32">
           <Button
             type={''}
             onClick={() => navigate('/')}

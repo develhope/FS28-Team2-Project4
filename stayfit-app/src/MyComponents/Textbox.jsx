@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Textbox = ({ label, type, id, name, hasError, onChange }) => {
-  const [inputVal, setInputVal] = useState('');
+const Textbox = ({ label, type, id, name, hasError, onChange, value }) => {
+  const [inputVal, setInputVal] = useState(value || '');
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => {
@@ -21,6 +21,10 @@ const Textbox = ({ label, type, id, name, hasError, onChange }) => {
       onChange(e);
     }
   };
+
+  useEffect(() => {
+    setInputVal(value);
+  }, [value]);
 
   return (
       <div className="relative w-[300px] h-10">

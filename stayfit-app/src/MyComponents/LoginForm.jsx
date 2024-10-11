@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Textbox from './Textbox';
 import Button from './Button';
-import users from '../../database/dbProfessionista.json';
+// import users from '../../database/dbProfessionista.json';
 
 const LoginForm = ({ onClose }) => {
   const [email, setEmail] = useState('');
@@ -10,18 +10,35 @@ const LoginForm = ({ onClose }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const user = users.find(
-      (user) => user.email === email && user.password === password
-    );
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (user) {
-      setErrorMessage('');
-      navigate('/dashboard');
-    } else {
-      setErrorMessage('Email o password non corretti');
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+
+        if (data.userId) {
+          localStorage.setItem('userId', data.userId);
+          setErrorMessage('');
+          navigate('/dashboard');
+        } else {
+          setErrorMessage('ID utente non trovato');
+        }
+      } else {
+        setErrorMessage('Email o password non corretti');
+      }
+    } catch (error) {
+      console.error('Errore durante il login:', error);
+      setErrorMessage('Si è verificato un errore durante il login');
     }
   };
 
