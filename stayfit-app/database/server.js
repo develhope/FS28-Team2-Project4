@@ -210,7 +210,6 @@ app.post('/clients', async (req, res) => {
     ? req.body.foodIntolerances
     : req.body.foodIntolerances ? req.body.foodIntolerances.split(',').map(item => item.trim()).filter(item => item) : [];
 
-  // Validazione
   const { error, value } = schemaClient.validate({
     ...req.body,
     professional_id: professionalId,
@@ -232,6 +231,31 @@ app.post('/clients', async (req, res) => {
   } catch (error) {
     console.error('Errore nella creazione del cliente:', error);
     res.status(500).json({ error: "Errore nella creazione del cliente" });
+  }
+});
+
+app.get('/clients', async (req, res) => {
+  const professionalId = req.query.professional_id;
+
+  if (!professionalId) {
+    return res.status(400).json({ error: 'Professional ID is required' });
+  }
+
+  try {
+    const clienti = await database.any('SELECT * FROM clients WHERE professional_id = $1', [professionalId]);
+    res.status(200).json(clienti);
+  } catch (error) {
+    console.error('Errore nel recupero dei clienti:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/foods', async (req, res) => {
+  try {
+    const foods = await database.any('SELECT * FROM foods');
+    res.status(200).json(foods);
+  } catch (error) {
+    res.status(500).json({ error: 'Errore nel recuperare gli alimenti' });
   }
 });
 

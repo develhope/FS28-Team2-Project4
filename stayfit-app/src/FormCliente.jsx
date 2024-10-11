@@ -3,9 +3,6 @@ import Textbox from './MyComponents/Textbox.jsx';
 import { SelectBox } from './MyComponents/SelectBox.jsx';
 import Button from './MyComponents/Button.jsx';
 import { useNavigate } from 'react-router-dom';
-import camelcaseKeys from 'camelcase-keys';
-
-const professionalId = localStorage.getItem('userId');
 
 const FormCliente = () => {
   const [step, setStep] = useState(0);
@@ -27,7 +24,7 @@ const FormCliente = () => {
     photo: null,
     username: '',
     password: '',
-    professionalId: professionalId,
+    professionalId: null,
   });
 
   console.log(formData);
@@ -46,6 +43,12 @@ const FormCliente = () => {
   useEffect(() => {
     localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
+
+  useEffect(() => {
+    const professionalId = localStorage.getItem('userId');
+    setFormData(prev => ({ ...prev, professionalId }));
+}, []);
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

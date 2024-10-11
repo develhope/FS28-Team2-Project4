@@ -100,7 +100,10 @@ const Header = () => {
         <div className="w-32">
           <Button
             type={''}
-            onClick={() => navigate('/')}
+            onClick={() => {
+              localStorage.removeItem('userId');
+              navigate('/');
+            }}
             text={'Logout'}
             color={'#800E13'}
             txtcolor={'#FFF'}
