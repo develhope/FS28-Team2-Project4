@@ -24,9 +24,15 @@ const LoginForm = ({ onClose }) => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
 
-        setErrorMessage('');
-        navigate('/dashboard');
+        if (data.userId) {
+          localStorage.setItem('userId', data.userId);
+          setErrorMessage('');
+          navigate('/dashboard');
+        } else {
+          setErrorMessage('ID utente non trovato');
+        }
       } else {
         setErrorMessage('Email o password non corretti');
       }

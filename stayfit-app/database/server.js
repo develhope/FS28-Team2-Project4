@@ -13,7 +13,7 @@ const port = 3000;
 
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(cors({origin: 'http://localhost:5173'}))
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 // const fileSchema = (allowedMimeTypes) => {
 //   return Joi.object({
@@ -24,7 +24,60 @@ app.use(cors({origin: 'http://localhost:5173'}))
 //   });
 // };
 
-const schema = Joi.object({
+const schemaClient = Joi.object({
+  first_name: Joi.string().required().min(1).max(50).label('Nome'),
+  last_name: Joi.string().required().min(1).max(50).label('Cognome'),
+  birth_date: Joi.date().required().less('now').label('Data di Nascita'),
+  gender: Joi.string()
+    .valid('male', 'female', 'other')
+    .required()
+    .label('Sesso'),
+  email: Joi.string().email().required().label('Email'),
+  phone: Joi.string()
+    .pattern(/^[0-9]{10,15}$/)
+    .required()
+    .label('Numero di Telefono'), // Adjust the pattern according to your requirements
+  weight: Joi.number().required().label('Peso (kg)'),
+  height: Joi.number().required().label('Altezza (cm)'),
+  allergies: Joi.array().items(Joi.string()).label('Allergie'),
+  food_intolerances: Joi.array().items(Joi.string()).label('Intolleranze Alimentari'),
+  activity_level: Joi.string()
+    .valid('sedentario', 'modAttivo', 'attivo', 'moltoAttivo')
+    .required()
+    .label('Livello di Attività'),
+  fitness_goals: Joi.string()
+    .valid(
+      'perdita',
+      'aumentoMassa',
+      'flessibilita',
+      'salute',
+      'incrementoForza',
+      'vitaAttiva',
+      'miglioramPrestazione',
+      'riabilitazione'
+    )
+    .required()
+    .label('Obiettivi Fitness'),
+  workout_preferences: Joi.string()
+    .valid(
+      'attivitaAllAperta',
+      'palestra'
+    )
+    .required()
+    .label('Preferenze di Allenamento'),
+  available_time: Joi.string()
+    .valid('menoDi1h', '1h', '2h', '3h', 'piuDi3h')
+    .required()
+    .label('Tempo Disponibile'),
+  photo: Joi.any().optional().label('Foto'),
+  username: Joi.string().required().min(3).max(30).label('Nome Utente'),
+  password: Joi.string().required().min(6).label('Password'),
+  confirm_password: Joi.string().valid(Joi.ref('password')).required().label('Conferma Password'),
+  professional_id: Joi.string().required().label('ID del professionista'),
+});
+
+
+const schemaProf = Joi.object({
   profession_type: Joi.string()
     .valid('personalTrainer', 'nutrizionista', 'entrambi')
     .required(),
@@ -48,7 +101,9 @@ const schema = Joi.object({
   social_network: Joi.string()
     .valid('facebook', 'instagram', 'twitter', 'linkedin')
     .allow(''),
-  subscription_type: Joi.string().valid('Free', 'Starter', 'Premium').required(),
+  subscription_type: Joi.string()
+    .valid('Free', 'Starter', 'Premium')
+    .required(),
   tax_code: Joi.string()
     .pattern(/^\d{11}$/)
     .allow(''),
@@ -69,9 +124,10 @@ app.get('/professionals', async (req, res) => {
 app.get('/professionals/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await database.oneOrNone('SELECT * FROM professionals WHERE id = $1', [
-      id,
-    ]);
+    const user = await database.oneOrNone(
+      'SELECT * FROM professionals WHERE id = $1',
+      [id]
+    );
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -82,7 +138,7 @@ app.get('/professionals/:id', async (req, res) => {
 });
 
 app.post('/professionals', async (req, res) => {
-  const { error, value } = schema.validate(req.body);
+  const { error, value } = schemaProf.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
@@ -93,21 +149,22 @@ app.post('/professionals', async (req, res) => {
     );
     res.status(201).json({ msg: 'User created successfully', id: newUser.id });
   } catch (error) {
-    console.error('Errore nella creazione dell\'utente:', error);
+    console.error("Errore nella creazione dell'utente:", error);
     res.status(500).json({ error: "Errore nella creazione dell'utente" });
   }
 });
 
 app.put('/professionals/:id', async (req, res) => {
-  const { error, value } = schema.validate(req.body);
+  const { error, value } = schemaProf.validate(req.body);
   const { id } = req.params;
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
   try {
-    const user = await database.oneOrNone('SELECT * FROM professionals WHERE id = $1', [
-      id,
-    ]);
+    const user = await database.oneOrNone(
+      'SELECT * FROM professionals WHERE id = $1',
+      [id]
+    );
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
@@ -124,9 +181,10 @@ app.put('/professionals/:id', async (req, res) => {
 app.delete('/professionals/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await database.oneOrNone('SELECT * FROM professionals WHERE id = $1', [
-      id,
-    ]);
+    const user = await database.oneOrNone(
+      'SELECT * FROM professionals WHERE id = $1',
+      [id]
+    );
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
@@ -137,18 +195,61 @@ app.delete('/professionals/:id', async (req, res) => {
   }
 });
 
+app.post('/clients', async (req, res) => {
+  const professionalId = req.body.professional_id;
+
+  console.log('Allergies:', req.body.allergies);
+  console.log('Food Intolerances:', req.body.foodIntolerances);
+
+  // Trasforma le stringhe in array
+  const allergiesArray = Array.isArray(req.body.allergies)
+    ? req.body.allergies
+    : req.body.allergies ? req.body.allergies.split(',').map(item => item.trim()).filter(item => item) : [];
+
+  const foodIntolerancesArray = Array.isArray(req.body.foodIntolerances)
+    ? req.body.foodIntolerances
+    : req.body.foodIntolerances ? req.body.foodIntolerances.split(',').map(item => item.trim()).filter(item => item) : [];
+
+  // Validazione
+  const { error, value } = schemaClient.validate({
+    ...req.body,
+    professional_id: professionalId,
+    allergies: allergiesArray,
+    food_intolerances: foodIntolerancesArray
+  });
+
+  if (error) {
+    console.error('Errore di validazione:', error);
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  try {
+    const newUser = await database.one(
+      'INSERT INTO clients (first_name, last_name, birth_date, gender, email, phone, weight, height, allergies, food_intolerances, activity_level, fitness_goals, workout_preferences, available_time, photo, username, password, professional_id) VALUES (${first_name}, ${last_name}, ${birth_date}, ${gender}, ${email}, ${phone}, ${weight}, ${height}, ${allergies}, ${food_intolerances}, ${activity_level}, ${fitness_goals}, ${workout_preferences}, ${available_time}, ${photo}, ${username}, ${password}, ${professional_id}) RETURNING id',
+      value
+    );
+    res.status(201).json({ msg: 'Client created successfully', id: newUser.id });
+  } catch (error) {
+    console.error('Errore nella creazione del cliente:', error);
+    res.status(500).json({ error: "Errore nella creazione del cliente" });
+  }
+});
+
 app.get('/foods/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const alimento = await database.oneOrNone('SELECT * FROM foods WHERE id = $1', [id]);
+    const alimento = await database.oneOrNone(
+      'SELECT * FROM foods WHERE id = $1',
+      [id]
+    );
     if (!alimento) {
       return res.status(404).json({ error: 'Alimento non trovato' });
     }
     res.status(200).json(alimento);
   } catch (error) {
-    console.error('Errore nel recuperare l\'alimento:', error);
-    res.status(500).json({ error: 'Errore nel recuperare l\'alimento' });
+    console.error("Errore nel recuperare l'alimento:", error);
+    res.status(500).json({ error: "Errore nel recuperare l'alimento" });
   }
 });
 
@@ -162,13 +263,17 @@ app.post('/login', async (req, res) => {
     );
 
     if (user) {
-      res.status(200).json({ msg: 'Login effettuato con successo', userId: user.id });
+      res
+        .status(200)
+        .json({ msg: 'Login effettuato con successo', userId: user.id });
     } else {
       res.status(401).json({ error: 'Email o password non corretti' });
     }
   } catch (error) {
     console.error('Errore durante il login:', error);
-    res.status(500).json({ error: 'Si è verificato un errore durante il login' });
+    res
+      .status(500)
+      .json({ error: 'Si è verificato un errore durante il login' });
   }
 });
 
