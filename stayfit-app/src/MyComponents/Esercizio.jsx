@@ -26,10 +26,15 @@ const Esercizio = () => {
   const repOptions = [0, 4, 6, 8, 10, 12, 15, 20, 25];
   const restOptions = [0, 0.3, 0.5, 1, 1.3, 1.5, 2, 2.3, 2.5, 3, 4];
 
+  const exercisesApi = 'https://raw.githubusercontent.com/mario-sica/API/refs/heads/main/gymExercises.json'
+
   useEffect(() => {
-    fetch('/gymExercises.json')
+    fetch(exercisesApi)
       .then((response) => response.json())
-      .then((data) => setGymExercises(data))
+      .then((data) => {
+        setGymExercises(data);
+        console.log(data);
+      })
       .catch((error) =>
         console.error('Errore nel caricamento del database:', error)
       );

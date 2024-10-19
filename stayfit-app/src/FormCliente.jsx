@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const FormCliente = () => {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({
+  const [clientData, setClientData] = useState({
     firstName: '',
     lastName: '',
     birthDate: '',
@@ -27,32 +27,32 @@ const FormCliente = () => {
     professionalId: null,
   });
 
-  console.log(formData);
+  console.log(clientData);
 
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedFormData = JSON.parse(localStorage.getItem('formData'));
+    const savedFormData = JSON.parse(localStorage.getItem('clientData'));
     if (savedFormData) {
-      setFormData(savedFormData);
+      setClientData(savedFormData);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('formData', JSON.stringify(formData));
-  }, [formData]);
+    localStorage.setItem('clientData', JSON.stringify(clientData));
+  }, [clientData]);
 
   useEffect(() => {
     const professionalId = localStorage.getItem('userId');
-    setFormData(prev => ({ ...prev, professionalId }));
+    setClientData(prev => ({ ...prev, professionalId }));
 }, []);
 
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setClientData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
@@ -60,7 +60,7 @@ const FormCliente = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    setFormData((prev) => ({
+    setClientData((prev) => ({
       ...prev,
       [name]: files.length > 0 ? files[0] : null,
     }));
@@ -75,38 +75,38 @@ const FormCliente = () => {
       switch (step) {
         case 0:
           return (
-            formData.firstName &&
-            formData.lastName &&
-            formData.birthDate &&
-            formData.gender
+            clientData.firstName &&
+            clientData.lastName &&
+            clientData.birthDate &&
+            clientData.gender
           );
         case 1:
-          return formData.email || formData.phone;
+          return clientData.email || clientData.phone;
         case 2:
-          return formData.weight && formData.height;
+          return clientData.weight && clientData.height;
         case 3:
-          return formData.allergies && formData.foodIntolerances;
+          return clientData.allergies && clientData.foodIntolerances;
         case 4:
           return (
-            formData.activityLevel &&
-            formData.fitnessGoals &&
-            formData.workoutPreferences &&
-            formData.availableTime
+            clientData.activityLevel &&
+            clientData.fitnessGoals &&
+            clientData.workoutPreferences &&
+            clientData.availableTime
           );
         case 5:
-          return formData.photo;
+          return clientData.photo;
         case 6:
           return (
-            formData.username &&
-            formData.password &&
-            formData.confirmPassword &&
-            formData.password === formData.confirmPassword
+            clientData.username &&
+            clientData.password &&
+            clientData.confirmPassword &&
+            clientData.password === clientData.confirmPassword
           );
         default:
           return false;
       }
     },
-    [formData]
+    [clientData]
   );
 
   const totalStep = 6;
@@ -146,7 +146,7 @@ const FormCliente = () => {
     };
 
     try {
-      const snakeCaseData = toSnakeCase(formData);
+      const snakeCaseData = toSnakeCase(clientData);
 
       const response = await fetch('http://localhost:3000/clients', {
         method: 'POST',
@@ -176,7 +176,7 @@ const FormCliente = () => {
             type="text"
             id="firstName"
             name="firstName"
-            value={formData.firstName}
+            value={clientData.firstName}
             onChange={handleChange}
             required
           />
@@ -185,7 +185,7 @@ const FormCliente = () => {
             type="text"
             id="lastName"
             name="lastName"
-            value={formData.lastName}
+            value={clientData.lastName}
             onChange={handleChange}
             required
           />
@@ -194,14 +194,14 @@ const FormCliente = () => {
             id="birthDate"
             type="date"
             name="birthDate"
-            value={formData.birthDate}
+            value={clientData.birthDate}
             onChange={handleChange}
             required
           />
           <SelectBox
             label="Sesso"
             name="gender"
-            value={formData.gender}
+            value={clientData.gender}
             onChange={handleChange}
             options={[
               { value: 'male', label: 'Maschio' },
@@ -222,7 +222,7 @@ const FormCliente = () => {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
+            value={clientData.email}
             onChange={handleChange}
             required
           />
@@ -231,7 +231,7 @@ const FormCliente = () => {
             type="tel"
             id="phone"
             name="phone"
-            value={formData.phone}
+            value={clientData.phone}
             onChange={handleChange}
             required
           />
@@ -247,7 +247,7 @@ const FormCliente = () => {
             type="number"
             id="weight"
             name="weight"
-            value={formData.weight}
+            value={clientData.weight}
             onChange={handleChange}
             required
           />
@@ -256,7 +256,7 @@ const FormCliente = () => {
             type="number"
             id="height"
             name="height"
-            value={formData.height}
+            value={clientData.height}
             onChange={handleChange}
             required
           />
@@ -272,7 +272,7 @@ const FormCliente = () => {
             type="text"
             id="allergies"
             name="allergies"
-            value={formData.allergies}
+            value={clientData.allergies}
             onChange={handleChange}
             required
           />
@@ -281,7 +281,7 @@ const FormCliente = () => {
             type="text"
             id="foodIntolerances"
             name="foodIntolerances"
-            value={formData.foodIntolerances}
+            value={clientData.foodIntolerances}
             onChange={handleChange}
             required
           />
@@ -295,7 +295,7 @@ const FormCliente = () => {
           <SelectBox
             label={'Livello di Attività fisica'}
             name="activityLevel"
-            value={formData.activityLevel}
+            value={clientData.activityLevel}
             onChange={handleChange}
             options={[
               { value: 'sedentario', label: 'Sedentario' },
@@ -308,7 +308,7 @@ const FormCliente = () => {
           <SelectBox
             label="Obiettivi Fitness"
             name="fitnessGoals"
-            value={formData.fitnessGoals}
+            value={clientData.fitnessGoals}
             onChange={handleChange}
             options={[
               { value: 'perdita', label: 'Perdita di peso' },
@@ -323,7 +323,7 @@ const FormCliente = () => {
           <SelectBox
             label="Preferenze di Allenamento"
             name="workoutPreferences"
-            value={formData.workoutPreferences}
+            value={clientData.workoutPreferences}
             onChange={handleChange}
             options={[
               { value: 'attivitaAllAperta', label: 'Attività all\'aperto' },
@@ -334,7 +334,7 @@ const FormCliente = () => {
           <SelectBox
             label="Tempo Disponibile"
             name="availableTime"
-            value={formData.availableTime}
+            value={clientData.availableTime}
             onChange={handleChange}
             options={[
               { value: 'menoDi1h', label: 'Meno di 1 ora' },
@@ -375,7 +375,7 @@ const FormCliente = () => {
             type="text"
             id="username"
             name="username"
-            value={formData.username}
+            value={clientData.username}
             onChange={handleChange}
             required
           />
@@ -384,7 +384,7 @@ const FormCliente = () => {
             type={showPassword ? 'text' : 'password'}
             id="password"
             name="password"
-            value={formData.password}
+            value={clientData.password}
             onChange={handleChange}
             required
           />
@@ -400,7 +400,7 @@ const FormCliente = () => {
             type={showPassword ? 'text' : 'password'}
             id="confirmPassword"
             name="confirmPassword"
-            value={formData.confirmPassword}
+            value={clientData.confirmPassword}
             onChange={handleChange}
             required
           />

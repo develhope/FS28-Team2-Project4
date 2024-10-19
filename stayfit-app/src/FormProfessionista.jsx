@@ -8,7 +8,7 @@ import { SelectBox } from './MyComponents/SelectBox';
 const FormProfessionista = ({ onClose, onChange }) => {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [professionalData, setProfessionalData] = useState({
     professionType: '',
     certifications: [],
     taxCode: '',
@@ -36,9 +36,9 @@ const FormProfessionista = ({ onClose, onChange }) => {
   const [errors, setErrors] = useState({}); // Stato per gestire gli errori
 
   useEffect(() => {
-    const savedFormData = localStorage.getItem('formData');
+    const savedFormData = localStorage.getItem('professionalData');
     if (savedFormData) {
-      setFormData(JSON.parse(savedFormData));
+      setProfessionalData(JSON.parse(savedFormData));
     }
   }, []);
 
@@ -46,7 +46,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
   const progress = (step / totalStep) * 100;
 
   const handleChange = ({ target: { name, value, type, checked, files } }) => {
-    setFormData((prev) => ({
+    setProfessionalData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : files ? files : value,
     }));
@@ -57,7 +57,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
   };
 
   const handleSubscriptionChange = (subscriptionType) => {
-    setFormData((prev) => ({ ...prev, subscriptionType }));
+    setProfessionalData((prev) => ({ ...prev, subscriptionType }));
     setErrors((prev) => ({
       ...prev,
       subscriptionType: '', // Resetta l'errore relativo a subscriptionType
@@ -73,7 +73,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
       if (
         step === steps.findIndex((s) => s.fields.includes('confirmPassword'))
       ) {
-        if (formData.password !== formData.confirmPassword) {
+        if (professionalData.password !== professionalData.confirmPassword) {
           setErrors((prev) => ({
             ...prev,
             confirmPassword: 'Le password non corrispondono.',
@@ -83,13 +83,13 @@ const FormProfessionista = ({ onClose, onChange }) => {
       }
 
       if (step === steps.length - 1) {
-        if (!formData.termsAccepted || !formData.privacyPolicyAccepted) {
+        if (!professionalData.termsAccepted || !professionalData.privacyPolicyAccepted) {
           setErrors((prev) => ({
             ...prev,
-            termsAccepted: !formData.termsAccepted
+            termsAccepted: !professionalData.termsAccepted
               ? 'Devi accettare i Termini e Condizioni.'
               : '',
-            privacyPolicyAccepted: !formData.privacyPolicyAccepted
+            privacyPolicyAccepted: !professionalData.privacyPolicyAccepted
               ? "Devi accettare l'Informativa Privacy."
               : '',
           }));
@@ -106,7 +106,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
 
   const handleSubmit = () => {
     // Salva i dati in localStorage
-    localStorage.setItem('formData', JSON.stringify(formData));
+    localStorage.setItem('professionalData', JSON.stringify(professionalData));
     alert('Dati inviati correttamente!');
   };
 
@@ -116,25 +116,25 @@ const FormProfessionista = ({ onClose, onChange }) => {
 
     steps[i].fields.forEach((f) => {
       if (f === 'taxCode') {
-        if (formData.taxCode && !/^\d{11}$/.test(formData.taxCode)) {
+        if (professionalData.taxCode && !/^\d{11}$/.test(professionalData.taxCode)) {
           stepErrors.taxCode =
             'La partita IVA deve contenere esattamente 11 cifre.';
           hasErrors = true;
         }
       }
 
-      if (f === 'phone' && !/^\d+$/.test(formData.phone)) {
+      if (f === 'phone' && !/^\d+$/.test(professionalData.phone)) {
         stepErrors.phone = 'Il numero di telefono deve contenere solo cifre.';
         hasErrors = true;
       }
 
-      if (f === 'subscriptionType' && !formData.subscriptionType) {
+      if (f === 'subscriptionType' && !professionalData.subscriptionType) {
         stepErrors[f] = 'Devi selezionare un piano di abbonamento.';
         hasErrors = true;
       }
 
       if (
-        !formData[f] &&
+        !professionalData[f] &&
         f !== 'taxCode' &&
         f !== 'socialNetwork' &&
         f !== 'socialAccountName'
@@ -182,7 +182,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             type="text"
             name="firstName"
             id="firstName"
-            value={formData.firstName}
+            value={professionalData.firstName}
             label={'Nome'}
             onChange={handleChange}
             required
@@ -194,7 +194,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             type="text"
             name="lastName"
             id="lastName"
-            value={formData.lastName}
+            value={professionalData.lastName}
             label={'Cognome'}
             onChange={handleChange}
             required
@@ -205,7 +205,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             name="birthDate"
             id="birthDate"
             label="Data di nascita"
-            value={formData.birthDate}
+            value={professionalData.birthDate}
             onChange={handleChange}
             required
           />
@@ -216,7 +216,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             type="text"
             name="taxCode"
             id="taxCode"
-            value={formData.taxCode}
+            value={professionalData.taxCode}
             onChange={handleChange}
             label={'Partita IVA (opzionale)'}
             maxLength={11}
@@ -227,7 +227,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             name="email"
             id="email"
             label={'Email'}
-            value={formData.email}
+            value={professionalData.email}
             onChange={handleChange}
             required
           />
@@ -236,7 +236,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             type="tel"
             id="phone"
             name="phone"
-            value={formData.phone}
+            value={professionalData.phone}
             onChange={handleChange}
             label={'Numero di telefono'}
             required
@@ -253,7 +253,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
         <div className="flex flex-col gap-5">
           <SelectBox
             name="professionType"
-            value={formData.professionType}
+            value={professionalData.professionType}
             onChange={handleChange}
             label={'Seleziona tipo professionista'}
             options={professionOptions}
@@ -267,7 +267,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             name="workArea"
             id="workArea"
             label={'Sede lavorativa (città)'}
-            value={formData.workArea}
+            value={professionalData.workArea}
             onChange={handleChange}
             required
           />
@@ -277,7 +277,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             name="experience"
             id="experience"
             label={'Esperienza Professionale (anni)'}
-            value={formData.experience}
+            value={professionalData.experience}
             onChange={handleChange}
             required
           />
@@ -312,7 +312,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             className="peer border-2 w-[300px] h-[200px] bg-transparent border-secondary-gray cursor-text
               caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
               duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green"
-            value={formData.description}
+            value={professionalData.description}
             onChange={handleChange}
             required
           />
@@ -330,7 +330,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             type="text"
             name="username"
             id="username"
-            value={formData.username}
+            value={professionalData.username}
             label={'Username'}
             onChange={handleChange}
             required
@@ -341,7 +341,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             name="password"
             id="password"
             label={'Password'}
-            value={formData.password}
+            value={professionalData.password}
             onChange={handleChange}
             required
           />
@@ -351,7 +351,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             name="confirmPassword"
             id="confirmPassword"
             label={'Conferma Password'}
-            value={formData.confirmPassword}
+            value={professionalData.confirmPassword}
             onChange={handleChange}
             required
           />
@@ -391,7 +391,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
           <CardProvider>
             <SubCards onSubscriptionChange={handleSubscriptionChange} />
           </CardProvider>
-          {!formData.subscriptionType && errors.subscriptionType && (
+          {!professionalData.subscriptionType && errors.subscriptionType && (
             <p className="text-red-500">{errors.subscriptionType}</p>
           )}
         </div>
@@ -404,7 +404,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
         <div>
           <SelectBox
             name="socialNetwork"
-            value={formData.socialNetwork}
+            value={professionalData.socialNetwork}
             onChange={handleChange}
             label={'Seleziona social network'}
             options={socialOptions}
@@ -413,15 +413,15 @@ const FormProfessionista = ({ onClose, onChange }) => {
           {errors.socialNetwork && (
             <p className="text-red-500">{errors.socialNetwork}</p>
           )}
-          {formData.socialNetwork && formData.socialNetwork !== 'Seleziona' && (
+          {professionalData.socialNetwork && professionalData.socialNetwork !== 'Seleziona' && (
             <div className="mt-5">
               <label className="text-xl text-secondary-green">
-                Nome account {formData.socialNetwork}
+                Nome account {professionalData.socialNetwork}
               </label>
               <Textbox
                 type="text"
                 name="socialAccountName"
-                value={formData.socialAccountName}
+                value={professionalData.socialAccountName}
                 onChange={handleChange}
               />
               {errors.socialAccountName && (
@@ -440,7 +440,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             <input
               type="checkbox"
               name="termsAccepted"
-              checked={formData.termsAccepted}
+              checked={professionalData.termsAccepted}
               onChange={handleChange}
               required
             />
@@ -455,7 +455,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             <input
               type="checkbox"
               name="privacyPolicyAccepted"
-              checked={formData.privacyPolicyAccepted}
+              checked={professionalData.privacyPolicyAccepted}
               onChange={handleChange}
               required
             />
@@ -478,7 +478,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             type="text"
             name="referral"
             id="referral"
-            value={formData.referral}
+            value={professionalData.referral}
             onChange={handleChange}
             required
           />
@@ -487,7 +487,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
             <input
               type="checkbox"
               name="receiveUpdates"
-              checked={formData.receiveUpdates}
+              checked={professionalData.receiveUpdates}
               onChange={handleChange}
             />
             <label className="text-xl text-secondary-green">
@@ -499,7 +499,7 @@ const FormProfessionista = ({ onClose, onChange }) => {
     },
   ];
 
-  console.log(formData);
+  console.log(professionalData);
 
   return (
     <div className="flex flex-col justify-center items-center w-fit h-fit px-9 py-9 bg-primary-blue border-2 border-secondary-green rounded-lg">
