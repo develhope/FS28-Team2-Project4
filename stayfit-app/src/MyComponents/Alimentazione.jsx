@@ -1,69 +1,227 @@
-import { useState, useEffect } from "react";
-import { SelectBox } from "./SelectBox";
+import { useState, useEffect } from 'react';
+import { SelectBox } from './SelectBox';
+import Button from './Button'; // Assicurati che il percorso sia corretto
 
 const Alimentazione = () => {
-  const [nutrition, setNutrition] = useState([
-    { giorno: "Allenante", grammatura: 150, alimento: "Riso" },
-    { giorno: "Riposo", grammatura: 100, alimento: "Insalata" },
-    { giorno: "Allenante", grammatura: 200, alimento: "Pollo" },
-    { giorno: "Riposo", grammatura: 250, alimento: "Pasta" }
-  ]);
+  const [nutrition, setNutrition] = useState({
+    Allenante: [
+      { pasto: 'Colazione', alimenti: [] },
+      { pasto: 'Primo Spuntino', alimenti: [] },
+      { pasto: 'Pranzo', alimenti: [] },
+      { pasto: 'Secondo Spuntino', alimenti: [] },
+      { pasto: 'Cena', alimenti: [] },
+    ],
+    Riposo: [
+      { pasto: 'Colazione', alimenti: [] },
+      { pasto: 'Primo Spuntino', alimenti: [] },
+      { pasto: 'Pranzo', alimenti: [] },
+      { pasto: 'Secondo Spuntino', alimenti: [] },
+      { pasto: 'Cena', alimenti: [] },
+    ],
+  });
 
   const [foods, setFoods] = useState([]);
-  const [selectedFood, setSelectedFood] = useState("");
+  const [savedDays, setSavedDays] = useState({
+    Allenante: false,
+    Riposo: false,
+  });
 
-  // Funzione per recuperare gli alimenti dal server
   const fetchFoods = async () => {
     try {
-      const response = await fetch("http://localhost:3000/foods");
+      const response = await fetch('http://localhost:3000/foods');
       const data = await response.json();
-      setFoods(data);
+
+      const formattedFoods = data.map(food => ({
+        ...food,
+        descrizione: food.descrizione
+          .split('_')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' '),
+      }));
+
+      setFoods(formattedFoods);
     } catch (error) {
-      console.error("Errore nel recupero degli alimenti:", error);
+      console.error('Errore nel recupero degli alimenti:', error);
     }
   };
 
   useEffect(() => {
-    fetchFoods(); // Recupera gli alimenti al caricamento del componente
+    fetchFoods();
   }, []);
 
-  const handleFoodChange = (e) => {
-    setSelectedFood(e.target.value);
+  const handleTempChange = (giorno, pasto, field, value, index) => {
+    setNutrition((prev) => {
+      const updatedNutrition = {
+        ...prev,
+        [giorno]: prev[giorno].map((item) =>
+          item.pasto === pasto
+            ? {
+                ...item,
+                alimenti: item.alimenti.map((alimento, i) =>
+                  i === index ? { ...alimento, [field]: value } : alimento
+                ),
+              }
+            : item
+        ),
+      };
+      return updatedNutrition;
+    });
+  };
+
+  const addAlimento = (giorno, pasto) => {
+    const newAlimento = { alimento: '', grammatura: '' };
+    const updatedNutrition = {
+      ...nutrition,
+      [giorno]: nutrition[giorno].map((item) =>
+        item.pasto === pasto
+          ? { ...item, alimenti: [...item.alimenti, newAlimento] }
+          : item
+      ),
+    };
+    setNutrition(updatedNutrition);
+  };
+
+  const removeAlimento = (giorno, pasto, index) => {
+    const updatedNutrition = {
+      ...nutrition,
+      [giorno]: nutrition[giorno].map((item) =>
+        item.pasto === pasto
+          ? { ...item, alimenti: item.alimenti.filter((_, i) => i !== index) }
+          : item
+      ),
+    };
+    setNutrition(updatedNutrition);
+  };
+
+  const saveDay = (giorno) => {
+    setSavedDays((prev) => ({ ...prev, [giorno]: !prev[giorno] }));
   };
 
   return (
-    <div className="overflow-x-auto pt-10 flex justify-center">
-      <table className="min-w-[90%] border-collapse border border-secondary-gray">
-        <thead>
-          <tr className="bg-secondary-green">
-            <th className="border borde-secondary-gray p-2">Giorno</th>
-            <th className="border borde-secondary-gray p-2">Grammatura (g)</th>
-            <th className="border borde-secondary-gray p-2">Alimento</th>
-          </tr>
-        </thead>
-        <tbody>
-          {nutrition.map((item, index) => (
-            <tr className="text-white" key={index}>
-              <td className="border borde-secondary-gray p-2">{item.giorno}</td>
-              <td className="border borde-secondary-gray p-2">{item.grammatura}</td>
-              <td className="border borde-secondary-gray p-2">
-                {/* Aggiungi la SelectBox per selezionare l'alimento */}
-                <SelectBox
-                  label="Seleziona Alimento"
-                  name={`food-${index}`}
-                  value={selectedFood}
-                  onChange={handleFoodChange}
-                  options={foods.map((food) => ({
-                    value: food.id, // L'id come valore
-                    label: food.descrizione // Descrizione come testo visibile
-                  }))}
-                  required
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="overflow-x-auto mt-4 font-nowalt">
+      <h1 className="text-2xl font-bold text-white mb-6">Scheda Alimentare</h1>
+      {['Allenante', 'Riposo'].map((giorno) => (
+        <div key={giorno} className="mb-8">
+          <h2 className="text-xl font-bold text-white pb-5">{giorno}</h2>
+          <div className="flex justify-center">
+            <table className="min-w-[90vw] border border-light-blue-shadow table-auto lg:table-fixed shadow-card">
+              <thead className="bg-light-blue-shadow text-white">
+                <tr className="text-center">
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Pasto
+                  </th>
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Alimento
+                  </th>
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Grammatura (g)
+                  </th>
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Azioni
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-primary-blue text-white">
+                {nutrition[giorno].map((meal, mealIndex) => (
+                  <tr key={mealIndex} className="">
+                    <td className="border border-light-blue-shadow p-2 text-left pl-5">
+                      {meal.pasto}
+                    </td>
+                    <td className="border border-light-blue-shadow p-2">
+                      {meal.alimenti.map((alimento, index) => (
+                        <div key={index} className="my-2 flex justify-center items-center">
+                          {savedDays[giorno] ? (
+                            <span>{alimento.alimento}</span>
+                          ) : (
+                            <SelectBox
+                              label="Seleziona Alimento"
+                              name={`alimento-${giorno}-${meal.pasto}-${index}`}
+                              value={alimento.alimento}
+                              onChange={(e) =>
+                                handleTempChange(
+                                  giorno,
+                                  meal.pasto,
+                                  'alimento',
+                                  e.target.value,
+                                  index
+                                )
+                              }
+                              options={foods.map((food) => ({
+                                value: food.descrizione,
+                                label: food.descrizione,
+                              }))}
+                              required
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </td>
+                    <td className="border border-light-blue-shadow p-2">
+                      {meal.alimenti.map((alimento, index) => (
+                        <div key={index} className="mb-2">
+                          {savedDays[giorno] ? (
+                            <span>{alimento.grammatura} g</span>
+                          ) : (
+                            <input
+                              min='0'
+                              type="number"
+                              value={alimento.grammatura || ''}
+                              onChange={(e) =>
+                                handleTempChange(
+                                  giorno,
+                                  meal.pasto,
+                                  'grammatura',
+                                  e.target.value,
+                                  index
+                                )
+                              }
+                              className="bg-dark-blue-shadow text-white border-2 outline-none border-secondary-gray hover:border-secondary-green focus:border-secondary-green p-1 rounded w-1/3 my-2"
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </td>
+                    <td className="border border-none p-2 flex justify-center">
+                      <div className="flex flex-wrap justify-center gap-2 pt-2">
+                        {!savedDays[giorno] && (
+                          <Button
+                            type="button"
+                            onClick={() => addAlimento(giorno, meal.pasto)}
+                            text="Aggiungi Alimento +"
+                          />
+                        )}
+                        {meal.alimenti.length > 0 && !savedDays[giorno] && (
+                          <Button
+                            type="button"
+                            onClick={() =>
+                              removeAlimento(
+                                giorno,
+                                meal.pasto,
+                                meal.alimenti.length - 1
+                              )
+                            }
+                            text="Rimuovi"
+                            color="#C71C24"
+                            txtcolor="#FFFFFF"
+                          />
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="w-full flex justify-center pt-5">
+            <Button
+              type="button"
+              onClick={() => saveDay(giorno)}
+              text={savedDays[giorno] ? 'Modifica' : 'Salva'}
+              color={savedDays[giorno] ? '#ffc107' : ''}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

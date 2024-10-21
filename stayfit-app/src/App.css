@@ -19,10 +19,17 @@ input:-webkit-autofill:active {
   -webkit-appearance: none !important;
   background-color: transparent !important;
   -webkit-box-shadow: 0 0 0 30px transparent !important; /* Cambia il colore "white" a quello che preferisci per lo sfondo */
-  -webkit-text-fill-color: #C5C5C5 !important;
+  -webkit-text-fill-color: #c5c5c5 !important;
   transition: background-color 5000s ease-in-out 0s; /* Per impedire che Chrome applichi di nuovo lo stile predefinito */
 }
-
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 
 #root {
   height: 100%;
@@ -110,13 +117,12 @@ button:active.glow-button {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
+-ms-overflow-style: none;
+scrollbar-width: none;
 
 @layer utilities {
   input:-webkit-autofill {

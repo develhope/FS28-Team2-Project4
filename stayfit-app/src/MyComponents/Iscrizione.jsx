@@ -74,7 +74,7 @@ useEffect(() => {
 
         {/* Informazioni di fatturazione aggiuntive */}
         <div className="bg-activated-card p-6 rounded-lg">
-          <h4 className="font-bold mb-4 p-2 text-secondary-green">Informazioni di fatturazione aggiuntive:</h4>
+          <h4 className="font-bold mb-4 text-secondary-green">Informazioni di fatturazione:</h4>
           <input
             type="text"
             className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md"
@@ -82,7 +82,7 @@ useEffect(() => {
             aria-label="Nome azienda"
           />
           <textarea
-            className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md p-5"
+            className="bg-light-blue-shadow p-2 w-full mt-2 rounded-md"
             placeholder="Indirizzo di fatturazione"
             aria-label="Indirizzo di fatturazione"
           ></textarea>

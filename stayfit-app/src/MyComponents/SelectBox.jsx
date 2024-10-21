@@ -19,7 +19,7 @@ export const SelectBox = ({
   };
 
   return (
-    <div className="relative w-[300px] h-10">
+    <div className="relative w-[300px] h-10 mb-2">
       <label
         htmlFor={name}
         className={`absolute opacity-0 left-4 top-2 transition-all duration-200 ease-in-out bg-primary-blue px-0.5 bg-left bg-no-repeat ${
@@ -31,7 +31,7 @@ export const SelectBox = ({
         {label}
       </label>
       <select
-        className="custom-select peer border-2 w-[300px] h-10 bg-transparent border-secondary-gray
+        className="custom-select peer border-2 w-[300px] h-10 bg-primary-blue border-secondary-gray
           caret-[#C5C5C5] text-[#C5C5C5] pl-[12px] pr-[12px] rounded-[6px] outline-none transition-all
           duration-300 focus:ring-secondary-green hover:border-secondary-green focus:border-secondary-green
           glow-effect focus:transition-all focus:duration-300 cursor-pointer"
@@ -42,7 +42,7 @@ export const SelectBox = ({
         onBlur={handleBlur}
         {...(required && { required })}
       >
-        <option value="">{label}</option>
+        <option className='rounded-xl' value="">{label}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
