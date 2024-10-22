@@ -27,11 +27,21 @@ const LoginForm = ({ onClose }) => {
         console.log(data);
 
         if (data.token) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('userId', data.user.id);
-          localStorage.setItem('user', JSON.stringify(data.user));
-          setErrorMessage('');
-          navigate('/dashboard');
+          const user = data.user;
+        let formattedBirthUser = user;
+        if (user.birth_date) {
+          const isoDateString = user.birth_date;
+          const date = new Date(isoDateString);
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          const formattedDate = date.toLocaleDateString('it-IT', options);
+          formattedBirthUser = { ...user, birth_date: formattedDate };
+        }
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', formattedBirthUser.id);
+        localStorage.setItem('user', JSON.stringify(formattedBirthUser));
+        setErrorMessage('');
+        navigate('/dashboard');
         } else {
           setErrorMessage('ID utente non trovato');
         }

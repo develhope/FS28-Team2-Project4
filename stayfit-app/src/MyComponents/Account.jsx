@@ -3,20 +3,12 @@ import Button from './Button';
 
 export const Account = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [birthDate, setBirthDate] = useState(null)
 
   useEffect(() => {
     const userToParse = localStorage.getItem('user');
     const userInfo = JSON.parse(userToParse);
     if (userInfo) {
       setUserInfo(userInfo);
-      if(userInfo.birth_date) {
-      const isoDateString = userInfo.birth_date;
-      const date = new Date(isoDateString);
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      const formattedDate = date.toLocaleDateString('it-IT', options);
-      setBirthDate(formattedDate)
-      }
     } else {
       setUserInfo(null);
     }
@@ -53,7 +45,7 @@ export const Account = () => {
           <p className="">
             Data di nascita:{' '}
             <span className="font-bold">
-              {userInfo ? `${birthDate}` : loadingMsg}
+              {userInfo ? `${userInfo.birth_date}` : loadingMsg}
             </span>
           </p>
           <p className="">
