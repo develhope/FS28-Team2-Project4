@@ -4,7 +4,7 @@ export const Supporto = () => {
   return (
     <>
       <div className="bg-activated-card text-white p-6 rounded-lg shadow-md">
-        <div className="flex justify-around">
+        <div className="flex flex-wrap justify-around">
           <div className="flex flex-col justify-center text-start mt-5">
             <header className="mb-6">
               <h3 className="text-3xl font-bold mb-2 text-secondary-green">

@@ -2,42 +2,27 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from './Icon';
 import Button from './Button';
-import users from '../../database/dbProfessionista.json';
 
 const Header = () => {
-  const [userInfo, setUserInfo] = useState(null)
+  const [userInfo, setUserInfo] = useState(null);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    const fetchUserInfo = async () => {
-      const userId = localStorage.getItem('userId');
+    const userToParse = localStorage.getItem('user');
+    const userInfo = JSON.parse(userToParse)
+    if(userInfo) {
+      setUserInfo(userInfo)
+    } else {
+      setUserInfo(null)
+    }
+  }, [])
 
-      if (userId) {
-        try {
-          const res = await fetch(`http://localhost:3000/professionals/${userId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            setUserInfo(data);
-          } else {
-            setErrorMessage('Impossibile recuperare le informazioni dell\'utente');
-          }
-        } catch (error) {
-          console.error('Errore durante il recupero delle informazioni dell\'utente:', error);
-          setErrorMessage('Si è verificato un errore durante il recupero delle informazioni');
-        }
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
-
+  const logout = () => {
+    localStorage.clear()
+    navigate('/');
+  };
 
   const toggleNotifications = () => {
     setIsNotificationsOpen(!isNotificationsOpen);
@@ -92,7 +77,9 @@ const Header = () => {
             className="h-12 w-12 rounded-full"
           />
           <span className="hidden md:block text-white hover:text-secondary-green">
-            {userInfo ? `${userInfo.first_name} ${userInfo.last_name}` : 'Caricamento...'}
+            {userInfo
+              ? `${userInfo.first_name} ${userInfo.last_name}`
+              : 'Caricamento...'}
           </span>
         </div>
 
@@ -100,10 +87,7 @@ const Header = () => {
         <div className="w-32">
           <Button
             type={''}
-            onClick={() => {
-              localStorage.removeItem('userId');
-              navigate('/');
-            }}
+            onClick={logout}
             text={'Logout'}
             color={'#800E13'}
             txtcolor={'#FFF'}

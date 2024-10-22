@@ -5,6 +5,9 @@ import 'express-async-errors';
 import dotenv from 'dotenv';
 import { database } from './database.js';
 import cors from 'cors';
+import { generateToken } from './functions/generateToken.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -40,7 +43,9 @@ const schemaClient = Joi.object({
   weight: Joi.number().required().label('Peso (kg)'),
   height: Joi.number().required().label('Altezza (cm)'),
   allergies: Joi.array().items(Joi.string()).label('Allergie'),
-  food_intolerances: Joi.array().items(Joi.string()).label('Intolleranze Alimentari'),
+  food_intolerances: Joi.array()
+    .items(Joi.string())
+    .label('Intolleranze Alimentari'),
   activity_level: Joi.string()
     .valid('sedentario', 'modAttivo', 'attivo', 'moltoAttivo')
     .required()
@@ -59,10 +64,7 @@ const schemaClient = Joi.object({
     .required()
     .label('Obiettivi Fitness'),
   workout_preferences: Joi.string()
-    .valid(
-      'attivitaAllAperta',
-      'palestra'
-    )
+    .valid('attivitaAllAperta', 'palestra')
     .required()
     .label('Preferenze di Allenamento'),
   available_time: Joi.string()
@@ -72,10 +74,12 @@ const schemaClient = Joi.object({
   photo: Joi.any().optional().label('Foto'),
   username: Joi.string().required().min(3).max(30).label('Nome Utente'),
   password: Joi.string().required().min(6).label('Password'),
-  confirm_password: Joi.string().valid(Joi.ref('password')).required().label('Conferma Password'),
+  confirm_password: Joi.string()
+    .valid(Joi.ref('password'))
+    .required()
+    .label('Conferma Password'),
   professional_id: Joi.string().required().label('ID del professionista'),
 });
-
 
 const schemaProf = Joi.object({
   profession_type: Joi.string()
@@ -137,46 +141,86 @@ app.get('/professionals/:id', async (req, res) => {
   }
 });
 
-app.post('/professionals', async (req, res) => {
+app.post('/register', async (req, res) => {
   const { error, value } = schemaProf.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
   try {
+    const existingUsers = await database.oneOrNone(
+      'SELECT * FROM professionals WHERE email = $1',
+      [value.email]
+    );
+
+    if (existingUsers) {
+      return res
+        .status(400)
+        .json({ error: 'Questa mail risulta già registrata' });
+    }
+
+    const cryptedPassword = await bcrypt.hash(value.password, 10);
+
     const newUser = await database.one(
       'INSERT INTO professionals (profession_type, birth_date, description, email, experience, first_name, last_name, password, phone, privacy_policy_accepted, receive_updates, referral, social_account_name, social_network, subscription_type, tax_code, terms_accepted, username, work_area) VALUES (${profession_type}, ${birth_date}, ${description}, ${email}, ${experience}, ${first_name}, ${last_name}, ${password}, ${phone}, ${privacy_policy_accepted}, ${receive_updates}, ${referral}, ${social_account_name}, ${social_network}, ${subscription_type}, ${tax_code}, ${terms_accepted}, ${username}, ${work_area}) RETURNING id',
-      value
+      { ...value, password: cryptedPassword }
     );
-    res.status(201).json({ msg: 'User created successfully', id: newUser.id });
+
+    const createdUser = await database.one(
+      'SELECT * FROM professionals WHERE id = $1',
+      [newUser.id]
+    );
+
+    const token = generateToken({
+      id: createdUser.id,
+      email: createdUser.email,
+    });
+
+    res
+      .status(201)
+      .json({
+        msg: 'Utente registrato con successo',
+        user: createdUser,
+        token,
+      });
   } catch (error) {
     console.error("Errore nella creazione dell'utente:", error);
     res.status(500).json({ error: "Errore nella creazione dell'utente" });
   }
 });
 
-app.put('/professionals/:id', async (req, res) => {
-  const { error, value } = schemaProf.validate(req.body);
+app.put('/professionals/:id/password', async (req, res) => {
+  const { password } = req.body;
   const { id } = req.params;
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
+
+  if (!password) {
+    return res.status(400).json({ error: 'La password è richiesta' });
   }
+
   try {
     const user = await database.oneOrNone(
       'SELECT * FROM professionals WHERE id = $1',
       [id]
     );
+
     if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+      return res.status(404).json({ msg: 'Utente non trovato' });
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await database.none(
-      'UPDATE professionals SET profession_type = ${profession_type}, birth_date = ${birth_date}, description = ${description}, email = ${email}, experience = ${experience}, first_name = ${first_name}, last_name = ${last_name}, password = ${password}, phone = ${phone}, privacy_policy_accepted = ${privacy_policy_accepted}, receive_updates = ${receive_updates}, referral = ${referral}, social_account_name = ${social_account_name}, social_network = ${social_network}, subscription_type = ${subscription_type}, tax_code = ${tax_code}, terms_accepted = ${terms_accepted}, username = ${username}, work_area = ${work_area} WHERE id = ${id}',
-      value
+      'UPDATE professionals SET password = ${password} WHERE id = ${id}',
+      { password: hashedPassword, id }
     );
-    res.status(200).json({ msg: 'User updated successfully' });
+
+    res.status(200).json({ msg: 'Password aggiornata con successo' });
   } catch (error) {
-    res.status(500).json({ error: "Errore nell'aggiornare l'utente" });
+    console.error('Errore nell\'aggiornare la password:', error);
+    res.status(500).json({ error: "Errore nell'aggiornare la password" });
   }
 });
+
+
 
 app.delete('/professionals/:id', async (req, res) => {
   const { id } = req.params;
@@ -204,17 +248,27 @@ app.post('/clients', async (req, res) => {
   // Trasforma le stringhe in array
   const allergiesArray = Array.isArray(req.body.allergies)
     ? req.body.allergies
-    : req.body.allergies ? req.body.allergies.split(',').map(item => item.trim()).filter(item => item) : [];
+    : req.body.allergies
+    ? req.body.allergies
+        .split(',')
+        .map((item) => item.trim())
+        .filter((item) => item)
+    : [];
 
   const foodIntolerancesArray = Array.isArray(req.body.foodIntolerances)
     ? req.body.foodIntolerances
-    : req.body.foodIntolerances ? req.body.foodIntolerances.split(',').map(item => item.trim()).filter(item => item) : [];
+    : req.body.foodIntolerances
+    ? req.body.foodIntolerances
+        .split(',')
+        .map((item) => item.trim())
+        .filter((item) => item)
+    : [];
 
   const { error, value } = schemaClient.validate({
     ...req.body,
     professional_id: professionalId,
     allergies: allergiesArray,
-    food_intolerances: foodIntolerancesArray
+    food_intolerances: foodIntolerancesArray,
   });
 
   if (error) {
@@ -227,10 +281,12 @@ app.post('/clients', async (req, res) => {
       'INSERT INTO clients (first_name, last_name, birth_date, gender, email, phone, weight, height, allergies, food_intolerances, activity_level, fitness_goals, workout_preferences, available_time, photo, username, password, professional_id) VALUES (${first_name}, ${last_name}, ${birth_date}, ${gender}, ${email}, ${phone}, ${weight}, ${height}, ${allergies}, ${food_intolerances}, ${activity_level}, ${fitness_goals}, ${workout_preferences}, ${available_time}, ${photo}, ${username}, ${password}, ${professional_id}) RETURNING id',
       value
     );
-    res.status(201).json({ msg: 'Client created successfully', id: newUser.id });
+    res
+      .status(201)
+      .json({ msg: 'Client created successfully', id: newUser.id });
   } catch (error) {
     console.error('Errore nella creazione del cliente:', error);
-    res.status(500).json({ error: "Errore nella creazione del cliente" });
+    res.status(500).json({ error: 'Errore nella creazione del cliente' });
   }
 });
 
@@ -242,7 +298,10 @@ app.get('/clients', async (req, res) => {
   }
 
   try {
-    const clienti = await database.any('SELECT * FROM clients WHERE professional_id = $1', [professionalId]);
+    const clienti = await database.any(
+      'SELECT * FROM clients WHERE professional_id = $1',
+      [professionalId]
+    );
     res.status(200).json(clienti);
   } catch (error) {
     console.error('Errore nel recupero dei clienti:', error);
@@ -282,17 +341,23 @@ app.post('/login', async (req, res) => {
 
   try {
     const user = await database.oneOrNone(
-      'SELECT * FROM professionals WHERE email = $1 AND password = $2',
-      [email, password]
+      'SELECT * FROM professionals WHERE email = $1',
+      [email]
     );
 
-    if (user) {
-      res
-        .status(200)
-        .json({ msg: 'Login effettuato con successo', userId: user.id });
-    } else {
-      res.status(401).json({ error: 'Email o password non corretti' });
+    if (!user) {
+      return res.status(404).json({ error: 'Utente non trovato' });
     }
+
+    const matchedPassword = await bcrypt.compare(password, user.password);
+
+    if (!matchedPassword) {
+      return res.status(401).json({ error: 'Password non corretta' });
+    }
+
+    const token = generateToken(user);
+
+    res.status(200).json({ msg: 'Login effettuato con successo', user, token });
   } catch (error) {
     console.error('Errore durante il login:', error);
     res

@@ -31,7 +31,7 @@ const Textbox = ({ label, type, id, name, hasError, onChange, value }) => {
         <input
           id={id}
           type={type}
-          value={inputVal}
+          value={inputVal || ''}
           name={name}
           onChange={(e) => {
             setInputVal(e.target.value);
@@ -59,7 +59,7 @@ const Textbox = ({ label, type, id, name, hasError, onChange, value }) => {
 };
 
 Textbox.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   type: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   value: PropTypes.string,

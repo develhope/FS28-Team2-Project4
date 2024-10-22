@@ -26,8 +26,10 @@ const LoginForm = ({ onClose }) => {
         const data = await response.json();
         console.log(data);
 
-        if (data.userId) {
-          localStorage.setItem('userId', data.userId);
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.user.id);
+          localStorage.setItem('user', JSON.stringify(data.user));
           setErrorMessage('');
           navigate('/dashboard');
         } else {
