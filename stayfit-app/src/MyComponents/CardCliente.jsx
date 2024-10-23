@@ -11,6 +11,7 @@ export function CardCliente({
   stileDiVita,
   foto,
   onExpand,
+  id: clientId
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
@@ -105,7 +106,7 @@ export function CardCliente({
             <dd className="text-white">N/A (Da inserire)</dd>
           </div>
           <div className="flex flex-col gap-4 justify-center items-center p-4 even:bg-[#94B7BD] bg-[#001E23]">
-          <Link to="/alimentazione">
+          <Link to={`/alimentazione/${clientId}`}>
             <Button
               type="button"
               text={'Vai alla dieta'}

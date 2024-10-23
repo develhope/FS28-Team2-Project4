@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { SelectBox } from './SelectBox';
 import Button from './Button'; // Assicurati che il percorso sia corretto
 
 const Alimentazione = () => {
+  const { clientId } = useParams();
+
   const [nutrition, setNutrition] = useState({
     Allenante: [
       { pasto: 'Colazione', alimenti: [] },
@@ -45,9 +48,49 @@ const Alimentazione = () => {
     }
   };
 
+  const fetchNutritionPlan = async (clientId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/nutrition-plan/${clientId}`);
+  
+      if (!response.ok) {
+        throw new Error('Errore durante il recupero del piano nutrizionale');
+      }
+  
+      const data = await response.json();
+  
+      setNutrition((prevNutrition) => {
+        const updatedNutrition = { ...prevNutrition };
+        
+        data.forEach((item) => {
+          const giorno = item.giorno;
+          const pasto = item.pasto;
+        
+          const pastoEntry = updatedNutrition[giorno].find(p => p.pasto === pasto);
+        
+          if (pastoEntry) {
+            pastoEntry.alimenti.push({
+              alimento: item.alimento,
+              grammatura: item.grammatura,
+            });
+          }
+        });
+        
+        return updatedNutrition;
+      });
+    } catch (error) {
+      console.error('Errore nel recupero dei piani nutrizionali:', error);
+    }
+  };
+
   useEffect(() => {
     fetchFoods();
   }, []);
+
+  useEffect(() => {
+    if (clientId) {
+      fetchNutritionPlan(clientId);
+    }
+  }, [clientId]);
 
   const handleTempChange = (giorno, pasto, field, value, index) => {
     setNutrition((prev) => {
@@ -93,8 +136,29 @@ const Alimentazione = () => {
     setNutrition(updatedNutrition);
   };
 
-  const saveDay = (giorno) => {
-    setSavedDays((prev) => ({ ...prev, [giorno]: !prev[giorno] }));
+  const saveDay = async (giorno) => {
+    const payload = {
+      clientId,
+      nutritionPlan: nutrition,
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/nutrition-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Piano nutrizionale salvato:', data);
+        setSavedDays((prev) => ({ ...prev, [giorno]: !prev[giorno] }));
+      } else {
+        console.error('Errore:', data.message);
+      }
+    } catch (error) {
+      console.error('Errore nel salvataggio del piano nutrizionale:', error);
+    }
   };
 
   return (
@@ -215,7 +279,10 @@ const Alimentazione = () => {
           <div className="w-full flex justify-center pt-5">
             <Button
               type="button"
-              onClick={() => saveDay(giorno)}
+              onClick={() => {
+                saveDay(giorno);
+                saveNutritionPlan(clientId);
+              }}
               text={savedDays[giorno] ? 'Modifica' : 'Salva'}
               color={savedDays[giorno] ? '#ffc107' : ''}
             />

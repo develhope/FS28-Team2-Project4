@@ -61,6 +61,7 @@ export const Clienti = () => {
               obiettivo={cliente.obiettivo}
               stileDiVita={cliente.stileDiVita}
               foto={cliente.foto}
+              id={cliente.id}
             />
           ))
         ) : (

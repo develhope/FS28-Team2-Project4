@@ -336,6 +336,46 @@ app.get('/foods/:id', async (req, res) => {
   }
 });
 
+app.post('/nutrition-plan', async (req, res) => {
+  const { clientId, nutritionPlan } = req.body;
+
+  try {
+    for (let giorno in nutritionPlan) {
+      for (let pasto of nutritionPlan[giorno]) {
+        for (let alimento of pasto.alimenti) {
+          await database.query(`
+            INSERT INTO nutrition_plan (client_id, giorno, pasto, alimento, grammatura)
+            VALUES ($1, $2, $3, $4, $5)
+          `, [clientId, giorno, pasto.pasto, alimento.alimento, alimento.grammatura]);
+        }
+      }
+    }
+
+    res.status(200).json({ message: 'Piano nutrizionale salvato con successo.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Errore nel salvataggio del piano nutrizionale.' });
+  }
+});
+
+app.get('/nutrition-plan/:clientId', async (req, res) => {
+  const clientId = req.params.clientId;
+
+  try {
+    const result = await database.query(
+      'SELECT * FROM nutrition_plan WHERE client_id = $1',
+      [clientId]
+    );
+
+    if (!result) {
+      return res.status(404).json({ message: 'Nessun piano nutrizionale trovato' });
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Errore durante il recupero del piano nutrizionale' });
+  }
+});
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
