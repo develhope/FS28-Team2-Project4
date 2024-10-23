@@ -2,46 +2,22 @@ import { useContext, useRef, useEffect, useState } from 'react';
 import { Card } from './Card';
 import { CardContext } from './CardProvider';
 import { Clienti } from './Clienti';
+import { Schede } from './Schede/Schede'
 import { Iscrizione } from './Iscrizione';
 import { Supporto } from './Supporto';
 import { Account } from './Account';
 
 export const CardMenu = () => {
-  const { isSelected, handleClick } = useContext(CardContext);
+  const { isSelected, handleClick, selectedCardIndex } = useContext(CardContext);
   const menuRef = useRef(null);
-  const [selectedCardIndex, setSelectedCardIndex] = useState(null);
 
-const dataCard = [
-    {
-      titolo: 'Clienti',
-      descrizione: `Visualizza l'elenco dei tuoi clienti`,
-      icona: 'customer',
-    },
-    {
-      titolo: 'Schede',
-      descrizione: 'Tutti i piani personalizzati dei tuoi clienti',
-      icona: 'plans',
-    },
-    {
-      titolo: 'Iscrizione',
-      descrizione: 'Vedi lo stato del tuo abbonamento',
-      icona: 'payment',
-    },
-    {
-      titolo: 'Statistiche',
-      descrizione: 'Visualizza i progressi dei tuoi clienti',
-      icona: 'stats',
-    },
-    {
-      titolo: 'Supporto',
-      descrizione: 'Stai riscontrando un problema? Contattaci!',
-      icona: 'support',
-    },
-    {
-      titolo: 'Account',
-      descrizione: 'Vedi le info sul tuo profilo',
-      icona: 'myAccount',
-    },
+  const dataCard = [
+    { titolo: 'Clienti', descrizione: `Visualizza l'elenco dei tuoi clienti`, icona: 'customer' },
+    { titolo: 'Schede', descrizione: 'Tutti i piani personalizzati dei tuoi clienti', icona: 'plans' },
+    { titolo: 'Iscrizione', descrizione: 'Vedi lo stato del tuo abbonamento', icona: 'payment' },
+    { titolo: 'Statistiche', descrizione: 'Visualizza i progressi dei tuoi clienti', icona: 'stats' },
+    { titolo: 'Supporto', descrizione: 'Stai riscontrando un problema? Contattaci!', icona: 'support' },
+    { titolo: 'Account', descrizione: 'Vedi le info sul tuo profilo', icona: 'myAccount' },
   ];
 
   useEffect(() => {
@@ -51,26 +27,11 @@ const dataCard = [
       const cardWidth = selectedCard.offsetWidth;
       const menuWidth = menu.offsetWidth;
 
-      const scrollAmount =
-        selectedCard.offsetLeft - menuWidth / 2 + cardWidth / 2;
+      const scrollAmount = selectedCard.offsetLeft - menuWidth / 2 + cardWidth / 2;
 
-      menu.scrollTo({
-        left: scrollAmount,
-        behavior: 'smooth',
-      });
+      menu.scrollTo({ left: scrollAmount, behavior: 'smooth' });
     }
   }, [isSelected]);
-
-  const handleCardClick = (index) => {
-    if (selectedCardIndex === index) {
-      setSelectedCardIndex(null);
-      handleClick(null);
-    } else {
-      setSelectedCardIndex(index);
-      handleClick(index);
-    }
-  };
-
 
   const renderContent = () => {
     switch (selectedCardIndex) {
@@ -93,11 +54,8 @@ const dataCard = [
 
   return (
     <div>
-      <div className="card-list overflow-x-auto w-dvw h-fit fixed lg:static border-t-2 lg:border-t-0 lg:border-b-2 border-secondary-green bottom-0 left-0 lg:top-0 shadow-[0_-4px_20px_#01181B] lg:shadow-[0_20px_20px_#01181B] bg-primary-blue">
-        <div
-          ref={menuRef}
-          className="flex gap-8 items-center overflow-x-auto no-scrollbar snap-x h-44 md:h-64 lg:h-80 px-5"
-        >
+      <div className="z-50 card-list overflow-x-auto w-dvw h-fit fixed lg:static border-t-2 lg:border-t-0 lg:border-b-2 border-secondary-green bottom-0 left-0 lg:top-0 shadow-[0_-4px_20px_#01181B] lg:shadow-[0_20px_20px_#01181B] bg-primary-blue">
+        <div ref={menuRef} className="flex gap-8 items-center overflow-x-auto no-scrollbar snap-x h-44 md:h-64 lg:h-80 px-5">
           {dataCard.map((data, idx) => (
             <Card
               key={idx}
@@ -105,13 +63,13 @@ const dataCard = [
               description={data.descrizione}
               icon={data.icona}
               status={isSelected === idx}
-              onSelect={() => handleCardClick(idx)}
+              onSelect={() => handleClick(idx)}
             />
           ))}
         </div>
       </div>
       {selectedCardIndex !== null && (
-        <div className=" w-full h-full pb-44 md:pb-64 lg:pb-0 bg-light-blue-shadow">
+        <div className="w-full h-full pb-44 md:pb-64 lg:pb-0 bg-light-blue-shadow">
           {renderContent()}
         </div>
       )}

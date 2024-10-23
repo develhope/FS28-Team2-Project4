@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { NewIcon } from './NewIcon';
 import Button from './Button';
+import { CardContext } from './CardProvider';
 
 export function CardCliente({
   nome,
@@ -16,6 +17,7 @@ export function CardCliente({
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
   const [maxHeight, setMaxHeight] = useState('0px');
+  const {selectClient} = useContext(CardContext)
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -36,6 +38,11 @@ export function CardCliente({
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
+  };
+
+  const handleSchedaClick = () => {
+    selectClient(clientId);
+    localStorage.setItem('activeClient', clientId)
   };
 
   return (
@@ -106,21 +113,20 @@ export function CardCliente({
             <dd className="text-white">N/A (Da inserire)</dd>
           </div>
           <div className="flex flex-col gap-4 justify-center items-center p-4 even:bg-[#94B7BD] bg-[#001E23]">
-          <Link to={`/alimentazione/${clientId}`}>
             <Button
               type="button"
               text={'Vai alla dieta'}
               color="#C1FF72"
               txtcolor="#001E23"
+              onClick={handleSchedaClick}
             />
-            </Link><Link to="/esercizio">
             <Button
               type="button"
               text={'Vai alla scheda'}
               color="#C1FF72"
               txtcolor="#001E23"
+              onClick={handleSchedaClick}
             />
-            </Link>
           </div>
         </dl>
       </div>

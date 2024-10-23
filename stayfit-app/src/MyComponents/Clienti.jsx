@@ -19,6 +19,7 @@ export const Clienti = () => {
       }
       const data = await response.json();
       setClienti(data);
+      localStorage.setItem('clienti', JSON.stringify(data))
     } catch (error) {
       console.error('Errore nel recupero dei clienti:', error);
     }

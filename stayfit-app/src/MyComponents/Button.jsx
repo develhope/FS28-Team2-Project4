@@ -1,6 +1,6 @@
-const Button = ({ type, onClick, text, color, txtcolor }) => {
+const Button = ({ type, onClick, text, color, txtcolor, disabled }) => {
   return (
-    <div className="flex justify-center md:justify-start items-center">
+    <div className="flex justify-center items-center">
       <button
         type={type}
         onClick={onClick}
@@ -11,6 +11,7 @@ const Button = ({ type, onClick, text, color, txtcolor }) => {
           backgroundColor: color || '#C1FF72',
           color: txtcolor || '#001E23'
         }}
+        disabled={disabled}
       >
         {text}
       </button>

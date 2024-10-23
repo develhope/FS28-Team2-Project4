@@ -339,23 +339,39 @@ app.get('/foods/:id', async (req, res) => {
 app.post('/nutrition-plan', async (req, res) => {
   const { clientId, nutritionPlan } = req.body;
 
+  // Controllo preliminare per il clientId
   try {
-    for (let giorno in nutritionPlan) {
-      for (let pasto of nutritionPlan[giorno]) {
-        for (let alimento of pasto.alimenti) {
+    const clientExists = await database.oneOrNone(
+      'SELECT id FROM clients WHERE id = $1',
+      [clientId]
+    );
+
+    if (!clientExists) {
+      return res.status(400).json({ message: 'Client ID non trovato.' });
+    }
+
+    // Iterazione attraverso il piano nutrizionale
+    for (const [giorno, pasti] of Object.entries(nutritionPlan)) {
+      for (const pasto of pasti) {
+        const { pasto: nomePasto, alimenti } = pasto;
+
+        for (const alimento of alimenti) {
+          const grammatura = parseInt(alimento.grammatura, 10); // Assicurati che sia un numero
           await database.query(`
             INSERT INTO nutrition_plan (client_id, giorno, pasto, alimento, grammatura)
             VALUES ($1, $2, $3, $4, $5)
-          `, [clientId, giorno, pasto.pasto, alimento.alimento, alimento.grammatura]);
+          `, [clientId, giorno, nomePasto, alimento.alimento, grammatura]);
         }
       }
     }
 
     res.status(200).json({ message: 'Piano nutrizionale salvato con successo.' });
   } catch (error) {
+    console.error('Errore nel salvataggio del piano nutrizionale:', error);
     res.status(500).json({ message: 'Errore nel salvataggio del piano nutrizionale.' });
   }
 });
+
 
 app.get('/nutrition-plan/:clientId', async (req, res) => {
   const clientId = req.params.clientId;

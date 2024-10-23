@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 html,
 body {
   height: 100%;
@@ -39,6 +50,111 @@ input[type='number'] {
   padding: 0;
   text-align: center;
 }
+
+
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.logoutButton {
+  /* Stili di base */
+  background: none;
+  border: 0;
+  color: #f4f7ff;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  outline: none;
+  padding: 0 0 0 20px;
+  perspective: 100px;
+  position: relative;
+  text-align: left;
+  width: 130px;
+}
+
+.logoutButton::before {
+  background-color: #1e2235;
+  border-radius: 5px;
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  transition: all 0.3s ease-in-out;
+}
+
+.logoutButton--dark {
+  color: #f4f7ff;
+}
+
+.logoutButton--dark .button-text {
+  color: #f4f7ff;
+}
+
+/* Effetti quando il bottone viene cliccato */
+.logoutButton.clicked {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Stili per le icone */
+.doorway,
+.figure,
+.door {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.figure {
+  fill: #f4f7ff;
+}
+
+.bang {
+  fill: #f44336; /* Colore per la parte rossa dell'icona */
+}
+
+/* Icona di uscita */
+.door {
+  fill: #f4f7ff;
+}
+
+.button-text {
+  margin-left: 60px; /* Spazio per il testo rispetto alle icone */
+  transition: color 0.3s ease;
+}
+
+/* Effetto hover sul bottone */
+.logoutButton:hover {
+  color: #f4f7ff;
+}
+
+.logoutButton:hover::before {
+  background-color: #2a2e43;
+}
+
 
 .logo {
   height: 6em;

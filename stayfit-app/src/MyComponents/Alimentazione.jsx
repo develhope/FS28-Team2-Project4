@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { SelectBox } from './SelectBox';
-import Button from './Button'; // Assicurati che il percorso sia corretto
+import Button from './Button';
 
 const Alimentazione = () => {
-  const { clientId } = useParams();
-
+  const [clientId, setClientId] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [thereIsData, setThereIsData] = useState(false)
   const [nutrition, setNutrition] = useState({
     Allenante: [
       { pasto: 'Colazione', alimenti: [] },
@@ -43,6 +43,9 @@ const Alimentazione = () => {
       }));
 
       setFoods(formattedFoods);
+      if (data) {
+        setThereIsData(true)
+      }
     } catch (error) {
       console.error('Errore nel recupero degli alimenti:', error);
     }
@@ -51,22 +54,21 @@ const Alimentazione = () => {
   const fetchNutritionPlan = async (clientId) => {
     try {
       const response = await fetch(`http://localhost:3000/nutrition-plan/${clientId}`);
-  
+
       if (!response.ok) {
         throw new Error('Errore durante il recupero del piano nutrizionale');
       }
-  
+
       const data = await response.json();
-  
       setNutrition((prevNutrition) => {
         const updatedNutrition = { ...prevNutrition };
-        
+
         data.forEach((item) => {
           const giorno = item.giorno;
           const pasto = item.pasto;
-        
+
           const pastoEntry = updatedNutrition[giorno].find(p => p.pasto === pasto);
-        
+
           if (pastoEntry) {
             pastoEntry.alimenti.push({
               alimento: item.alimento,
@@ -74,13 +76,20 @@ const Alimentazione = () => {
             });
           }
         });
-        
+
         return updatedNutrition;
       });
     } catch (error) {
       console.error('Errore nel recupero dei piani nutrizionali:', error);
     }
   };
+
+  useEffect(() => {
+    const storedClientId = localStorage.getItem('activeClient');
+    if (storedClientId) {
+      setClientId(storedClientId);
+    }
+  }, []);
 
   useEffect(() => {
     fetchFoods();
@@ -137,6 +146,9 @@ const Alimentazione = () => {
   };
 
   const saveDay = async (giorno) => {
+    if (isSaving) return;
+    setIsSaving(true);
+
     const payload = {
       clientId,
       nutritionPlan: nutrition,
@@ -148,49 +160,42 @@ const Alimentazione = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Piano nutrizionale salvato:', data);
-        setSavedDays((prev) => ({ ...prev, [giorno]: !prev[giorno] }));
-      } else {
-        console.error('Errore:', data.message);
+
+      if (!response.ok) {
+        const data = await response.json();
+
+        throw new Error(data.message || 'Errore sconosciuto durante il salvataggio');
       }
+
+      const data = await response.json();
+      console.log('Piano nutrizionale salvato:', data);
+      setSavedDays((prev) => ({ ...prev, [giorno]: !prev[giorno] }));
     } catch (error) {
       console.error('Errore nel salvataggio del piano nutrizionale:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
   return (
     <div className="overflow-x-auto mt-4 font-nowalt">
-      <h1 className="text-2xl font-bold text-white mb-6">Scheda Alimentare</h1>
       {['Allenante', 'Riposo'].map((giorno) => (
         <div key={giorno} className="mb-8">
           <h2 className="text-xl font-bold text-white pb-5">{giorno}</h2>
           <div className="flex justify-center">
-            <table className="min-w-[90vw] border border-light-blue-shadow table-auto lg:table-fixed shadow-card">
+            <table className="min-w-[90vw] border border-light-blue-shadow table-fixed shadow-card">
               <thead className="bg-light-blue-shadow text-white">
                 <tr className="text-center">
-                  <th className="text-center border border-light-blue-shadow p-2">
-                    Pasto
-                  </th>
-                  <th className="text-center border border-light-blue-shadow p-2">
-                    Alimento
-                  </th>
-                  <th className="text-center border border-light-blue-shadow p-2">
-                    Grammatura (g)
-                  </th>
-                  <th className="text-center border border-light-blue-shadow p-2">
-                    Azioni
-                  </th>
+                  <th className="text-center border border-light-blue-shadow p-2">Pasto</th>
+                  <th className="text-center border border-light-blue-shadow p-2">Alimento</th>
+                  <th className="text-center border border-light-blue-shadow p-2">Grammatura (g)</th>
+                  <th className="text-center border border-light-blue-shadow p-2">Azioni</th>
                 </tr>
               </thead>
               <tbody className="bg-primary-blue text-white">
                 {nutrition[giorno].map((meal, mealIndex) => (
-                  <tr key={mealIndex} className="">
-                    <td className="border border-light-blue-shadow p-2 text-left pl-5">
-                      {meal.pasto}
-                    </td>
+                  <tr key={mealIndex}>
+                    <td className="border border-light-blue-shadow p-2 text-left pl-5">{meal.pasto}</td>
                     <td className="border border-light-blue-shadow p-2">
                       {meal.alimenti.map((alimento, index) => (
                         <div key={index} className="my-2 flex justify-center items-center">
@@ -281,10 +286,12 @@ const Alimentazione = () => {
               type="button"
               onClick={() => {
                 saveDay(giorno);
-                saveNutritionPlan(clientId);
+                console.log(nutrition);
+
               }}
-              text={savedDays[giorno] ? 'Modifica' : 'Salva'}
-              color={savedDays[giorno] ? '#ffc107' : ''}
+              text={savedDays[giorno] || thereIsData ? 'Modifica' : 'Salva'}
+              color={savedDays[giorno] || thereIsData ? '#ffc107' : ''}
+              disabled={isSaving}
             />
           </div>
         </div>

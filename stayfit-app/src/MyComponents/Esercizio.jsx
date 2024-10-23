@@ -126,9 +126,6 @@ const Esercizio = () => {
 
   return (
     <div className="overflow-x-auto mt-4 font-nowalt">
-      <h1 className="text-2xl font-bold text-white mb-6">
-        Scheda di Allenamento
-      </h1>
       <div className='flex gap-5 justify-center'>
         <div className="mb-4">
           <label className="text-white" htmlFor="trainingType">

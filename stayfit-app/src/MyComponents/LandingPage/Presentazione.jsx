@@ -31,17 +31,20 @@ const Presentazione = () => {
         <br />
         SEMPLIFICATO
       </h2>
-      <p className="text-[15px] lg:text-lg text-white mb-6">
-        Unisciti anche tu alla rivoluzione del Fitness, gestisci e monitora i
-        piani di allenamento
-        <br />e nutrizione dei tuoi clienti, offrendo soluzioni personalizzate
-        in modo semplice e veloce.
-      </p>
-      <Button
-        type="button"
-        onClick={handleRegisterClick}
-        text={'Unisciti ora!'}
-      />
+      <div className='md:max-w-[65vw]'>
+        <p className="text-[15px] lg:text-lg text-white mb-6">
+          Unisciti anche tu alla rivoluzione del Fitness, gestisci e monitora i
+          piani di allenamento e nutrizione dei tuoi clienti, offrendo soluzioni personalizzate
+          in modo semplice e veloce.
+        </p>
+      </div>
+      <div className="md:w-32">
+        <Button
+          type="button"
+          onClick={handleRegisterClick}
+          text={'Unisciti ora!'}
+        />
+      </div>
 
       {isRegisterOpen && (
         <div
@@ -50,7 +53,10 @@ const Presentazione = () => {
           className="fixed inset-0 bg-black bg-opacity-20 backdrop-blur-sm flex justify-center items-center z-10"
         >
           {!isLoginOpen ? (
-            <FormProfessionista onClose={() => setRegisterOpen(false)} onChange={handleLoginClick}/>
+            <FormProfessionista
+              onClose={() => setRegisterOpen(false)}
+              onChange={handleLoginClick}
+            />
           ) : (
             <LoginForm onClose={() => setRegisterOpen(false)} />
           )}
