@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Button from './Button';
 import { CardContext } from './CardProvider';
@@ -15,6 +15,7 @@ export function CardCliente({
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
+  const {selectClient} = useContext(CardContext)
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -50,13 +51,13 @@ export function CardCliente({
       </div>
 
       {/* Informazioni di Base del Cliente */}
-      <div className={`text-sm text-center ${isExpanded ? 'grid grid-cols-2 gap-4 p-4 bg-secondary-green text-sm text-center border-t border-gray-200' : 'divide-y divide-[#868686]'
+      <div className={`text-center ${isExpanded ? 'grid grid-cols-2 p-4 bg-secondary-green text-sm text-center border-t border-gray-200' : ''
         }`}>
-        <div className={`grid grid-cols-1 gap-1 p-4 bg-secondary-green ${isExpanded ? 'justify-items-end' : ''}`}>
-          <dt className="font-extrabold text-xl text-activated-card">{nome}</dt>
+        <div className={`grid grid-cols-1 p-4 bg-secondary-green ${isExpanded ? 'justify-items-end' : ''}`}>
+          <dt className={`font-extrabold ${isExpanded ? 'text-2xl' : 'text-xl'} text-activated-card`}>{nome}</dt>
         </div>
-        <div className={`grid grid-cols-1 gap-1 p-4 ${isExpanded ? ' bg-secondary-green justify-items-start' : 'bg-[#001E23]'}`}>
-          <dt className={`font-extrabold text-xl ${isExpanded ? 'text-activated-card' : ' text-white'}`}>{cognome}</dt>
+        <div className={`grid grid-cols-1 p-4 ${isExpanded ? ' bg-secondary-green justify-items-start' : 'bg-[#001E23]'}`}>
+          <dt className={`font-extrabold ${isExpanded ? 'text-activated-card text-2xl' : 'text-xl text-white'}`}>{cognome}</dt>
         </div>
       </div>
 
@@ -70,32 +71,31 @@ export function CardCliente({
       >
         <div className={` text-sm text-center ${isExpanded ? 'grid grid-cols-2 text-sm text-center border-t border-gray-200 lg:grid-cols-3' : ''}`}>
           <div className="grid grid-cols-1 gap-1 p-4  bg-[#001E23]">
-            <dt className="font-extrabold text-xl text-white">Data di nascita</dt>
-            <dd className="font-extrabold text-white">{formatDate(birthDate)}</dd>
+            <dt className="font-semibold text-xl text-white">Data di nascita</dt>
+            <dd className="font-semibold text-white">{formatDate(birthDate)}</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 'bg-[#001E23]">
-            <dt className="font-extrabold text-xl text-white">Obiettivo</dt>
+            <dt className="font-semibold text-xl text-white">Obiettivo</dt>
             <dd className="text-[#001E23]">{obiettivo}</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-secondary-green lg:bg-[#001E23]">
-            <dt className="font-extrabold text-xl text-[#001E23] lg:text-white">Stile di vita</dt>
+            <dt className="font-semibold text-xl text-[#001E23] lg:text-white">Stile di vita</dt>
             <dd className="text-[#001E23] lg:text-white">{stileDiVita}</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-secondary-green">
-            <dt className="font-extrabold text-xl text-[#001E23]">Peso</dt>
+            <dt className="font-semibold text-xl text-[#001E23]">Peso</dt>
             <dd className="text-[#001E23]">N/A (Modificabile)</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-[#001E23] lg:bg-secondary-green">
-            <dt className="font-extrabold text-xl text-white lg:text-[#001E23]">Massa Grassa</dt>
+            <dt className="font-semibold text-xl text-white lg:text-[#001E23]">Massa Grassa</dt>
             <dd className="text-white lg:text-[#001E23]">N/A (Da inserire)</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-[#001E23] lg:bg-secondary-green">
-            <dt className="font-extrabold text-xl text-white lg:text-[#001E23]">Massa Magra</dt>
+            <dt className="font-semibold text-xl text-white lg:text-[#001E23]">Massa Magra</dt>
             <dd className="text-white lg:text-[#001E23]">N/A (Da inserire)</dd>
           </div>
         </div>
         <div className="flex flex-cols-2 gap-4 p-4 justify-center even:bg-[#94B7BD] bg-[#001E23]">
-          <Link to="/alimentazione">
             <Button
               type="button"
               text={'Vai alla dieta'}
@@ -103,8 +103,6 @@ export function CardCliente({
               txtcolor="#001E23"
               onClick={handleSchedaClick}
             />
-          </Link>
-          <Link to="/esercizio">
             <Button
               type="button"
               text={'Vai alla scheda'}
@@ -112,7 +110,6 @@ export function CardCliente({
               txtcolor="#001E23"
               onClick={handleSchedaClick}
             />
-          </Link>
         </div>
       </div>
 

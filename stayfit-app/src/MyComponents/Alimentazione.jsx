@@ -289,8 +289,8 @@ const Alimentazione = () => {
                 console.log(nutrition);
 
               }}
-              text={savedDays[giorno] || thereIsData ? 'Modifica' : 'Salva'}
-              color={savedDays[giorno] || thereIsData ? '#ffc107' : ''}
+              text={savedDays[giorno] ? 'Modifica' : 'Salva'}
+              color={savedDays[giorno] ? '#ffc107' : ''}
               disabled={isSaving}
             />
           </div>
