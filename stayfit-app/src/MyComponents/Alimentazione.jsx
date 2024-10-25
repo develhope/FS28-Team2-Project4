@@ -61,6 +61,7 @@ const Alimentazione = () => {
       }
 
       const data = await response.json();
+
       setNutrition((prevNutrition) => {
         const updatedNutrition = { ...prevNutrition };
         let newSavedDays = {...savedDays};

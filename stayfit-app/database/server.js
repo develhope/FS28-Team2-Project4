@@ -430,6 +430,59 @@ app.get('/nutrition-plan/:clientId', async (req, res) => {
   }
 });
 
+app.get('/training-plan/:clientId', async (req, res) => {
+  const clientId = req.params.clientId;
+
+  try {
+    const result = await database.query(
+      'SELECT * FROM training_plan WHERE client_id = $1',
+      [clientId]
+    );
+
+    if (!result) {
+      return res.status(404).json({ message: 'Nessun piano di allenamento trovato' })
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Errore durante il recupero del piano di allenamento' });
+  }
+});
+
+app.post('/training-plan', async (req, res) => {
+  const { client_id, training_type, giorno, exercises } = req.body;
+  try {
+    exercises.forEach(async exercise => {
+      const query = `INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+      const values = [client_id, training_type, giorno, exercise.esercizio, exercise.gruppoMuscolare, exercise.set, exercise.rep, exercise.rest];
+      await database.query(query, values);
+    });
+    res.status(201).json({ message: "Exercises saved successfully" });
+  } catch (error) {
+    console.error("Failed to save exercises:", error);
+    res.status(500).json({ error: "Failed to save the training plan" });
+  }
+});
+
+app.put('/training-plan', async (req, res) => {
+  const { client_id, training_type, giorno, exercises } = req.body;
+
+  try {
+    const deleteQuery = 'DELETE FROM training_plan WHERE client_id = $1';
+    await database.query(deleteQuery, [client_id]);
+
+    exercises.forEach(async exercise => {
+      const query = `INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+      const values = [client_id, training_type, giorno, exercise.esercizio, exercise.gruppoMuscolare, exercise.set, exercise.rep, exercise.rest];
+      await database.query(query, values);
+    });
+    res.status(200).json({message: 'Exercises updated successfully'});
+  } catch (error) {
+    console.error('Failed to update exercises:', error);
+    res.status(500).json({message: 'Failed to update exercises'});
+  }
+});
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

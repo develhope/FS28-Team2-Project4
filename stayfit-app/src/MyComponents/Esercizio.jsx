@@ -18,7 +18,8 @@ const Esercizio = () => {
   const [setOptions, setSetOptions] = useState([]);
   const [repOptions, setRepOptions] = useState([]);
   const [restOptions, setRestOptions] = useState([]);
-  const [activeClient, setActiveClient] = useState(null)
+  const [activeClient, setActiveClient] = useState(null);
+  const [thereIsData, setThereIsData] = useState(false);
 
   const giorniOptions = ['Giorno1', 'Giorno2', 'Giorno3', 'Giorno4', 'Giorno5'];
 
@@ -102,6 +103,40 @@ const Esercizio = () => {
     setExercises(updatedExercises);
     setEditIndex((prev) => ({ ...prev, [giorno]: null }));
     setTempValues({});
+  
+    if (!activeClient) {
+      console.error("No active client found.");
+      return;
+    }
+
+    const trainingData = {
+      client_id: activeClient,
+      training_type: trainingType,
+      giorno: giorno,
+      exercises: updatedExercises[giorno],
+    };
+
+    console.log(updatedExercises[giorno]);
+
+    if (thereIsData) {
+      updateExercise(trainingData)
+      .then(() => {
+        setThereIsData(true);
+        console.log("Dati aggiornati sul server con successo!");
+      })
+      .catch(error => {
+        console.error("Errore durante l'aggiornamento dei dati sul server:", error);
+      });
+    } else {
+      saveTrainingPlan(trainingData)
+      .then(() => {
+        setThereIsData(true);
+        console.log("Dati salvati sul server con successo!");
+      })
+      .catch(error => {
+        console.error("Errore durante il salvataggio dei dati sul server:", error);
+      });
+    }
   };
 
   const addExercise = (giorno) => {
@@ -130,6 +165,99 @@ const Esercizio = () => {
 
   const getAvailableExercises = (gruppoMuscolare) => {
     return gymExercises[gruppoMuscolare] || [''];
+  };
+
+  const fetchExercises = async (activeClient) => {
+    try {
+      const response = await fetch(`http://localhost:3000/training-plan/${activeClient}`);
+
+      if (!response.ok) {
+        throw new Error('Errore durante il recupero del piano nutrizionale');
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+
+      const exercisesByDay = {
+        Giorno1: [],
+        Giorno2: [],
+        Giorno3: [],
+        Giorno4: [],
+        Giorno5: [],
+      };
+
+      data.forEach(exercise => {
+        const day = exercise.giorno;
+        if (exercisesByDay[day]) {
+          exercisesByDay[day].push({
+            id: exercise.id,
+            esercizio: exercise.esercizio,
+            gruppoMuscolare: exercise.gruppo_muscolare,
+            set: parseInt(exercise.set, 10),
+            rep: parseInt(exercise.rep, 10),
+            rest: parseFloat(exercise.rest)
+          });
+        }
+      });
+
+      setThereIsData(true);
+
+      setExercises(exercisesByDay);
+
+    } catch (error) {
+      console.error('Errore nel recupero dei piani d\'allenamento', error);
+    }
+  };
+
+  useEffect(() => {
+    if (activeClient) {
+      fetchExercises(activeClient);
+      setThereIsData(true);
+    }
+  }, [activeClient]);
+
+  const saveTrainingPlan = async (trainingData) => {
+    try {
+      const response = await fetch('http://localhost:3000/training-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(trainingData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Errore nel server');
+      }
+  
+      const result = await response.json();
+
+      setThereIsData(true);
+
+      console.log('Piano d\'allenamento salvato con successo:', result);
+    } catch (error) {
+      console.error('Errore nel salvataggio del piano d\'allenamento:', error);
+    }
+  };
+
+  const updateExercise = async (trainingData) => {
+    try {
+      const response = await fetch(`http://localhost:3000/training-plan`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(trainingData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.json();
+      console.log('Exercise updated successfully:', result);
+      return result;
+    } catch (error) {
+      console.error('Failed to update exercise:', error);
+      throw error;
+    }
   };
 
   return (
