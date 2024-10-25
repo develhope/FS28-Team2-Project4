@@ -18,6 +18,7 @@ const Esercizio = () => {
   const [setOptions, setSetOptions] = useState([]);
   const [repOptions, setRepOptions] = useState([]);
   const [restOptions, setRestOptions] = useState([]);
+  const [activeClient, setActiveClient] = useState(null)
 
   const giorniOptions = ['Giorno1', 'Giorno2', 'Giorno3', 'Giorno4', 'Giorno5'];
 
@@ -38,6 +39,13 @@ const Esercizio = () => {
       restOptions: [0.5, 1],
     },
   };
+
+  useEffect(() => {
+    const storedClientId = localStorage.getItem('activeClient');
+    if (storedClientId) {
+      setActiveClient(storedClientId);
+    }
+  }, []);
 
   useEffect(() => {
     // Aggiorna le opzioni per set, rep e rest in base al tipo di allenamento
