@@ -5,7 +5,8 @@ import Button from './Button';
 const Alimentazione = () => {
   const [clientId, setClientId] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [thereIsData, setThereIsData] = useState(false)
+  const [isEditing, setIsEditing] = useState(false);
+  const [thereIsData, setThereIsData] = useState(false);
   const [nutrition, setNutrition] = useState({
     Allenante: [
       { pasto: 'Colazione', alimenti: [] },
@@ -62,6 +63,7 @@ const Alimentazione = () => {
       const data = await response.json();
       setNutrition((prevNutrition) => {
         const updatedNutrition = { ...prevNutrition };
+        let newSavedDays = {...savedDays};
 
         data.forEach((item) => {
           const giorno = item.giorno;
@@ -74,8 +76,11 @@ const Alimentazione = () => {
               alimento: item.alimento,
               grammatura: item.grammatura,
             });
+            newSavedDays[giorno] = true;
           }
         });
+
+        setSavedDays(newSavedDays);
 
         return updatedNutrition;
       });
@@ -94,6 +99,10 @@ const Alimentazione = () => {
   useEffect(() => {
     fetchFoods();
   }, []);
+
+  useEffect(() => {
+    console.log(savedDays);
+  }, [savedDays]);
 
   useEffect(() => {
     if (clientId) {
@@ -118,6 +127,15 @@ const Alimentazione = () => {
       };
       return updatedNutrition;
     });
+  };
+
+  const handleButtonClick = (giorno) => {
+    if (isEditing) {
+      saveDay(giorno);
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
   };
 
   const addAlimento = (giorno, pasto) => {
@@ -155,8 +173,10 @@ const Alimentazione = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/nutrition-plan', {
-        method: 'POST',
+      const update = savedDays[giorno];
+
+      const response = await fetch(`http://localhost:3000/nutrition-plan${update ? `/${clientId}` : ''}`, {
+        method: update ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
@@ -168,8 +188,10 @@ const Alimentazione = () => {
       }
 
       const data = await response.json();
-      console.log('Piano nutrizionale salvato:', data);
-      setSavedDays((prev) => ({ ...prev, [giorno]: !prev[giorno] }));
+
+      console.log(update ? 'Piano nutrizionale aggiornato:' : 'Piano nutrizionale salvato:', data);
+
+      setSavedDays(prev => ({ ...prev, [giorno]: true }));
     } catch (error) {
       console.error('Errore nel salvataggio del piano nutrizionale:', error);
     } finally {
@@ -189,7 +211,7 @@ const Alimentazione = () => {
                   <th className="text-center border border-light-blue-shadow p-2">Pasto</th>
                   <th className="text-center border border-light-blue-shadow p-2">Alimento</th>
                   <th className="text-center border border-light-blue-shadow p-2">Grammatura (g)</th>
-                  <th className="text-center border border-light-blue-shadow p-2">Azioni</th>
+                  <th className={`${isEditing ? 'text-center border border-light-blue-shadow p-2' : 'hidden'}`} >Azioni</th>
                 </tr>
               </thead>
               <tbody className="bg-primary-blue text-white">
@@ -199,7 +221,7 @@ const Alimentazione = () => {
                     <td className="border border-light-blue-shadow p-2">
                       {meal.alimenti.map((alimento, index) => (
                         <div key={index} className="my-2 flex justify-center items-center">
-                          {savedDays[giorno] ? (
+                          {!isEditing && savedDays[giorno] ? (
                             <span>{alimento.alimento}</span>
                           ) : (
                             <SelectBox
@@ -228,7 +250,7 @@ const Alimentazione = () => {
                     <td className="border border-light-blue-shadow p-2">
                       {meal.alimenti.map((alimento, index) => (
                         <div key={index} className="mb-2">
-                          {savedDays[giorno] ? (
+                          {!isEditing && savedDays[giorno] ? (
                             <span>{alimento.grammatura} g</span>
                           ) : (
                             <input
@@ -250,16 +272,16 @@ const Alimentazione = () => {
                         </div>
                       ))}
                     </td>
-                    <td className="border border-none p-2 flex justify-center">
+                    <td className={`${isEditing ? 'border border-none p-2 flex justify-center' : 'hidden'}`}>
                       <div className="flex flex-wrap justify-center gap-2 pt-2">
-                        {!savedDays[giorno] && (
+                        {isEditing && (
                           <Button
                             type="button"
                             onClick={() => addAlimento(giorno, meal.pasto)}
                             text="Aggiungi Alimento +"
                           />
                         )}
-                        {meal.alimenti.length > 0 && !savedDays[giorno] && (
+                        {meal.alimenti.length > 0 && isEditing && (
                           <Button
                             type="button"
                             onClick={() =>
@@ -284,13 +306,9 @@ const Alimentazione = () => {
           <div className="w-full flex justify-center pt-5">
             <Button
               type="button"
-              onClick={() => {
-                saveDay(giorno);
-                console.log(nutrition);
-
-              }}
-              text={savedDays[giorno] ? 'Modifica' : 'Salva'}
-              color={savedDays[giorno] ? '#ffc107' : ''}
+              onClick={handleButtonClick}
+              text={!isEditing && savedDays[giorno] ? 'Modifica' : 'Salva'}
+              color={!isEditing && savedDays[giorno] ? '#ffc107' : ''}
               disabled={isSaving}
             />
           </div>

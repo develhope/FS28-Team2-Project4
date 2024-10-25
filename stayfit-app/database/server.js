@@ -372,6 +372,44 @@ app.post('/nutrition-plan', async (req, res) => {
   }
 });
 
+app.put('/nutrition-plan/:clientId', async (req, res) => {
+  // const clientId = req.params.clientId;
+  const { clientId, nutritionPlan } = req.body;
+
+  try {
+    const clientExists = await database.oneOrNone(
+      'SELECT id FROM clients WHERE id = $1',
+      [clientId]
+    );
+
+    if (!clientExists) {
+      return res.status(404).json({ message: 'Client ID non trovato.' });
+    }
+
+    await database.query(
+      'DELETE FROM nutrition_plan WHERE client_id = $1',
+      [clientId]
+    );
+
+    for (const [giorno, pasti] of Object.entries(nutritionPlan)) {
+      for (const pasto of pasti) {
+        const { pasto: nomePasto, alimenti } = pasto;
+        for (const alimento of alimenti) {
+          const grammatura = parseInt(alimento.grammatura, 10);
+          await database.query(`
+            INSERT INTO nutrition_plan (client_id, giorno, pasto, alimento, grammatura)
+            VALUES ($1, $2, $3, $4, $5)
+          `, [clientId, giorno, nomePasto, alimento.alimento, grammatura]);
+        }
+      }
+    }
+
+    res.status(200).json({ message: 'Piano nutrizionale aggiornato con successo.' });
+  } catch (error) {
+    console.error('Errore durante l\'aggiornamento del piano nutrizionale:', error);
+    res.status(500).json({ message: 'Errore durante l\'aggiornamento del piano nutrizionale.' });
+  }
+});
 
 app.get('/nutrition-plan/:clientId', async (req, res) => {
   const clientId = req.params.clientId;
