@@ -339,7 +339,6 @@ app.get('/foods/:id', async (req, res) => {
 app.post('/nutrition-plan', async (req, res) => {
   const { clientId, nutritionPlan } = req.body;
 
-  // Controllo preliminare per il clientId
   try {
     const clientExists = await database.oneOrNone(
       'SELECT id FROM clients WHERE id = $1',
@@ -350,50 +349,12 @@ app.post('/nutrition-plan', async (req, res) => {
       return res.status(400).json({ message: 'Client ID non trovato.' });
     }
 
-    // Iterazione attraverso il piano nutrizionale
-    for (const [giorno, pasti] of Object.entries(nutritionPlan)) {
-      for (const pasto of pasti) {
-        const { pasto: nomePasto, alimenti } = pasto;
-
-        for (const alimento of alimenti) {
-          const grammatura = parseInt(alimento.grammatura, 10); // Assicurati che sia un numero
-          await database.query(`
-            INSERT INTO nutrition_plan (client_id, giorno, pasto, alimento, grammatura)
-            VALUES ($1, $2, $3, $4, $5)
-          `, [clientId, giorno, nomePasto, alimento.alimento, grammatura]);
-        }
-      }
-    }
-
-    res.status(200).json({ message: 'Piano nutrizionale salvato con successo.' });
-  } catch (error) {
-    console.error('Errore nel salvataggio del piano nutrizionale:', error);
-    res.status(500).json({ message: 'Errore nel salvataggio del piano nutrizionale.' });
-  }
-});
-
-app.put('/nutrition-plan/:clientId', async (req, res) => {
-  // const clientId = req.params.clientId;
-  const { clientId, nutritionPlan } = req.body;
-
-  try {
-    const clientExists = await database.oneOrNone(
-      'SELECT id FROM clients WHERE id = $1',
-      [clientId]
-    );
-
-    if (!clientExists) {
-      return res.status(404).json({ message: 'Client ID non trovato.' });
-    }
-
-    await database.query(
-      'DELETE FROM nutrition_plan WHERE client_id = $1',
-      [clientId]
-    );
+    await database.query('DELETE FROM nutrition_plan WHERE client_id = $1', [clientId]);
 
     for (const [giorno, pasti] of Object.entries(nutritionPlan)) {
       for (const pasto of pasti) {
         const { pasto: nomePasto, alimenti } = pasto;
+
         for (const alimento of alimenti) {
           const grammatura = parseInt(alimento.grammatura, 10);
           await database.query(`
@@ -404,12 +365,52 @@ app.put('/nutrition-plan/:clientId', async (req, res) => {
       }
     }
 
-    res.status(200).json({ message: 'Piano nutrizionale aggiornato con successo.' });
+    res.status(201).json({ message: 'Piano nutrizionale salvato con successo.' });
   } catch (error) {
-    console.error('Errore durante l\'aggiornamento del piano nutrizionale:', error);
-    res.status(500).json({ message: 'Errore durante l\'aggiornamento del piano nutrizionale.' });
+    console.error('Errore nel salvataggio del piano nutrizionale:', error);
+    res.status(500).json({ message: 'Errore nel salvataggio del piano nutrizionale.' });
   }
 });
+
+
+// app.put('/nutrition-plan/:clientId', async (req, res) => {
+//   // const clientId = req.params.clientId;
+//   const { clientId, nutritionPlan } = req.body;
+
+//   try {
+//     const clientExists = await database.oneOrNone(
+//       'SELECT id FROM clients WHERE id = $1',
+//       [clientId]
+//     );
+
+//     if (!clientExists) {
+//       return res.status(404).json({ message: 'Client ID non trovato.' });
+//     }
+
+//     await database.query(
+//       'DELETE FROM nutrition_plan WHERE client_id = $1',
+//       [clientId]
+//     );
+
+//     for (const [giorno, pasti] of Object.entries(nutritionPlan)) {
+//       for (const pasto of pasti) {
+//         const { pasto: nomePasto, alimenti } = pasto;
+//         for (const alimento of alimenti) {
+//           const grammatura = parseInt(alimento.grammatura, 10);
+//           await database.query(`
+//             INSERT INTO nutrition_plan (client_id, giorno, pasto, alimento, grammatura)
+//             VALUES ($1, $2, $3, $4, $5)
+//           `, [clientId, giorno, nomePasto, alimento.alimento, grammatura]);
+//         }
+//       }
+//     }
+
+//     res.status(200).json({ message: 'Piano nutrizionale aggiornato con successo.' });
+//   } catch (error) {
+//     console.error('Errore durante l\'aggiornamento del piano nutrizionale:', error);
+//     res.status(500).json({ message: 'Errore durante l\'aggiornamento del piano nutrizionale.' });
+//   }
+// });
 
 app.get('/nutrition-plan/:clientId', async (req, res) => {
   const clientId = req.params.clientId;
@@ -451,12 +452,31 @@ app.get('/training-plan/:clientId', async (req, res) => {
 
 app.post('/training-plan', async (req, res) => {
   const { client_id, training_type, giorno, exercises } = req.body;
+
   try {
-    exercises.forEach(async exercise => {
-      const query = `INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
-      const values = [client_id, training_type, giorno, exercise.esercizio, exercise.gruppoMuscolare, exercise.set, exercise.rep, exercise.rest];
-      await database.query(query, values);
-    });
+    const deleteQuery = 'DELETE FROM training_plan WHERE client_id = $1';
+    await database.query(deleteQuery, [client_id]);
+
+    await Promise.all(
+      exercises.map(async exercise => {
+        const query = `
+          INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+        `;
+        const values = [
+          client_id,
+          training_type,
+          giorno,
+          exercise.esercizio,
+          exercise.gruppoMuscolare,
+          exercise.set,
+          exercise.rep,
+          exercise.rest,
+        ];
+        await database.query(query, values);
+      })
+    );
+
     res.status(201).json({ message: "Exercises saved successfully" });
   } catch (error) {
     console.error("Failed to save exercises:", error);
@@ -464,24 +484,25 @@ app.post('/training-plan', async (req, res) => {
   }
 });
 
-app.put('/training-plan', async (req, res) => {
-  const { client_id, training_type, giorno, exercises } = req.body;
 
-  try {
-    const deleteQuery = 'DELETE FROM training_plan WHERE client_id = $1';
-    await database.query(deleteQuery, [client_id]);
+// app.put('/training-plan', async (req, res) => {
+//   const { client_id, training_type, giorno, exercises } = req.body;
 
-    exercises.forEach(async exercise => {
-      const query = `INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
-      const values = [client_id, training_type, giorno, exercise.esercizio, exercise.gruppoMuscolare, exercise.set, exercise.rep, exercise.rest];
-      await database.query(query, values);
-    });
-    res.status(200).json({message: 'Exercises updated successfully'});
-  } catch (error) {
-    console.error('Failed to update exercises:', error);
-    res.status(500).json({message: 'Failed to update exercises'});
-  }
-});
+//   try {
+//     const deleteQuery = 'DELETE FROM training_plan WHERE client_id = $1';
+//     await database.query(deleteQuery, [client_id]);
+
+//     exercises.forEach(async exercise => {
+//       const query = `INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+//       const values = [client_id, training_type, giorno, exercise.esercizio, exercise.gruppoMuscolare, exercise.set, exercise.rep, exercise.rest];
+//       await database.query(query, values);
+//     });
+//     res.status(200).json({message: 'Exercises updated successfully'});
+//   } catch (error) {
+//     console.error('Failed to update exercises:', error);
+//     res.status(500).json({message: 'Failed to update exercises'});
+//   }
+// });
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;

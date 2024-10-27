@@ -42,7 +42,7 @@ export const ToggleSwitch = () => {
             </div>
           </div>
         </button>
-        <h2 className={`mt-8 text-2xl font-bold text-white mb-6`}>
+        <h2 className={`mt-8 text-2xl font-bold text-white mb-2`}>
           {toggled ? 'Scheda Alimentare' : 'Scheda di Allenamento'}
         </h2>
       </div>

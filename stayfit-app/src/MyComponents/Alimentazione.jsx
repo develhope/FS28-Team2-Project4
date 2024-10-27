@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { SelectBox } from './SelectBox';
+import Swal from 'sweetalert2';
 import Button from './Button';
+import { SaveSuccess } from './Alerts/SaveSuccess';
+import { SaveFailed } from './Alerts/SaveFailed';
+import { SaveConfirm } from './Alerts/SaveConfirm';
 
 const Alimentazione = () => {
   const [clientId, setClientId] = useState(null);
@@ -35,18 +39,15 @@ const Alimentazione = () => {
       const response = await fetch('http://localhost:3000/foods');
       const data = await response.json();
 
-      const formattedFoods = data.map(food => ({
+      const formattedFoods = data.map((food) => ({
         ...food,
         descrizione: food.descrizione
           .split('_')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' '),
       }));
 
       setFoods(formattedFoods);
-      if (data) {
-        setThereIsData(true)
-      }
     } catch (error) {
       console.error('Errore nel recupero degli alimenti:', error);
     }
@@ -54,7 +55,9 @@ const Alimentazione = () => {
 
   const fetchNutritionPlan = async (clientId) => {
     try {
-      const response = await fetch(`http://localhost:3000/nutrition-plan/${clientId}`);
+      const response = await fetch(
+        `http://localhost:3000/nutrition-plan/${clientId}`
+      );
 
       if (!response.ok) {
         throw new Error('Errore durante il recupero del piano nutrizionale');
@@ -64,13 +67,15 @@ const Alimentazione = () => {
 
       setNutrition((prevNutrition) => {
         const updatedNutrition = { ...prevNutrition };
-        let newSavedDays = {...savedDays};
+        let newSavedDays = { ...savedDays };
 
         data.forEach((item) => {
           const giorno = item.giorno;
           const pasto = item.pasto;
 
-          const pastoEntry = updatedNutrition[giorno].find(p => p.pasto === pasto);
+          const pastoEntry = updatedNutrition[giorno].find(
+            (p) => p.pasto === pasto
+          );
 
           if (pastoEntry) {
             pastoEntry.alimenti.push({
@@ -82,7 +87,6 @@ const Alimentazione = () => {
         });
 
         setSavedDays(newSavedDays);
-
         return updatedNutrition;
       });
     } catch (error) {
@@ -106,10 +110,11 @@ const Alimentazione = () => {
   }, [savedDays]);
 
   useEffect(() => {
-    if (clientId) {
+    if (clientId && !thereIsData) {
       fetchNutritionPlan(clientId);
+      setThereIsData(true);
     }
-  }, [clientId]);
+  }, [clientId, thereIsData]);
 
   const handleTempChange = (giorno, pasto, field, value, index) => {
     setNutrition((prev) => {
@@ -131,8 +136,50 @@ const Alimentazione = () => {
   };
 
   const handleButtonClick = (giorno) => {
-    if (isEditing) {
+    if (!isEditing) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Un attimo!',
+        text: 'Per poter salvare, devi essere in modalità "modifica"',
+        background: '#01282F',
+        color: '#fff',
+        confirmButtonText: 'Va bene!',
+        confirmButtonColor: 'green',
+      });
+      return;
+    }
+
+    const isMealValid = (meal) =>
+      meal.alimenti.some(
+        (alimento) => alimento.alimento.trim() !== '' && alimento.grammatura > 0
+      );
+
+    const areMainMealsValid = (giorno) => {
+      const mainMeals = ['Colazione', 'Pranzo', 'Cena'];
+      return mainMeals.every((pasto) =>
+        nutrition[giorno].some(
+          (meal) => meal.pasto === pasto && isMealValid(meal)
+        )
+      );
+    };
+
+    if (areMainMealsValid('Allenante') && areMainMealsValid('Riposo')) {
       saveDay(giorno);
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Attenzione',
+        text: 'Devi compilare almeno Colazione, Pranzo e Cena per entrambi i giorni.',
+        background: '#01282F',
+        color: '#fff',
+        confirmButtonText: 'Capito!',
+        confirmButtonColor: 'orange',
+      });
+    }
+  };
+
+  const handleEditClick = () => {
+    if (isEditing) {
       setIsEditing(false);
     } else {
       setIsEditing(true);
@@ -172,36 +219,55 @@ const Alimentazione = () => {
       clientId,
       nutritionPlan: nutrition,
     };
+    const areYouSure = await SaveConfirm();
+    if (areYouSure.isConfirmed) {
+      try {
+        const response = await fetch(`http://localhost:3000/nutrition-plan`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
 
-    try {
-      const update = savedDays[giorno];
+        if (!response.ok) {
+          const data = await response.json();
 
-      const response = await fetch(`http://localhost:3000/nutrition-plan${update ? `/${clientId}` : ''}`, {
-        method: update ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+          throw new Error(
+            data.message || 'Errore sconosciuto durante il salvataggio'
+          );
+        }
 
-      if (!response.ok) {
         const data = await response.json();
 
-        throw new Error(data.message || 'Errore sconosciuto durante il salvataggio');
+        console.log('Piano nutrizionale salvato:', data);
+        SaveSuccess();
+
+        setSavedDays((prev) => ({ ...prev, [giorno]: true }));
+      } catch (error) {
+        console.error('Errore nel salvataggio del piano nutrizionale:', error);
+        SaveFailed();
+      } finally {
+        setIsSaving(false);
       }
-
-      const data = await response.json();
-
-      console.log(update ? 'Piano nutrizionale aggiornato:' : 'Piano nutrizionale salvato:', data);
-
-      setSavedDays(prev => ({ ...prev, [giorno]: true }));
-    } catch (error) {
-      console.error('Errore nel salvataggio del piano nutrizionale:', error);
-    } finally {
-      setIsSaving(false);
     }
   };
 
   return (
     <div className="overflow-x-auto mt-4 font-nowalt">
+      <div className="flex gap-4 justify-end items-center pb-4">
+        <Button
+          type="button"
+          onClick={handleButtonClick}
+          text={'Salva'}
+          disabled={isSaving}
+        />
+        <Button
+          type="button"
+          onClick={handleEditClick}
+          text={!isEditing ? 'Modifica' : 'Solo lettura'}
+          color={'#ffc107'}
+          disabled={isSaving}
+        />
+      </div>
       {['Allenante', 'Riposo'].map((giorno) => (
         <div key={giorno} className="mb-8">
           <h2 className="text-xl font-bold text-white pb-5">{giorno}</h2>
@@ -209,19 +275,38 @@ const Alimentazione = () => {
             <table className="min-w-[90vw] border border-light-blue-shadow table-fixed shadow-card">
               <thead className="bg-light-blue-shadow text-white">
                 <tr className="text-center">
-                  <th className="text-center border border-light-blue-shadow p-2">Pasto</th>
-                  <th className="text-center border border-light-blue-shadow p-2">Alimento</th>
-                  <th className="text-center border border-light-blue-shadow p-2">Grammatura (g)</th>
-                  <th className={`${isEditing ? 'text-center border border-light-blue-shadow p-2' : 'hidden'}`} >Azioni</th>
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Pasto
+                  </th>
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Alimento
+                  </th>
+                  <th className="text-center border border-light-blue-shadow p-2">
+                    Grammatura (g)
+                  </th>
+                  <th
+                    className={`${
+                      isEditing
+                        ? 'text-center border border-light-blue-shadow p-2'
+                        : 'hidden'
+                    }`}
+                  >
+                    Azioni
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-primary-blue text-white">
                 {nutrition[giorno].map((meal, mealIndex) => (
                   <tr key={mealIndex}>
-                    <td className="border border-light-blue-shadow p-2 text-left pl-5">{meal.pasto}</td>
-                    <td className="border border-light-blue-shadow p-2">
+                    <td className="border border-light-blue-shadow p-2 text-left pl-5">
+                      {meal.pasto}
+                    </td>
+                    <td className="border border-light-blue-shadow p-2 text-left">
                       {meal.alimenti.map((alimento, index) => (
-                        <div key={index} className="my-2 flex justify-center items-center">
+                        <div
+                          key={index}
+                          className="my-2 flex justify-start items-center"
+                        >
                           {!isEditing && savedDays[giorno] ? (
                             <span>{alimento.alimento}</span>
                           ) : (
@@ -255,7 +340,7 @@ const Alimentazione = () => {
                             <span>{alimento.grammatura} g</span>
                           ) : (
                             <input
-                              min='0'
+                              min="0"
                               type="number"
                               value={alimento.grammatura || ''}
                               onChange={(e) =>
@@ -273,7 +358,13 @@ const Alimentazione = () => {
                         </div>
                       ))}
                     </td>
-                    <td className={`${isEditing ? 'border border-none p-2 flex justify-center' : 'hidden'}`}>
+                    <td
+                      className={`${
+                        isEditing
+                          ? 'border border-none p-2 flex justify-center'
+                          : 'hidden'
+                      }`}
+                    >
                       <div className="flex flex-wrap justify-center gap-2 pt-2">
                         {isEditing && (
                           <Button
@@ -304,15 +395,7 @@ const Alimentazione = () => {
               </tbody>
             </table>
           </div>
-          <div className="w-full flex justify-center pt-5">
-            <Button
-              type="button"
-              onClick={handleButtonClick}
-              text={!isEditing && savedDays[giorno] ? 'Modifica' : 'Salva'}
-              color={!isEditing && savedDays[giorno] ? '#ffc107' : ''}
-              disabled={isSaving}
-            />
-          </div>
+          <div className="w-full flex justify-center pt-5"></div>
         </div>
       ))}
     </div>
