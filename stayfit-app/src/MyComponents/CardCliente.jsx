@@ -9,6 +9,7 @@ export function CardCliente({
   eta: birthDate,
   obiettivo,
   stileDiVita,
+  peso,
   foto,
   onExpand,
   id: clientId
@@ -38,7 +39,7 @@ export function CardCliente({
   return (
     <div
       className={`h-fit min-w-[380px] rounded-2xl border-x-4 border-y-4 border-secondary-green py-4 shadow-[4px_4px_8px_#01181B,-4px_-4px_8px_#01282F] cursor-pointer ${isExpanded ? 'bg-[#001E23] w-[100vw] order-first' : ''
-        } mx-auto`}
+        }`}
       onClick={toggleExpand}
     >
       {/* Foto del Cliente */}
@@ -76,7 +77,7 @@ export function CardCliente({
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 'bg-[#001E23]">
             <dt className="font-semibold text-xl text-white">Obiettivo</dt>
-            <dd className="text-[#001E23]">{obiettivo}</dd>
+            <dd className="text-white">{obiettivo}</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-secondary-green lg:bg-[#001E23]">
             <dt className="font-semibold text-xl text-[#001E23] lg:text-white">Stile di vita</dt>
@@ -84,7 +85,7 @@ export function CardCliente({
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-secondary-green">
             <dt className="font-semibold text-xl text-[#001E23]">Peso</dt>
-            <dd className="text-[#001E23]">N/A (Modificabile)</dd>
+            <dd className="text-[#001E23]">{peso}</dd>
           </div>
           <div className="grid grid-cols-1 gap-1 p-4 even:bg-[#94B7BD] bg-[#001E23] lg:bg-secondary-green">
             <dt className="font-semibold text-xl text-white lg:text-[#001E23]">Massa Grassa</dt>
@@ -96,13 +97,6 @@ export function CardCliente({
           </div>
         </div>
         <div className="flex flex-cols-2 gap-4 p-4 justify-center even:bg-[#94B7BD] bg-[#001E23]">
-            <Button
-              type="button"
-              text={'Vai alla dieta'}
-              color="#C1FF72"
-              txtcolor="#001E23"
-              onClick={handleSchedaClick}
-            />
             <Button
               type="button"
               text={'Vai alla scheda'}

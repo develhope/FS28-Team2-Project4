@@ -257,7 +257,7 @@ const Alimentazione = () => {
         <Button
           type="button"
           onClick={handleButtonClick}
-          text={'Salva'}
+          text={!thereIsData ? 'Salva' : 'Aggiorna'}
           disabled={isSaving}
         />
         <Button

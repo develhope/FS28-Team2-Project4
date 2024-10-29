@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import Button from './Button'; // Assicurati che il percorso sia corretto
+import Button from './Button';
+import { SaveConfirm } from './Alerts/SaveConfirm';
 
 const Esercizio = () => {
   const [exercises, setExercises] = useState({
@@ -103,9 +104,9 @@ const Esercizio = () => {
     setExercises(updatedExercises);
     setEditIndex((prev) => ({ ...prev, [giorno]: null }));
     setTempValues({});
-  
+
     if (!activeClient) {
-      console.error("No active client found.");
+      console.error('No active client found.');
       return;
     }
 
@@ -117,26 +118,7 @@ const Esercizio = () => {
     };
 
     console.log(updatedExercises[giorno]);
-
-    if (thereIsData) {
-      updateExercise(trainingData)
-      .then(() => {
-        setThereIsData(true);
-        console.log("Dati aggiornati sul server con successo!");
-      })
-      .catch(error => {
-        console.error("Errore durante l'aggiornamento dei dati sul server:", error);
-      });
-    } else {
-      saveTrainingPlan(trainingData)
-      .then(() => {
-        setThereIsData(true);
-        console.log("Dati salvati sul server con successo!");
-      })
-      .catch(error => {
-        console.error("Errore durante il salvataggio dei dati sul server:", error);
-      });
-    }
+    // saveTrainingPlan(trainingData);
   };
 
   const addExercise = (giorno) => {
@@ -169,7 +151,9 @@ const Esercizio = () => {
 
   const fetchExercises = async (activeClient) => {
     try {
-      const response = await fetch(`http://localhost:3000/training-plan/${activeClient}`);
+      const response = await fetch(
+        `http://localhost:3000/training-plan/${activeClient}`
+      );
 
       if (!response.ok) {
         throw new Error('Errore durante il recupero del piano nutrizionale');
@@ -187,7 +171,7 @@ const Esercizio = () => {
         Giorno5: [],
       };
 
-      data.forEach(exercise => {
+      data.forEach((exercise) => {
         const day = exercise.giorno;
         if (exercisesByDay[day]) {
           exercisesByDay[day].push({
@@ -196,7 +180,7 @@ const Esercizio = () => {
             gruppoMuscolare: exercise.gruppo_muscolare,
             set: parseInt(exercise.set, 10),
             rep: parseInt(exercise.rep, 10),
-            rest: parseFloat(exercise.rest)
+            rest: parseFloat(exercise.rest),
           });
         }
       });
@@ -204,9 +188,8 @@ const Esercizio = () => {
       setThereIsData(true);
 
       setExercises(exercisesByDay);
-
     } catch (error) {
-      console.error('Errore nel recupero dei piani d\'allenamento', error);
+      console.error("Errore nel recupero dei piani d'allenamento", error);
     }
   };
 
@@ -218,51 +201,30 @@ const Esercizio = () => {
   }, [activeClient]);
 
   const saveTrainingPlan = async (trainingData) => {
-    try {
-      const response = await fetch('http://localhost:3000/training-plan', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(trainingData)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Errore nel server');
+      try {
+        const response = await fetch('http://localhost:3000/training-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(trainingData),
+        });
+
+        if (!response.ok) {
+          throw new Error('Errore nel server');
+        }
+
+        const result = await response.json();
+
+        setThereIsData(true);
+
+        console.log("Piano d'allenamento salvato con successo:", result);
+      } catch (error) {
+        console.error("Errore nel salvataggio del piano d'allenamento:", error);
       }
-  
-      const result = await response.json();
-
-      setThereIsData(true);
-
-      console.log('Piano d\'allenamento salvato con successo:', result);
-    } catch (error) {
-      console.error('Errore nel salvataggio del piano d\'allenamento:', error);
-    }
-  };
-
-  const updateExercise = async (trainingData) => {
-    try {
-      const response = await fetch(`http://localhost:3000/training-plan`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(trainingData)
-      });
-  
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const result = await response.json();
-      console.log('Exercise updated successfully:', result);
-      return result;
-    } catch (error) {
-      console.error('Failed to update exercise:', error);
-      throw error;
-    }
   };
 
   return (
     <div className="overflow-x-auto mt-4 font-nowalt">
-      <div className='flex gap-5 justify-center'>
+      <div className="flex gap-5 justify-center items-center">
         <div className="mb-4">
           <label className="text-white" htmlFor="trainingType">
             Tipo di allenamento:{' '}
@@ -296,6 +258,22 @@ const Esercizio = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div className="flex gap-4 justify-end items-center pb-4">
+          <Button
+            type="button"
+            onClick={() => {
+              const trainingData = {
+                client_id: activeClient,
+                training_type: trainingType,
+                giorno: 1,
+                exercises: exercises,
+              };
+
+              saveTrainingPlan(trainingData);
+            }}
+            text={'Salva'}
+          />
         </div>
       </div>
 

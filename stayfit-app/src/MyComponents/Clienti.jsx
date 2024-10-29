@@ -51,7 +51,7 @@ export const Clienti = () => {
       )}
 
       {/* Mostra le schede dei clienti */}
-      <div className="flex flex-wrap justify-start gap-6 mt-6 w-full">
+      <div className="flex flex-wrap justify-center gap-10 mt-6 w-full mx-auto">
         {clienti.length > 0 ? (
           clienti.map((cliente) => (
             <CardCliente
@@ -59,8 +59,9 @@ export const Clienti = () => {
               nome={cliente.first_name}
               cognome={cliente.last_name}
               eta={cliente.birth_date}
-              obiettivo={cliente.obiettivo}
-              stileDiVita={cliente.stileDiVita}
+              obiettivo={cliente.fitness_goals}
+              stileDiVita={cliente.activity_level}
+              peso={`${cliente.weight} kg`}
               foto={cliente.foto}
               id={cliente.id}
             />

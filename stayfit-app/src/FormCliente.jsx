@@ -3,6 +3,7 @@ import Textbox from './MyComponents/Textbox.jsx';
 import { SelectBox } from './MyComponents/SelectBox.jsx';
 import Button from './MyComponents/Button.jsx';
 import { useNavigate } from 'react-router-dom';
+import { SaveSuccess } from './MyComponents/Alerts/SaveSuccess.jsx';
 
 const FormCliente = () => {
   const [step, setStep] = useState(0);
@@ -157,6 +158,7 @@ const FormCliente = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('Cliente creato:', data);
+        SaveSuccess();
         navigate('/dashboard');
       } else {
         console.error('Errore nella creazione:', data.error);

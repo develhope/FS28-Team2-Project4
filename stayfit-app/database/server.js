@@ -457,8 +457,11 @@ app.post('/training-plan', async (req, res) => {
     const deleteQuery = 'DELETE FROM training_plan WHERE client_id = $1';
     await database.query(deleteQuery, [client_id]);
 
+    // Controlla se exercises è un array, se no, mettilo in un array
+    const exercisesArray = Array.isArray(exercises) ? exercises : [exercises];
+
     await Promise.all(
-      exercises.map(async exercise => {
+      exercisesArray.map(async exercise => {
         const query = `
           INSERT INTO training_plan (client_id, training_type, giorno, esercizio, gruppo_muscolare, set, rep, rest)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
@@ -483,6 +486,7 @@ app.post('/training-plan', async (req, res) => {
     res.status(500).json({ error: "Failed to save the training plan" });
   }
 });
+
 
 
 // app.put('/training-plan', async (req, res) => {

@@ -62,7 +62,7 @@ useEffect(() => {
           <p className='py-3'>Hai sottoscritto il nostro piano: {userInfo ? userInfo.subscription_type : 'Caricamento...'}</p>
           <p>Nome: {userInfo ? userInfo.first_name : 'Caricamento...'}</p>
           <p>Cognome: {userInfo ? userInfo.last_name : 'Caricamento...'}</p>
-          <p className='py-3'>Professione: {userInfo ? userInfo.profession_type : 'Caricamento...'}</p>
+          <p className='py-3'>Professione: {userInfo ? (userInfo.profession_type === 'personalTrainer' ? 'Personal Trainer' : 'Nutrizionista') : 'Caricamento...'}</p>
           <p>Scadenza: 12/2025</p>
           <a href="#" className="text-secondary-green mt-2 block py-3 underline" aria-label="Rinnova in anticipo">
             Rinnova in anticipo
